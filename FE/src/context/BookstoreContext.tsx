@@ -729,7 +729,6 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           title: payload.title,
           author: payload.author,
           price: payload.price == null || payload.price === '' ? undefined : Number(payload.price),
-          importPrice: payload.importPrice,
           discount: payload.discount,
           stock: payload.stock == null || payload.stock === '' ? undefined : Number(payload.stock),
           categoryId,
@@ -745,9 +744,41 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           trending: payload.trending,
           isNew: payload.isNew,
         });
+        const imagesFromPayload = Array.isArray(payload.images)
+          ? (payload.images as unknown[]).map((x) => String(x)).filter(Boolean)
+          : undefined;
+        const tagsFromPayload = Array.isArray(payload.tags)
+          ? (payload.tags as unknown[]).map((x) => String(x)).filter(Boolean)
+          : undefined;
         persist((prev) => ({
           ...prev,
-          books: (prev.books || []).map((b) => (b && String(b.id) === String(bookId) ? updated : b)).filter(Boolean),
+          books: (prev.books || [])
+            .map((b) => {
+              if (!b || String(b.id) !== String(bookId)) return b;
+              const prevBook = b as unknown as Record<string, unknown>;
+              const updatedBook = updated as unknown as Record<string, unknown>;
+              const merged = {
+                ...prevBook,
+                ...updatedBook,
+                image: (updatedBook.image as string | undefined) || (prevBook.image as string | undefined),
+                images:
+                  imagesFromPayload ||
+                  (Array.isArray(updatedBook.images) ? (updatedBook.images as unknown[]) : undefined) ||
+                  (Array.isArray(prevBook.images) ? (prevBook.images as unknown[]) : undefined),
+                tags:
+                  tagsFromPayload ||
+                  (Array.isArray(updatedBook.tags) ? (updatedBook.tags as unknown[]) : undefined) ||
+                  (Array.isArray(prevBook.tags) ? (prevBook.tags as unknown[]) : undefined),
+                bestSeller:
+                  (updatedBook.bestSeller as boolean | undefined) ??
+                  (updatedBook.bestseller as boolean | undefined) ??
+                  (prevBook.bestSeller as boolean | undefined) ??
+                  (prevBook.bestseller as boolean | undefined) ??
+                  false,
+              };
+              return merged as unknown as Book;
+            })
+            .filter(Boolean),
         }));
         return updated;
       } catch {

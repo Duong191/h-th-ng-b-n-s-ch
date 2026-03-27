@@ -22,8 +22,11 @@ export default function AdminBooksPage() {
 
   const handleDelete = async (id: string, title: string) => {
     if (window.confirm(`Bạn có chắc muốn xóa sách "${title}"?`)) {
-      if (await Promise.resolve(deleteBook(id))) {
+      const ok = await Promise.resolve(deleteBook(id));
+      if (ok) {
         showToast('Đã xóa sách', 'success');
+      } else {
+        showToast('Không thể xóa sách. Vui lòng thử lại.', 'error');
       }
     }
   };

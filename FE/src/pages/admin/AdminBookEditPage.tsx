@@ -95,8 +95,7 @@ export default function AdminBookEditPage() {
       originalPrice: parseFloat(formData.originalPrice) || undefined,
       stock: parseInt(formData.stock),
       description: formData.description,
-      image: imagesArray[0] || '',
-      images: imagesArray,
+      ...(imagesArray.length > 0 ? { image: imagesArray[0], images: imagesArray } : {}),
       tags: tagsArray,
       isbn: formData.isbn,
       pages: parseInt(formData.pages) || undefined,
@@ -204,7 +203,7 @@ export default function AdminBookEditPage() {
           <small style={{ color: '#666', fontSize: '0.85rem' }}>Giá bán cho khách hàng</small>
         </div>
         <div className="form-group">
-          <label className="form-label required">Giá nhập (VNĐ)</label>
+          <label className={`form-label ${isEdit ? '' : 'required'}`}>Giá nhập (VNĐ)</label>
           <input
             type="number"
             className="form-input"
@@ -212,9 +211,17 @@ export default function AdminBookEditPage() {
             step="1000"
             value={formData.importPrice}
             onChange={(e) => setFormData({ ...formData, importPrice: e.target.value })}
-            required
+            required={!isEdit}
+            disabled={isEdit}
+            style={isEdit ? { backgroundColor: '#f5f5f5', cursor: 'not-allowed' } : {}}
           />
-          <small style={{ color: '#666', fontSize: '0.85rem' }}>Giá vốn từ nhà cung cấp</small>
+          {isEdit ? (
+            <small style={{ color: '#666', fontSize: '0.85rem' }}>
+              Chỉ đọc. Muốn cập nhật giá nhập, vui lòng vào trang Quản lý Kho.
+            </small>
+          ) : (
+            <small style={{ color: '#666', fontSize: '0.85rem' }}>Giá vốn từ nhà cung cấp</small>
+          )}
         </div>
       </div>
 
@@ -280,14 +287,14 @@ export default function AdminBookEditPage() {
 
       {/* Images */}
       <div className="form-group">
-        <label className="form-label required">Hình ảnh (URL, cách nhau bởi dấu phẩy)</label>
+        <label className={`form-label ${isEdit ? '' : 'required'}`}>Hình ảnh (URL, cách nhau bởi dấu phẩy)</label>
         <textarea
           className="form-textarea"
           rows={3}
           placeholder="img/book1.jpg, img/book2.jpg"
           value={formData.images}
           onChange={(e) => setFormData({ ...formData, images: e.target.value })}
-          required
+          required={!isEdit}
         />
         <small style={{ color: '#666', marginTop: 5, display: 'block' }}>
           Nhập các URL hình ảnh, cách nhau bởi dấu phẩy. Hình đầu tiên sẽ là hình chính.

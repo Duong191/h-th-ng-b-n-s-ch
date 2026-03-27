@@ -11,6 +11,7 @@ const PER = 5;
 interface BookWithExtras extends Book {
   featured?: boolean;
   category?: string;
+  categoryName?: string;
   tags?: string[];
   salesCount?: number;
   reviews?: number;
@@ -32,22 +33,48 @@ export default function HomePage() {
   const [featPage, setFeatPage] = useState(0);
   const featPages = Math.max(1, Math.ceil(featured.length / PER));
 
-  const comicsAll = useMemo(() => books.filter((b) => (b as any).category === '5' || b.categoryId === '5'), [books]);
+  const comicsAll = useMemo(
+    () =>
+      books.filter((b) => {
+        const categoryId = String((b as any).category ?? b.categoryId ?? '');
+        const categoryName = String((b as any).categoryName ?? '').toLowerCase();
+        return (
+          categoryId === '5' ||
+          categoryId === '9' ||
+          categoryName.includes('manga') ||
+          categoryName.includes('comic') ||
+          categoryName.includes('thiếu nhi') ||
+          categoryName.includes('thieu nhi')
+        );
+      }),
+    [books]
+  );
   const [comicTab, setComicTab] = useState('manga-comic');
   const [comicPage, setComicPage] = useState(0);
   const comicFiltered = useMemo(() => {
     if (comicTab === 'manga-comic') {
       return comicsAll.filter(
-        (b) =>
-          Array.isArray(b.tags) &&
-          b.tags.some((t) => String(t).toLowerCase().includes('manga') || String(t).toLowerCase().includes('comic'))
+        (b) => {
+          const categoryId = String((b as any).category ?? b.categoryId ?? '');
+          const categoryName = String((b as any).categoryName ?? '').toLowerCase();
+          const hasMangaTag =
+            Array.isArray(b.tags) &&
+            b.tags.some((t) => String(t).toLowerCase().includes('manga') || String(t).toLowerCase().includes('comic'));
+          return categoryId === '9' || categoryName.includes('manga') || categoryName.includes('comic') || hasMangaTag;
+        }
       );
     }
     if (comicTab === 'truyen-thieu-nhi') {
       return comicsAll.filter((b) => {
-        if (!Array.isArray(b.tags)) return true;
-        const has = b.tags.some((t) => String(t).toLowerCase().includes('manga') || String(t).toLowerCase().includes('comic'));
-        return !has;
+        const categoryId = String((b as any).category ?? b.categoryId ?? '');
+        const categoryName = String((b as any).categoryName ?? '').toLowerCase();
+        if (categoryId === '5' || categoryName.includes('thiếu nhi') || categoryName.includes('thieu nhi')) {
+          return true;
+        }
+        const hasMangaTag =
+          Array.isArray(b.tags) &&
+          b.tags.some((t) => String(t).toLowerCase().includes('manga') || String(t).toLowerCase().includes('comic'));
+        return !hasMangaTag && categoryId !== '9' && !categoryName.includes('manga') && !categoryName.includes('comic');
       });
     }
     return comicsAll;
@@ -57,21 +84,39 @@ export default function HomePage() {
   const [rankCat, setRankCat] = useState('1');
   const rankingPreview = useMemo(() => getBestSellersByCategory(books, rankCat).slice(0, 5), [books, rankCat]);
 
-  const foreignAll = useMemo(() => books.filter((b) => (b as any).category === '6' || b.categoryId === '6'), [books]);
+  const foreignAll = useMemo(
+    () =>
+      books.filter((b) => {
+        const categoryId = String((b as any).category ?? b.categoryId ?? '');
+        const categoryName = String((b as any).categoryName ?? '').toLowerCase();
+        return (
+          categoryId === '6' ||
+          categoryName.includes('ngoại ngữ') ||
+          categoryName.includes('ngoai ngu') ||
+          categoryName.includes('foreign')
+        );
+      }),
+    [books]
+  );
   const [foreignTab, setForeignTab] = useState('english');
   const [foreignPage, setForeignPage] = useState(0);
   const foreignFiltered = useMemo(() => {
     const kw: Record<string, string[]> = {
-      chinese: ['tiếng trung', 'chinese', 'hsk', 'trung quốc'],
-      japanese: ['tiếng nhật', 'nhật', 'japanese', 'jlpt', 'n5', 'n4', 'n3', 'n2', 'n1'],
-      korean: ['tiếng hàn', 'hàn', 'korean', 'topik'],
-      english: ['tiếng anh', 'anh', 'english', 'ielts', 'toeic', 'toefl'],
+      chinese: ['tiếng trung', 'tieng trung', 'chinese', 'hsk', 'trung quốc', 'trung quoc', '中文', '汉语'],
+      japanese: ['tiếng nhật', 'tieng nhat', 'japanese', 'jlpt', 'n5', 'n4', 'n3', 'n2', 'n1', '日本語'],
+      korean: ['tiếng hàn', 'tieng han', 'korean', 'topik', '한국어'],
+      english: ['tiếng anh', 'tieng anh', 'english', 'ielts', 'toeic', 'toefl'],
     };
     const keywords = kw[foreignTab] || [];
     return foreignAll.filter((book) => {
-      const lang = (book.language || '').toLowerCase();
+      const lang = String(book.language || '').toLowerCase();
       const tags = Array.isArray(book.tags) ? book.tags.map((t) => String(t).toLowerCase()) : [];
-      return keywords.some((k) => lang.includes(k) || tags.some((t) => t.includes(k)));
+      const title = String(book.title || '').toLowerCase();
+      const publisher = String(book.publisher || '').toLowerCase();
+      const description = String(book.description || '').toLowerCase();
+      const categoryName = String((book as any).categoryName || '').toLowerCase();
+      const haystack = `${lang} ${title} ${publisher} ${description} ${categoryName}`;
+      return keywords.some((k) => haystack.includes(k) || tags.some((t) => t.includes(k)));
     });
   }, [foreignAll, foreignTab]);
   const foreignPages = Math.max(1, Math.ceil(foreignFiltered.length / PER));
@@ -209,7 +254,7 @@ export default function HomePage() {
             </button>
           </div>
           <div className="view-more-container">
-            <NavLink to="/shop?category=5" className="view-more-btn">
+            <NavLink to={comicTab === 'manga-comic' ? '/shop?category=9' : '/shop?category=5'} className="view-more-btn">
               Xem Thêm
             </NavLink>
           </div>

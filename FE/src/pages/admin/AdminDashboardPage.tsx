@@ -4,7 +4,7 @@ import { useBookstore } from '../../context/BookstoreContext';
 import { formatPrice, formatDate, fixImagePath } from '../../utils/format';
 
 export default function AdminDashboardPage() {
-  const { data, getUserById } = useBookstore();
+  const { data, getUserById, deleteBook, showToast } = useBookstore();
 
   const stats = useMemo(() => {
     const orders = data?.orders || [];
@@ -53,6 +53,13 @@ export default function AdminDashboardPage() {
     };
     const badge = badges[status] || { label: status, className: 'badge' };
     return <span className={`badge ${badge.className}`}>{badge.label}</span>;
+  };
+
+  const handleDeleteBook = async (bookId: string, title: string) => {
+    if (!window.confirm(`Bạn có chắc muốn xóa sách "${title}"?`)) return;
+    const ok = await Promise.resolve(deleteBook(bookId));
+    if (ok) showToast('Đã xóa sách', 'success');
+    else showToast('Không thể xóa sách. Vui lòng thử lại.', 'error');
   };
 
   return (
@@ -200,9 +207,17 @@ export default function AdminDashboardPage() {
                     <td>{book.salesCount || 0}</td>
                     <td>{formatPrice(price)}</td>
                     <td>
-                      <NavLink to={`/admin/books/${book.id}/edit`} className="btn-admin btn-admin-primary" style={{ padding: '5px 10px', fontSize: '0.85rem' }}>
+                      <NavLink to={`/admin/books/${book.id}/edit`} className="btn-admin btn-admin-primary" style={{ padding: '5px 10px', fontSize: '0.85rem', marginRight: 6 }}>
                         <i className="fas fa-edit"></i>
                       </NavLink>
+                      <button
+                        type="button"
+                        className="btn-admin btn-admin-danger"
+                        style={{ padding: '5px 10px', fontSize: '0.85rem' }}
+                        onClick={() => handleDeleteBook(String(book.id), String(book.title))}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
                     </td>
                   </tr>
                 );

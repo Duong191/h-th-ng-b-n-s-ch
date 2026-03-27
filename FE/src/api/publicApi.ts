@@ -22,6 +22,7 @@ function mapBook(raw: RawBook): Book & {
   salesCount?: number;
   images?: string[];
   originalPrice?: number;
+  categoryName?: string;
 } {
   const price = Number(raw.price ?? 0);
   const discount = Number(raw.discount ?? 0);
@@ -38,6 +39,7 @@ function mapBook(raw: RawBook): Book & {
     discount,
     stock: Number(raw.stock ?? 0),
     categoryId: String(raw.category_id ?? raw.categoryId ?? ''),
+    categoryName: raw.category_name != null ? String(raw.category_name) : undefined,
     description: String(raw.description ?? ''),
     image,
     isbn: raw.isbn != null ? String(raw.isbn) : undefined,

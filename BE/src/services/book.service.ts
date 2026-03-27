@@ -118,7 +118,6 @@ export const updateBook = async (id: number, payload: Record<string, unknown>) =
     .input("publishDate", sql.Date, payload.publishDate ?? null)
     .input("categoryId", sql.BigInt, payload.categoryId ? Number(payload.categoryId) : null)
     .input("price", sql.Decimal(18, 2), payload.price ? Number(payload.price) : null)
-    .input("importPrice", sql.Decimal(18, 2), payload.importPrice != null ? Number(payload.importPrice) : null)
     .input("discount", sql.Decimal(5, 2), payload.discount != null ? Number(payload.discount) : null)
     .input("stock", sql.Int, payload.stock ? Number(payload.stock) : null)
     .input("description", sql.NVarChar(sql.MAX), payload.description ?? null)
@@ -131,7 +130,6 @@ export const updateBook = async (id: number, payload: Record<string, unknown>) =
        publish_date = COALESCE(@publishDate, publish_date),
        category_id = COALESCE(@categoryId, category_id),
        price = COALESCE(@price, price),
-       import_price = COALESCE(@importPrice, import_price),
        discount = COALESCE(@discount, discount),
        stock = COALESCE(@stock, stock)
        ,description = COALESCE(@description, description)
