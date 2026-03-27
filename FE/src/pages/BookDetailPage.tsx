@@ -12,7 +12,6 @@ export default function BookDetailPage() {
   const book = id ? getBookById(id) : null;
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [activeTab, setActiveTab] = useState('description');
   const [reviews, setReviews] = useState<{ id: string; userId: string; rating: number; comment: string; createdAt: string }[]>([]);
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewRating, setReviewRating] = useState(5);
@@ -21,6 +20,16 @@ export default function BookDetailPage() {
   const bookWithExtras = book ? (book as any) : null;
   const imagesRaw = bookWithExtras?.images || (book?.image ? [book.image] : []);
   const images = imagesRaw.map((img: string) => fixImagePath(img));
+  const tags = Array.isArray(bookWithExtras?.tags) ? (bookWithExtras.tags as unknown[]).map((t) => String(t)) : [];
+  const variants = useMemo(() => {
+    const fromTags = tags
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .slice(0, 6);
+    if (fromTags.length) return fromTags;
+    return ['Bìa mềm', 'Bìa cứng'];
+  }, [tags]);
+  const [selectedVariant, setSelectedVariant] = useState<string>(() => variants[0] || 'Bìa mềm');
   const relatedBooks = useMemo(() => {
     if (!book || !data?.books) return [];
     return getRelatedBooks(data.books, book.id, 4);
@@ -32,11 +41,32 @@ export default function BookDetailPage() {
     return () => {};
   }, [id]);
 
+  useEffect(() => {
+    // Keep selectedVariant in sync when book changes
+    setSelectedVariant((prev) => (variants.includes(prev) ? prev : variants[0] || 'Bìa mềm'));
+  }, [variants]);
+
+  const totalReviews = Number(book?.reviewCount || bookWithExtras?.reviews || reviews.length || 0);
+  const avgRating = Number(book?.rating || 0);
+  const reviewBreakdown = useMemo(() => {
+    const counts: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    for (const r of reviews) {
+      const key = Math.max(1, Math.min(5, Math.round(r.rating))) as 1 | 2 | 3 | 4 | 5;
+      counts[key] += 1;
+    }
+    return [5, 4, 3, 2, 1].map((star) => {
+      const count = counts[star as 1 | 2 | 3 | 4 | 5];
+      const percent = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+      return { star, percent };
+    });
+  }, [reviews, totalReviews]);
+
   if (loading) return <div className="container" style={{ padding: 60 }}>Đang tải…</div>;
   if (!book) return <div className="container" style={{ padding: 60 }}>Không tìm thấy sách</div>;
 
   const price = discountedUnitPrice(book);
   const category = data?.categories?.find((c) => c.id === book.categoryId || c.id === (book as any).category);
+  const sold = Number(book.soldCount || bookWithExtras?.salesCount || 0);
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
@@ -82,19 +112,23 @@ export default function BookDetailPage() {
               <div className="main-image">
                 <img src={images[selectedImage] || book.image} alt={book.title} />
               </div>
-              {images.length > 1 && (
-                <div className="thumbnail-gallery">
-                  {images.slice(0, 5).map((img: string, idx: number) => (
-                    <div
-                      key={idx}
-                      className={`thumbnail-item ${selectedImage === idx ? 'active' : ''}`}
-                      onClick={() => setSelectedImage(idx)}
-                    >
-                      <img src={img} alt={`Thumbnail ${idx + 1}`} />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="thumbnail-gallery">
+                {images.slice(0, 4).map((img: string, idx: number) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`thumbnail-item ${selectedImage === idx ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(idx)}
+                  >
+                    <img src={img} alt={`Thumbnail ${idx + 1}`} />
+                  </button>
+                ))}
+                {images.length > 4 && (
+                  <button type="button" className="thumbnail-item thumbnail-more" onClick={() => setSelectedImage(4)}>
+                    <span className="thumbnail-more-count">+{images.length - 4}</span>
+                  </button>
+                )}
+              </div>
 
               {/* Action Buttons */}
               <div className="book-actions">
@@ -129,35 +163,54 @@ export default function BookDetailPage() {
               </div>
             </div>
 
-            {/* Right Column: Book Info */}
-            <div className="book-info-section">
+            {/* Right Column: 3 content blocks */}
+            <div className="book-right-column">
+            <div className="book-info-section block-content-product-detail block-product-view-mobile">
               <div className="book-header">
                 {bookWithExtras?.trending && <div className="book-badge">Xu hướng</div>}
                 {bookWithExtras?.bestSeller && <div className="book-badge">Bán chạy</div>}
                 {bookWithExtras?.isNew && <div className="book-badge">Mới</div>}
-                <h1 className="book-title">{book.title}</h1>
-                <div className="book-supplier">
-                  <span>Nhà cung cấp: <span>{bookWithExtras?.brand || 'N/A'}</span></span>
+                <div className="book-title-row">
+                  <h1 className="book-title">{book.title}</h1>
                 </div>
-                <div className="book-publisher">
-                  <span>Nhà xuất bản: <span>{book.publisher || 'N/A'}</span></span>
-                </div>
-              </div>
 
-              <div className="book-rating">
-                <div className="stars">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <img
-                      key={star}
-                      src="/icon/book_details/star.svg"
-                      alt="Star"
-                      className="star-icon"
-                      style={{ opacity: star <= (book.rating || 0) ? 1 : 0.3 }}
-                    />
-                  ))}
+                <div className="book-meta-top">
+                  <div className="book-info-grid">
+                    <div className="book-info-col">
+                      <div className="book-supplier">
+                        <span>Nhà cung cấp: <span>{bookWithExtras?.brand || 'N/A'}</span></span>
+                      </div>
+                      <div className="book-publisher">
+                        <span>Nhà xuất bản: <span>{book.publisher || 'N/A'}</span></span>
+                      </div>
+                    </div>
+                    <div className="book-meta">
+                      <div className="meta-item">
+                        <span className="meta-label">Tác giả:</span>
+                        <span className="meta-value">{book.author}</span>
+                      </div>
+                      <div className="meta-item">
+                        <span className="meta-label">Hình thức bìa:</span>
+                        <span className="meta-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="book-rating">
+                    <div className="stars">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <img
+                          key={star}
+                          src="/icon/book_details/star.svg"
+                          alt="Star"
+                          className="star-icon"
+                          style={{ opacity: star <= (book.rating || 0) ? 1 : 0.3 }}
+                        />
+                      ))}
+                    </div>
+                    <span className="rating-text">({book.reviewCount || bookWithExtras?.reviews || 0} đánh giá)</span>
+                    <span className="sales-count">| Đã bán {sold}+</span>
+                  </div>
                 </div>
-                <span className="rating-text">({book.reviewCount || bookWithExtras?.reviews || 0} đánh giá)</span>
-                <span className="sales-count">| Đã bán {book.soldCount || bookWithExtras?.salesCount || 0}+</span>
               </div>
 
               <div className="price-section">
@@ -170,22 +223,18 @@ export default function BookDetailPage() {
                 )}
               </div>
 
-              <div className="book-meta">
-                <div className="meta-item">
-                  <span className="meta-label">Tác giả:</span>
-                  <span className="meta-value">{book.author}</span>
-                </div>
-                <div className="meta-item">
-                  <span className="meta-label">Hình thức bìa:</span>
-                  <span className="meta-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
-                </div>
-              </div>
-
               <div className="promo-link">
                 <a href="#">Chính sách khuyến mãi trên chỉ áp dụng tại Bookarazi.com &gt;</a>
               </div>
 
+              <div className="availability">
+                <span className="availability-badge">{Math.max(1, Math.min(99, book.stock))} nhà sách còn hàng</span>
+              </div>
+
+            </div>
+
               {/* Shipping Info */}
+              <div className="book-info-section block-content-product-detail block-info-delivery-mobile">
               <div className="shipping-info">
                 <h4>Thông tin vận chuyển</h4>
                 <div className="shipping-location">
@@ -204,13 +253,37 @@ export default function BookDetailPage() {
               {/* Related Offers */}
               <div className="related-offers">
                 <h4>Ưu đãi liên quan</h4>
-                <div className="offers-list">
-                  <div className="offer-item">Mã giảm 10k - toàn bộ đơn hàng</div>
-                  <div className="offer-item">Zalopay: giảm 15k cho đơn từ 99k</div>
-                  <div className="offer-item">Momo: giảm 20k cho đơn từ 150k</div>
-                  <div className="offer-item">Vietcombank: giảm 5% tối đa 50k</div>
+                <div className="offers-grid">
+                  {[
+                    { icon: '🏷️', text: 'Mã giảm 10k - toàn bộ đơn hàng' },
+                    { icon: '💳', text: 'Mã giảm 20k - cho đơn từ 150k' },
+                    { icon: '🎁', text: 'Mã giảm 25k - sàn TMĐT' },
+                    { icon: '🅿️', text: 'Zalopay: giảm 15k cho đơn từ 99k' },
+                  ].map((o) => (
+                    <div key={o.text} className="offer-card">
+                      <span className="offer-icon">{o.icon}</span>
+                      <span className="offer-text">{o.text}</span>
+                    </div>
+                  ))}
                 </div>
                 <a href="#" className="view-more-offers">Xem thêm &gt;</a>
+              </div>
+
+              {/* Classification */}
+              <div className="product-options">
+                <h4>Phân loại:</h4>
+                <div className="option-chips">
+                  {variants.slice(0, 6).map((v) => (
+                    <button
+                      key={v}
+                      type="button"
+                      className={`chip ${selectedVariant === v ? 'active' : ''}`}
+                      onClick={() => setSelectedVariant(v)}
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Quantity Selector */}
@@ -239,130 +312,130 @@ export default function BookDetailPage() {
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
+              </div>
 
-          {/* Detailed Information */}
-          <div className="book-details-section">
-            <div className="details-tabs">
-              <button
-                className={`tab-btn ${activeTab === 'details' ? 'active' : ''}`}
-                onClick={() => setActiveTab('details')}
-              >
-                Thông tin chi tiết
-              </button>
-              <button
-                className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`}
-                onClick={() => setActiveTab('description')}
-              >
-                Mô tả sản phẩm
-              </button>
-            </div>
-
-            <div className="tab-content">
-              {activeTab === 'details' ? (
-                <div className="tab-panel active">
-                  <div className="details-table">
-                    <div className="detail-row">
-                      <span className="detail-label">Mã hàng</span>
-                      <span className="detail-value">{book.isbn || 'N/A'}</span>
-                      <span className="detail-label">Tên Nhà Cung Cấp</span>
-                      <span className="detail-value">{bookWithExtras?.brand || 'N/A'}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Tác giả</span>
-                      <span className="detail-value">{book.author}</span>
-                      <span className="detail-label">NXB</span>
-                      <span className="detail-value">{book.publisher || 'N/A'}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Năm XB</span>
-                      <span className="detail-value">{bookWithExtras?.publishYear || book.publishDate || 'N/A'}</span>
-                      <span className="detail-label">Trọng lượng (gr)</span>
-                      <span className="detail-value">{bookWithExtras?.weight || 400}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Kích Thước Bao Bì</span>
-                      <span className="detail-value">{bookWithExtras?.dimensions || '20.5 x 14.5 x 2.5 cm'}</span>
-                      <span className="detail-label">Số trang</span>
-                      <span className="detail-value">{book.pages || 'N/A'}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Hình thức</span>
-                      <span className="detail-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
-                      <span className="detail-label"></span>
-                      <span className="detail-value"></span>
-                    </div>
+              <div className="book-details-section block-content-product-detail block-info-detail-mobile">
+                <div className="details-block-header">Thông tin chi tiết</div>
+                <div className="details-table">
+                  <div className="detail-row">
+                    <span className="detail-label">Mã hàng</span>
+                    <span className="detail-value">{book.isbn || 'N/A'}</span>
+                    <span className="detail-label">Tên Nhà Cung Cấp</span>
+                    <span className="detail-value">{bookWithExtras?.brand || 'N/A'}</span>
                   </div>
-
-                  {category && (
-                    <div className="best-seller-link">
-                      <NavLink to={`/shop?category=${category.id}`}>
-                        Top 100 sản phẩm {category.name} bán chạy của tháng
-                      </NavLink>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="tab-panel active">
-                  <div className="product-description">
-                    <h3>{book.title}</h3>
-                    <div className="description-content">
-                      {book.description || 'Chưa có mô tả'}
-                    </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Tác giả</span>
+                    <span className="detail-value">{book.author}</span>
+                    <span className="detail-label">NXB</span>
+                    <span className="detail-value">{book.publisher || 'N/A'}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Năm XB</span>
+                    <span className="detail-value">{bookWithExtras?.publishYear || book.publishDate || 'N/A'}</span>
+                    <span className="detail-label">Trọng lượng (gr)</span>
+                    <span className="detail-value">{bookWithExtras?.weight || 400}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Kích Thước Bao Bì</span>
+                    <span className="detail-value">{bookWithExtras?.dimensions || '20.5 x 14.5 x 2.5 cm'}</span>
+                    <span className="detail-label">Số trang</span>
+                    <span className="detail-value">{book.pages || 'N/A'}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Hình thức</span>
+                    <span className="detail-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
+                    <span className="detail-label"></span>
+                    <span className="detail-value"></span>
                   </div>
                 </div>
-              )}
+
+                {category && (
+                  <div className="best-seller-link">
+                    <NavLink to={`/shop?category=${category.id}`}>
+                      Top 100 sản phẩm {category.name} bán chạy của tháng
+                    </NavLink>
+                  </div>
+                )}
+
+                <div className="details-block-header" style={{ marginTop: 20 }}>Mô tả sản phẩm</div>
+                <div className="product-description">
+                  <h3>{book.title}</h3>
+                  <div className="description-content">{book.description || 'Chưa có mô tả'}</div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Related Books */}
-          <div className="book-details-section" style={{ marginTop: 24 }}>
+          <div className="book-details-section review-summary-card" style={{ marginTop: 24 }}>
             <h2 className="section-title">Đánh giá sản phẩm</h2>
             {reviewLoading ? (
               <p>Đang tải đánh giá...</p>
-            ) : reviews.length === 0 ? (
-              <p>Chưa có đánh giá nào.</p>
             ) : (
-              <div style={{ display: 'grid', gap: 12 }}>
-                {reviews.map((review) => (
-                  <div key={review.id} style={{ border: '1px solid #eee', borderRadius: 8, padding: 12 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong>{review.rating}/5 sao</strong>
-                      {currentUser && currentUser.id === review.userId && (
-                        <button className="btn btn-secondary" onClick={() => handleDeleteReview(review.id)}>
-                          Xóa
-                        </button>
-                      )}
-                    </div>
-                    <div style={{ marginTop: 8 }}>{review.comment || 'Không có bình luận'}</div>
+              <div className="review-summary-layout">
+                <div className="review-score-col">
+                  <div className="review-score-value">
+                    {Number.isFinite(avgRating) ? avgRating.toFixed(1).replace('.0', '') : '0'}
+                    <span>/5</span>
                   </div>
-                ))}
-              </div>
-            )}
-            {currentUser && (
-              <form onSubmit={handleSubmitReview} style={{ marginTop: 16, display: 'grid', gap: 10 }}>
-                <div>
-                  <label>Chấm sao: </label>
-                  <select value={reviewRating} onChange={(e) => setReviewRating(Number(e.target.value))}>
-                    <option value={5}>5</option>
-                    <option value={4}>4</option>
-                    <option value={3}>3</option>
-                    <option value={2}>2</option>
-                    <option value={1}>1</option>
-                  </select>
+                  <div className="review-score-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <img
+                        key={star}
+                        src="/icon/book_details/star.svg"
+                        alt="star"
+                        className="star-icon"
+                        style={{ opacity: star <= Math.round(avgRating) ? 1 : 0.25 }}
+                      />
+                    ))}
+                  </div>
+                  <div className="review-count-text">({totalReviews} đánh giá)</div>
                 </div>
-                <textarea
-                  className="form-input"
-                  rows={4}
-                  placeholder="Chia sẻ cảm nhận của bạn..."
-                  value={reviewComment}
-                  onChange={(e) => setReviewComment(e.target.value)}
-                />
-                <button type="submit" className="btn btn-primary">
-                  Gửi đánh giá
-                </button>
-              </form>
+
+                <div className="review-bars-col">
+                  {reviewBreakdown.map((row) => (
+                    <div key={row.star} className="review-bar-row">
+                      <span className="review-bar-label">{row.star} sao</span>
+                      <div className="review-bar-track">
+                        <div className="review-bar-fill" style={{ width: `${row.percent}%` }} />
+                      </div>
+                      <span className="review-bar-percent">{row.percent}%</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="review-login-col">
+                  {currentUser ? (
+                    <form onSubmit={handleSubmitReview} className="inline-review-form">
+                      <div>
+                        <label>Chấm sao: </label>
+                        <select value={reviewRating} onChange={(e) => setReviewRating(Number(e.target.value))}>
+                          <option value={5}>5</option>
+                          <option value={4}>4</option>
+                          <option value={3}>3</option>
+                          <option value={2}>2</option>
+                          <option value={1}>1</option>
+                        </select>
+                      </div>
+                      <textarea
+                        className="form-input"
+                        rows={3}
+                        placeholder="Chia sẻ cảm nhận của bạn..."
+                        value={reviewComment}
+                        onChange={(e) => setReviewComment(e.target.value)}
+                      />
+                      <button type="submit" className="btn btn-primary">
+                        Gửi đánh giá
+                      </button>
+                    </form>
+                  ) : (
+                    <p>
+                      Chỉ có thành viên mới có thể viết nhận xét. Vui lòng{' '}
+                      <NavLink to="/login">đăng nhập</NavLink> hoặc <NavLink to="/login?tab=register">đăng ký</NavLink>.
+                    </p>
+                  )}
+                </div>
+              </div>
             )}
           </div>
 

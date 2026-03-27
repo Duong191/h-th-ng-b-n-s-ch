@@ -20,8 +20,8 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
   }, [data?.orders]);
 
   const columns = useMemo(() => {
-    const per = Math.ceil(detailed.length / 3) || 1;
-    return [0, 1, 2].map((i) => detailed.slice(i * per, i * per + per));
+    const per = Math.ceil(detailed.length / 4) || 1;
+    return [0, 1, 2, 3].map((i) => detailed.slice(i * per, i * per + per));
   }, [detailed]);
 
   const onSearch = (e: React.FormEvent) => {
@@ -71,30 +71,47 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
                   <img src="/icon/ico_menu.jpg" alt="Menu" className="icon-img" />
                   <span>Danh mục</span>
                 </button>
-                <div className="category-dropdown" style={{ display: catOpen ? 'flex' : 'none' }}>
+                <div className={`category-dropdown ${catOpen ? 'show' : ''}`}>
                   {detailed.length === 0 ? (
                     <div style={{ padding: 20 }}>Đang tải danh mục…</div>
                   ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 40, alignItems: 'start' }}>
+                    <>
                       {columns.map((col, ci) => (
                         <div key={ci} className="category-column">
                           {col.map((category) => (
                             <div key={category.id} className="category-section">
                               <h3 className="category-title">{category.name}</h3>
                               <div className="category-subcategories">
-                                {(category.subCategories || []).map((sub) => (
-                                  <NavLink
-                                    key={sub.name}
-                                    to={`/shop?category=${category.id}`}
-                                    className="category-subcategory"
-                                    onClick={() => setCatOpen(false)}
-                                  >
-                                    {sub.name}
-                                  </NavLink>
-                                ))}
+                                {(() => {
+                                  const subs = (category.subCategories || []).slice(0, 4);
+                                  const placeholders = Array.from({ length: Math.max(0, 4 - subs.length) });
+                                  return (
+                                    <>
+                                      {subs.map((sub) => (
+                                        <NavLink
+                                          key={`${category.id}-${sub.name}`}
+                                          to={sub.link || category.viewAllLink || `/shop?category=${category.id}`}
+                                          className="category-subcategory"
+                                          onClick={() => setCatOpen(false)}
+                                        >
+                                          {sub.name}
+                                        </NavLink>
+                                      ))}
+                                      {placeholders.map((_, idx) => (
+                                        <span
+                                          key={`${category.id}-placeholder-${idx}`}
+                                          className="category-subcategory category-subcategory--placeholder"
+                                          aria-hidden="true"
+                                        >
+                                          &nbsp;
+                                        </span>
+                                      ))}
+                                    </>
+                                  );
+                                })()}
                               </div>
                               <NavLink
-                                to={`/shop?category=${category.id}`}
+                                to={category.viewAllLink || `/shop?category=${category.id}`}
                                 className="category-view-all"
                                 onClick={() => setCatOpen(false)}
                               >
@@ -104,7 +121,7 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
                           ))}
                         </div>
                       ))}
-                    </div>
+                    </>
                   )}
                 </div>
               </div>

@@ -25,6 +25,7 @@ export const listBooks = async (query: Record<string, unknown>) => {
          b.id,
          b.title,
          b.author,
+         b.description,
          b.price,
          b.import_price,
          b.discount,
@@ -72,7 +73,11 @@ export const listBooks = async (query: Record<string, unknown>) => {
 export const getBookById = async (id: number) => {
   const pool = await getDb();
   const rs = await pool.request().input("id", sql.BigInt, id).query(
-    `SELECT b.*, c.name AS category_name
+    `SELECT
+      b.*,
+      c.name AS category_name,
+      b.review_count AS reviewCount,
+      b.sold_count AS soldCount
      FROM books b
      JOIN categories c ON c.id = b.category_id
      WHERE b.id=@id AND b.is_deleted=0`
@@ -117,9 +122,13 @@ export const updateBook = async (id: number, payload: Record<string, unknown>) =
     .input("publisher", sql.NVarChar(255), payload.publisher ?? null)
     .input("publishDate", sql.Date, payload.publishDate ?? null)
     .input("categoryId", sql.BigInt, payload.categoryId ? Number(payload.categoryId) : null)
-    .input("price", sql.Decimal(18, 2), payload.price ? Number(payload.price) : null)
+    .input("price", sql.Decimal(18, 2), payload.price != null && payload.price !== "" ? Number(payload.price) : null)
     .input("discount", sql.Decimal(5, 2), payload.discount != null ? Number(payload.discount) : null)
-    .input("stock", sql.Int, payload.stock ? Number(payload.stock) : null)
+    .input("stock", sql.Int, payload.stock != null && payload.stock !== "" ? Number(payload.stock) : null)
+    .input("featured", sql.Bit, payload.featured == null ? null : (payload.featured ? 1 : 0))
+    .input("bestseller", sql.Bit, payload.bestseller == null ? null : (payload.bestseller ? 1 : 0))
+    .input("trending", sql.Bit, payload.trending == null ? null : (payload.trending ? 1 : 0))
+    .input("isNew", sql.Bit, payload.isNew == null ? null : (payload.isNew ? 1 : 0))
     .input("description", sql.NVarChar(sql.MAX), payload.description ?? null)
     .query(
       `UPDATE books SET
@@ -132,6 +141,10 @@ export const updateBook = async (id: number, payload: Record<string, unknown>) =
        price = COALESCE(@price, price),
        discount = COALESCE(@discount, discount),
        stock = COALESCE(@stock, stock)
+       ,featured = COALESCE(@featured, featured)
+       ,bestseller = COALESCE(@bestseller, bestseller)
+       ,trending = COALESCE(@trending, trending)
+       ,is_new = COALESCE(@isNew, is_new)
        ,description = COALESCE(@description, description)
        WHERE id=@id AND is_deleted=0`
     );

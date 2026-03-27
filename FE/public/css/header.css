@@ -565,7 +565,7 @@
     flex: 1;
     width: 100%;
     margin-bottom: 10px;
-    min-height: 110px;
+    min-height: 160px; /* 4 lines */
 }
 
 .category-subcategory {
@@ -579,6 +579,11 @@
     line-height: 1.4;
     font-weight: 400;
     margin-bottom: 2px;
+}
+
+.category-subcategory--placeholder {
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .category-subcategory:hover {

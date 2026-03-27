@@ -25,6 +25,7 @@ export default function AdminInventoryPage() {
     const fd = new FormData(e.currentTarget);
     const bookId = fd.get('bookId') as string;
     const quantity = parseInt(fd.get('quantity') as string);
+    const importPrice = parseFloat((fd.get('importPrice') as string) || '0');
     const note = fd.get('note') as string;
 
     if (!bookId || quantity <= 0) return;
@@ -32,9 +33,8 @@ export default function AdminInventoryPage() {
     const book = getBookById(bookId);
     if (!book) return;
 
-    const importPrice = book.importPrice || 0;
     if (importPrice <= 0) {
-      alert('Sách này chưa có giá nhập! Vui lòng cập nhật giá nhập trong trang Sửa sách.');
+      alert('Giá nhập phải lớn hơn 0.');
       return;
     }
 
@@ -205,18 +205,18 @@ export default function AdminInventoryPage() {
                   onChange={(e) => {
                     const bookId = e.target.value;
                     const book = books.find(b => b.id === bookId);
-                    const priceDisplay = document.getElementById('importPriceDisplay');
                     const totalCostDisplay = document.getElementById('totalCostDisplay');
                     const qtyInput = document.querySelector('input[name="quantity"]') as HTMLInputElement;
+                    const priceInput = document.querySelector('input[name="importPrice"]') as HTMLInputElement;
                     
-                    if (priceDisplay && book) {
-                      priceDisplay.textContent = book.importPrice ? formatPrice(book.importPrice) : 'Chưa có giá nhập';
-                      priceDisplay.style.color = book.importPrice ? '#27ae60' : '#e74c3c';
+                    if (priceInput) {
+                      priceInput.value = book?.importPrice ? String(book.importPrice) : '';
                     }
                     
-                    if (totalCostDisplay && book && qtyInput) {
+                    if (totalCostDisplay && qtyInput) {
                       const qty = parseInt(qtyInput.value) || 1;
-                      const total = (book.importPrice || 0) * qty;
+                      const price = parseFloat(priceInput?.value || '0') || 0;
+                      const total = price * qty;
                       totalCostDisplay.textContent = formatPrice(total);
                     }
                   }}
@@ -240,31 +240,37 @@ export default function AdminInventoryPage() {
                   defaultValue="1"
                   onChange={(e) => {
                     const qty = parseInt(e.target.value) || 1;
-                    const bookId = (document.querySelector('select[name="bookId"]') as HTMLSelectElement)?.value;
-                    const book = books.find(b => b.id === bookId);
+                    const price = parseFloat(((document.querySelector('input[name="importPrice"]') as HTMLInputElement)?.value || '0')) || 0;
                     const totalCostDisplay = document.getElementById('totalCostDisplay');
                     
-                    if (totalCostDisplay && book) {
-                      const total = (book.importPrice || 0) * qty;
-                      totalCostDisplay.textContent = formatPrice(total);
+                    if (totalCostDisplay) {
+                      totalCostDisplay.textContent = formatPrice(price * qty);
                     }
                   }}
                 />
               </div>
               <div className="form-group">
-                <label>Giá nhập (từ thông tin sách)</label>
-                <div style={{ 
-                  padding: '12px', 
-                  background: '#f8f9fa', 
-                  border: '1px solid #dee2e6',
-                  borderRadius: 4,
-                  fontWeight: 'bold',
-                  fontSize: '1.1rem'
-                }}>
-                  <span id="importPriceDisplay" style={{ color: '#666' }}>Chọn sách để xem giá</span>
-                </div>
+                <label>Giá nhập *</label>
+                <input
+                  type="number"
+                  name="importPrice"
+                  className="form-input"
+                  min="0"
+                  step="1000"
+                  required
+                  defaultValue=""
+                  placeholder="Nhập giá nhập cho đợt nhập này"
+                  onChange={(e) => {
+                    const currentPrice = parseFloat(e.target.value) || 0;
+                    const qty = parseInt(((document.querySelector('input[name="quantity"]') as HTMLInputElement)?.value || '1')) || 1;
+                    const totalCostDisplay = document.getElementById('totalCostDisplay');
+                    if (totalCostDisplay) {
+                      totalCostDisplay.textContent = formatPrice(currentPrice * qty);
+                    }
+                  }}
+                />
                 <small style={{ color: '#666', fontSize: '0.85rem', marginTop: 5, display: 'block' }}>
-                  <i className="fas fa-info-circle"></i> Giá này được thiết lập trong trang Sửa sách
+                  Giá nhập cho lần nhập kho này (có thể khác các lần trước).
                 </small>
               </div>
               <div className="form-group">

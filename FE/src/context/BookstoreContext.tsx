@@ -760,6 +760,34 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
               const merged = {
                 ...prevBook,
                 ...updatedBook,
+                reviewCount:
+                  (updatedBook.reviewCount as number | undefined) ??
+                  (updatedBook.review_count as number | undefined) ??
+                  (prevBook.reviewCount as number | undefined) ??
+                  (prevBook.review_count as number | undefined) ??
+                  0,
+                soldCount:
+                  (updatedBook.soldCount as number | undefined) ??
+                  (updatedBook.sold_count as number | undefined) ??
+                  (prevBook.soldCount as number | undefined) ??
+                  (prevBook.sold_count as number | undefined) ??
+                  0,
+                reviews:
+                  (updatedBook.reviews as number | undefined) ??
+                  (updatedBook.reviewCount as number | undefined) ??
+                  (updatedBook.review_count as number | undefined) ??
+                  (prevBook.reviews as number | undefined) ??
+                  (prevBook.reviewCount as number | undefined) ??
+                  (prevBook.review_count as number | undefined) ??
+                  0,
+                salesCount:
+                  (updatedBook.salesCount as number | undefined) ??
+                  (updatedBook.soldCount as number | undefined) ??
+                  (updatedBook.sold_count as number | undefined) ??
+                  (prevBook.salesCount as number | undefined) ??
+                  (prevBook.soldCount as number | undefined) ??
+                  (prevBook.sold_count as number | undefined) ??
+                  0,
                 image: (updatedBook.image as string | undefined) || (prevBook.image as string | undefined),
                 images:
                   imagesFromPayload ||
@@ -892,7 +920,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
 
       await createInventoryLogRequest(token, {
         bookId,
-        type,
+        transactionType: type,
         quantity: type === 'export' ? -Math.abs(quantity) : Math.abs(quantity),
         importPrice,
         note,
@@ -907,7 +935,14 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           const newStock = type === 'import'
             ? books[bookIdx].stock + quantity
             : Math.max(0, books[bookIdx].stock - quantity);
-          books[bookIdx] = { ...books[bookIdx], stock: newStock };
+          books[bookIdx] = {
+            ...books[bookIdx],
+            stock: newStock,
+            importPrice:
+              type === 'import' && importPrice != null && importPrice > 0
+                ? importPrice
+                : books[bookIdx].importPrice,
+          };
         }
 
         return { ...prev, books, inventoryLogs: logs };

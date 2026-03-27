@@ -10,6 +10,17 @@
     grid-template-columns: 1fr 1.5fr;
     gap: 40px;
     margin-bottom: 40px;
+    align-items: start;
+}
+
+.book-right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.block-content-product-detail {
+    margin: 0;
 }
 
 /* BREADCRUMB */
@@ -45,6 +56,9 @@
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 140px; /* dưới header */
+    align-self: start;
 }
 
 .main-image {
@@ -74,6 +88,8 @@
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
+    background: white;
+    padding: 0;
 }
 
 .thumbnail-item.active {
@@ -193,6 +209,27 @@
     margin-bottom: 20px;
 }
 
+.book-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.book-type-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 6px;
+    background: #e8f1ff;
+    color: #2b77ff;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
 .book-badge {
     display: inline-block;
     background: #ff6b35;
@@ -208,14 +245,23 @@
     font-size: 28px;
     font-weight: 700;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     line-height: 1.3;
 }
 
 .book-supplier, .book-publisher {
-    font-size: 14px;
-    color: #6c757d;
-    margin-bottom: 5px;
+    font-size: 15px;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.book-supplier span span,
+.book-publisher span span {
+    font-weight: 700;
+}
+
+.book-supplier span span {
+    color: #2b77ff;
 }
 
 /* BOOK RATING */
@@ -250,7 +296,7 @@
 }
 
 .current-price {
-    font-size: 32px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--primary-color);
 }
@@ -273,25 +319,39 @@
 /* BOOK META */
 .book-meta {
     display: flex;
-    gap: 30px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
     font-size: 14px;
 }
 
 .meta-item {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    align-items: baseline;
+    gap: 6px;
+    line-height: 1.25;
 }
 
 .meta-label {
-    color: #6c757d;
+    color: #111827;
     font-weight: 500;
 }
 
 .meta-value {
-    color: #333;
-    font-weight: 600;
+    color: #111827;
+    font-weight: 700;
+}
+
+.book-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 10px;
+}
+
+.book-info-col {
+    display: flex;
+    flex-direction: column;
 }
 
 /* PROMO LINK */
@@ -500,6 +560,22 @@
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.book-details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 10px;
+}
+
+.details-block-header {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .details-tabs {
@@ -794,4 +870,201 @@
 .shipping-method {
     display: flex;
     align-items: center;
+}
+
+/* =========================
+   Fahasa-like details blocks
+   ========================= */
+.thumbnail-more {
+    border: none;
+    background: #2f2f2f;
+    color: white;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+}
+
+.thumbnail-more-count {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.book-meta-top {
+    margin-top: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+
+.availability {
+    margin: 8px 0 14px;
+}
+
+.availability-badge {
+    display: inline-block;
+    padding: 10px 12px;
+    background: #e8f3ff;
+    border: 1px solid #cfe6ff;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1d5ea8;
+}
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.offer-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    background: #fff7e6;
+    border: 1px solid #ffe7ba;
+    color: #8c4a00;
+    font-size: 12px;
+    line-height: 1.25;
+}
+
+.offer-icon {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.65);
+    flex: 0 0 auto;
+}
+
+.offer-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.option-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.chip:hover {
+    border-color: var(--primary-color);
+}
+
+.chip.active {
+    border-color: #2b77ff;
+    background: #e8f1ff;
+    color: #124bb2;
+    font-weight: 700;
+}
+
+/* REVIEW SUMMARY (Fahasa-like) */
+.review-summary-card .section-title {
+    margin-bottom: 16px;
+}
+
+.review-summary-layout {
+    display: grid;
+    grid-template-columns: 160px 1fr 1.1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.review-score-col {
+    text-align: center;
+}
+
+.review-score-value {
+    font-size: 52px;
+    line-height: 1;
+    font-weight: 700;
+    color: #212121;
+}
+
+.review-score-value span {
+    font-size: 28px;
+    color: #666;
+}
+
+.review-score-stars {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+}
+
+.review-count-text {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+}
+
+.review-bars-col {
+    display: grid;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.review-bar-row {
+    display: grid;
+    grid-template-columns: 46px 1fr 36px;
+    gap: 10px;
+    align-items: center;
+}
+
+.review-bar-label,
+.review-bar-percent {
+    font-size: 14px;
+    color: #555;
+}
+
+.review-bar-track {
+    height: 8px;
+    border-radius: 999px;
+    background: #eee;
+    overflow: hidden;
+}
+
+.review-bar-fill {
+    height: 100%;
+    background: #f6c343;
+}
+
+.review-login-col {
+    font-size: 16px;
+    color: #4a4a4a;
+    line-height: 1.55;
+    padding-top: 30px;
+}
+
+.review-login-col a {
+    color: #2b77ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.review-login-col a:hover {
+    text-decoration: underline;
+}
+
+.inline-review-form {
+    display: grid;
+    gap: 10px;
 }
