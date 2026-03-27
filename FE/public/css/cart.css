@@ -1,0 +1,475 @@
+/* ============================================
+   CART.CSS - STYLES CHO TRANG GIỎ HÀNG
+   
+   Bao gồm:
+   - Layout 2 cột (danh sách sản phẩm + tổng tiền)
+   - Cart items (hình ảnh, info, quantity, xóa)
+   - Cart summary (tổng tiền, checkout button)
+   - Empty cart state
+   - Responsive cho mobile/tablet
+============================================ */
+
+/* ============ LAYOUT CHÍNH ============ */
+
+.cart-section {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--bg-light);
+}
+
+/* Grid layout: 2 cột (products + summary) */
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+}
+
+.cart-main {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.cart-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* ============ CART HEADER - HEADER VỚI CHECKBOX CHỌN TẤT CẢ ============ */
+.cart-header-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+    font-weight: 600;
+}
+
+.cart-header-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.cart-header-row label {
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+}
+
+/* ============ CART ITEMS - DANH SÁCH SẢN PHẨM TRONG GIỎ ============ */
+.cart-items {
+    padding: var(--spacing-lg);
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.cart-item-image {
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.cart-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item-title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cart-item-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cart-item-title a:hover {
+    color: var(--primary-color);
+}
+
+.cart-item-price {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+.cart-item-price-current {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.cart-item-price-original {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+.cart-item-sold {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-right: var(--spacing-md);
+}
+
+.quantity-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+.quantity-btn:hover {
+    background: var(--bg-secondary);
+    border-color: var(--primary-color);
+}
+
+.quantity-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-base);
+}
+
+.cart-item-total {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-right: var(--spacing-md);
+    min-width: 100px;
+    text-align: right;
+}
+
+.cart-item-delete {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.cart-item-delete:hover {
+    color: var(--danger-color);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* ============ CART SUMMARY - TỔNG TIỀN VÀ NÚT THANH TOÁN ============ */
+.cart-summary {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+    position: sticky;
+    top: 100px;
+}
+
+.summary-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-base);
+}
+
+.summary-label {
+    color: var(--text-secondary);
+}
+
+.summary-value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.summary-total {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--primary-color);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-light);
+    margin-top: var(--spacing-md);
+}
+
+.checkout-btn {
+    width: 100%;
+    background: #E74C3C !important;
+    color: white !important;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: var(--spacing-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: visible;
+}
+
+.checkout-btn:hover:not(:disabled) {
+    background: #C0392B !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.checkout-btn:hover:not(:disabled) * {
+    color: white !important;
+}
+
+.checkout-btn:disabled {
+    background: #95a5a6 !important;
+    color: white !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.checkout-note {
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: var(--spacing-sm);
+}
+
+/* ============ EMPTY CART - TRẠNG THÁI GIỎ HÀNG TRỐNG ============ */
+.empty-cart-layout {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    grid-template-columns: 1fr !important;
+    background-color: #f5f5f5;
+    padding: var(--spacing-xl);
+    margin: var(--spacing-lg) 0;
+    border-radius: var(--border-radius-lg);
+}
+
+.empty-cart {
+    text-align: center;
+}
+
+.empty-cart-icon {
+    font-size: 4rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-lg);
+}
+
+.empty-cart h2 {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+.empty-cart p {
+    margin-bottom: var(--spacing-xl);
+    color: var(--text-secondary);
+}
+
+/* ============ RESPONSIVE - MOBILE & TABLET ============ */
+@media (max-width: 1024px) {
+    .cart-layout {
+        grid-template-columns: 1fr 300px;
+        gap: var(--spacing-lg);
+    }
+    
+    .empty-cart-layout {
+        min-height: 50vh;
+        padding: var(--spacing-lg);
+        margin: var(--spacing-md) 0;
+    }
+}
+
+/* TABLET - THÊM MỚI */
+@media (max-width: 992px) and (min-width: 769px) {
+    .cart-layout {
+        grid-template-columns: 1fr 320px;
+        gap: var(--spacing-lg);
+    }
+    
+    .cart-item-info h3 {
+        font-size: 15px;
+    }
+    
+    .cart-item-price {
+        font-size: 16px;
+    }
+}
+
+/* MOBILE - CẢI THIỆN */
+@media (max-width: 768px) {
+    .cart-section {
+        padding: var(--spacing-lg) 0;
+    }
+    
+    .cart-layout {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .empty-cart-layout {
+        min-height: 40vh;
+        padding: var(--spacing-md);
+        margin: var(--spacing-sm) 0;
+    }
+    
+    .empty-cart {
+        padding: var(--spacing-xl) var(--spacing-md);
+        width: 95%;
+    }
+    
+    .empty-cart-icon {
+        font-size: 3rem;
+    }
+    
+    .cart-sidebar {
+        order: -1; /* Summary lên trên */
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md) 0;
+    }
+    
+    .cart-item-checkbox {
+        order: -1;
+        align-self: flex-start;
+    }
+    
+    .cart-item-image {
+        width: 100%;
+        max-width: 150px;
+        height: auto;
+        aspect-ratio: 3/4;
+    }
+    
+    .cart-item-info {
+        width: 100%;
+    }
+    
+    .cart-item-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .quantity-selector {
+        flex: 0 0 auto;
+    }
+    
+    .quantity-selector button {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 18px;
+    }
+    
+    .quantity-selector input {
+        min-width: 50px;
+        min-height: 44px;
+        font-size: 16px;
+    }
+    
+    .remove-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 12px;
+    }
+    
+    .cart-item-quantity {
+        margin-right: 0;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .cart-item-total {
+        margin-right: 0;
+        text-align: left;
+        min-width: auto;
+    }
+    
+    .cart-item-delete {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-header-row {
+        padding: var(--spacing-md);
+    }
+    
+    .cart-items {
+        padding: var(--spacing-md);
+    }
+    
+    .cart-item {
+        padding: var(--spacing-md) 0;
+    }
+    
+    .cart-summary {
+        padding: var(--spacing-md);
+    }
+}

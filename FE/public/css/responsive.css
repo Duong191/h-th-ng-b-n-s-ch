@@ -1,0 +1,713 @@
+/* RESPONSIVE CSS */
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+    
+    .books-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 30px;
+    }
+    
+    .featured-books .books-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        gap: 25px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+    
+    .category-dropdown {
+        min-width: 1400px;
+        max-width: 1600px;
+        padding: 40px 30px;
+    }
+    
+    .category-dropdown.show,
+    .category-menu-wrapper:hover .category-dropdown,
+    .category-dropdown:hover {
+        gap: 60px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+    
+    .books-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 25px;
+    }
+    
+    .featured-books .books-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 20px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .category-dropdown {
+        min-width: 1200px;
+        max-width: 1400px;
+        padding: 30px 25px;
+    }
+    
+    .category-dropdown.show,
+    .category-menu-wrapper:hover .category-dropdown,
+    .category-dropdown:hover {
+        gap: 40px;
+    }
+}
+
+@media (min-width: 992px) {
+    .books-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px;
+    }
+    
+    .featured-books .books-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 18px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .category-dropdown {
+        min-width: 1000px;
+        max-width: 1200px;
+        padding: 25px 20px;
+    }
+    
+    .category-dropdown.show,
+    .category-menu-wrapper:hover .category-dropdown,
+    .category-dropdown:hover {
+        gap: 35px;
+    }
+    
+    .category-section {
+        min-height: 250px;
+        padding: 0 15px;
+    }
+    
+    .category-subcategories {
+        min-height: 120px;
+    }
+}
+
+@media (min-width: 768px) {
+    .books-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 18px;
+    }
+    
+    .featured-books .books-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 15px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .newsletter-form {
+        flex-direction: row;
+    }
+    
+    .category-dropdown {
+        min-width: 800px;
+        max-width: 1000px;
+        padding: 20px 15px;
+    }
+    
+    .category-dropdown.show,
+    .category-menu-wrapper:hover .category-dropdown,
+    .category-dropdown:hover {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    
+    .category-section {
+        min-height: 220px;
+        padding: 0 12px;
+    }
+    
+    .category-subcategories {
+        min-height: 100px;
+    }
+}
+
+@media (max-width: 767px) {
+    .container {
+        padding: 0 15px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .top-bar {
+        padding: 8px 0;
+    }
+    
+    .top-bar-content {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .top-bar-right span {
+        font-size: 12px;
+        line-height: 1.4;
+        margin: 0;
+        display: block;
+    }
+    
+    .navbar {
+        padding: 12px 0;
+    }
+    
+    .nav-wrapper {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .logo {
+        justify-content: center;
+        font-size: 20px;
+    }
+    
+    .search-box {
+        order: 2;
+        max-width: 100%;
+    }
+    
+    .nav-actions {
+        order: 3;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .books-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px;
+    }
+    
+    .featured-books .books-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
+    
+    .featured-books .book-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+    }
+    
+    .featured-books .book-image {
+        height: 150px;
+    }
+    
+    .featured-books .book-title {
+        font-size: 12px;
+        min-height: 36px;
+    }
+    
+    .featured-books .current-price {
+        font-size: 13px;
+    }
+    
+    .featured-books .book-sales {
+        font-size: 9px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .category-dropdown {
+        position: fixed;
+        top: 80px;
+        left: 10px;
+        right: 10px;
+        transform: none;
+        min-width: auto;
+        max-width: none;
+        padding: 15px;
+        max-height: 70vh;
+    }
+    
+    .category-dropdown.show,
+    .category-menu-wrapper:hover .category-dropdown,
+    .category-dropdown:hover {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .category-section {
+        min-height: auto;
+        padding: 0 8px;
+        margin-bottom: 15px;
+    }
+    
+    .category-title {
+        font-size: 14px;
+        margin-bottom: 10px;
+        min-height: auto;
+    }
+    
+    .category-subcategories {
+        min-height: auto;
+        margin-bottom: 8px;
+    }
+    
+    .category-subcategory {
+        font-size: 13px;
+        padding: 6px 0;
+    }
+    
+    .category-view-all {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .shop-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+    }
+    
+    .shop-sidebar {
+        position: static;
+        order: 2;
+    }
+    
+    .shop-main {
+        order: 1;
+        padding: 15px;
+    }
+    
+    .shop-main .books-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px;
+    }
+    
+    .shop-main .book-title {
+        font-size: 13px !important;
+        min-height: 39px;
+    }
+    
+    .shop-main .current-price {
+        font-size: 15px;
+    }
+    
+    .shop-main .book-sales {
+        font-size: 11px;
+    }
+    
+    .book-detail-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .book-detail-section {
+        padding: 20px 0;
+    }
+    
+    .book-detail-container {
+        padding: 0 15px;
+    }
+    
+    .book-gallery {
+        padding: 15px;
+    }
+    
+    .main-image img {
+        height: 300px;
+    }
+    
+    .thumbnail-gallery {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .thumbnail-item {
+        width: 50px;
+        height: 65px;
+    }
+    
+    .book-info-section {
+        padding: 20px;
+    }
+    
+    .book-title {
+        font-size: 24px;
+    }
+    
+    .price-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .current-price {
+        font-size: 28px;
+    }
+    
+    .book-meta {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .book-details-section {
+        padding: 20px;
+    }
+    
+    .details-tabs {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .tab-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .detail-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding: 8px 0;
+    }
+    
+    .detail-label {
+        font-size: 12px;
+    }
+    
+    .detail-value {
+        font-size: 13px;
+    }
+    
+    .hero {
+        height: 50vh;
+        min-height: 300px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
+    }
+    
+    .pagination {
+        gap: 6px;
+        margin: 20px 0;
+    }
+    
+    .pagination button {
+        min-width: 35px;
+        height: 35px;
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .footer-bottom {
+        padding-top: 15px;
+        font-size: 12px;
+    }
+    
+    .social-links {
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .social-links a {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .books-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+    }
+    
+    .featured-books .books-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+    
+    .featured-books .book-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .featured-books .book-image {
+        height: 200px;
+    }
+    
+    .featured-books .book-title {
+        font-size: 14px;
+        min-height: 42px;
+    }
+    
+    .featured-books .current-price {
+        font-size: 14px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .category-dropdown.show,
+    .category-menu-wrapper:hover .category-dropdown,
+    .category-dropdown:hover {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .category-section {
+        padding: 0 5px;
+        margin-bottom: 12px;
+    }
+    
+    .category-title {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    
+    .category-subcategory {
+        font-size: 12px;
+        padding: 5px 0;
+    }
+    
+    .category-view-all {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+    
+    .shop-main .books-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+    }
+    
+    .shop-main .book-title {
+        font-size: 14px !important;
+        min-height: 42px;
+    }
+    
+    .shop-main .current-price {
+        font-size: 16px;
+    }
+    
+    .book-detail-section {
+        padding: 15px 0;
+    }
+    
+    .book-detail-container {
+        padding: 0 10px;
+    }
+    
+    .book-gallery {
+        padding: 10px;
+    }
+    
+    .main-image img {
+        height: 250px;
+    }
+    
+    .thumbnail-gallery {
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+    
+    .thumbnail-item {
+        width: 45px;
+        height: 60px;
+    }
+    
+    .book-info-section {
+        padding: 15px;
+    }
+    
+    .book-title {
+        font-size: 20px;
+    }
+    
+    .current-price {
+        font-size: 24px;
+    }
+    
+    .book-details-section {
+        padding: 15px;
+    }
+    
+    .tab-btn {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .hero {
+        height: 40vh;
+        min-height: 250px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .hero-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+        min-width: 160px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .section-header p {
+        font-size: 0.9rem;
+    }
+    
+    .pagination {
+        gap: 4px;
+        margin: 15px 0;
+    }
+    
+    .pagination button {
+        min-width: 30px;
+        height: 30px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .footer-bottom {
+        padding-top: 12px;
+        font-size: 11px;
+    }
+    
+    .social-links {
+        justify-content: center;
+        margin-top: 12px;
+    }
+    
+    .social-links a {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        height: 100vh;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: row;
+        gap: 0.8rem;
+    }
+    
+    .hero-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        min-width: 140px;
+    }
+}
+
+/* PERFORMANCE OPTIMIZATION */
+
+/* Image Optimization */
+@media (max-width: 768px) {
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .book-image, .product-image {
+        loading: lazy;
+    }
+}
+
+/* Reduce animations on mobile for performance */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+    * {
+        animation-duration: 0.3s !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .book-card:hover, .category-card:hover {
+        transform: none;
+    }
+    
+    /* Add tap highlight */
+    * {
+        -webkit-tap-highlight-color: rgba(220, 38, 38, 0.1);
+    }
+}

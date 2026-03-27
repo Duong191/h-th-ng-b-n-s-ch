@@ -1,0 +1,20 @@
+{
+  "name": "bookstore-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Workspace scripts for FE and BE",
+  "scripts": {
+    "start": "npm run dev",
+    "fe": "npm --prefix FE start",
+    "be": "npm --prefix BE run dev",
+    "build": "npm --prefix FE run build",
+    "test:db": "npm --prefix BE run test:db",
+    "migrate": "npm --prefix BE run migrate:latest",
+    "seed": "npm --prefix BE run seed:run",
+    "dev": "concurrently -n FE,BE -c cyan,green \"npm --prefix FE start\" \"npm --prefix BE run dev\"",
+    "verify": "npm --prefix FE run build && npm --prefix BE run test:smoke"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -1,0 +1,15 @@
+node_modules/
+*.log
+npm-debug.log*
+
+# Build artifacts
+FE/build/
+BE/dist/
+
+# Environment
+BE/.env
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
