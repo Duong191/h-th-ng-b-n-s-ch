@@ -7,7 +7,7 @@ interface CartResponse {
 
 interface CartPayload {
   items: Array<{
-    bookId: string;
+    bookId: number;
     quantity: number;
   }>;
 }

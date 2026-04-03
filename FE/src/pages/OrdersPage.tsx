@@ -4,7 +4,7 @@ import { useBookstore } from '../context/BookstoreContext';
 import { formatPrice, formatDateTime } from '../utils/format';
 
 export default function OrdersPage() {
-  const { data, currentUser, getBookById, updateOrder, showToast } = useBookstore();
+  const { data, currentUser, getBookById, confirmOrderReceived, showToast } = useBookstore();
 
   const userOrders = useMemo(() => {
     if (!currentUser || !data) return [];
@@ -14,12 +14,12 @@ export default function OrdersPage() {
   }, [data, currentUser]);
 
   const handleConfirmReceived = async (orderId: string) => {
-    if (window.confirm('Xác nhận bạn đã nhận được hàng?')) {
-      const updated = await Promise.resolve(updateOrder(orderId, { status: 'completed' }));
+    if (window.confirm('Xác nhận bạn đã nhận được hàng? Đơn sẽ được đánh dấu hoàn thành.')) {
+      const updated = await Promise.resolve(confirmOrderReceived(orderId));
       if (updated) {
-        showToast('Cảm ơn bạn đã xác nhận nhận hàng!', 'success');
+        showToast('Đơn hàng đã hoàn thành. Cảm ơn bạn!', 'success');
       } else {
-        showToast('Không thể cập nhật trạng thái đơn hàng', 'error');
+        showToast('Không thể xác nhận. Chỉ xác nhận được khi đơn đang giao hàng.', 'error');
       }
     }
   };

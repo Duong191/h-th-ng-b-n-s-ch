@@ -45,6 +45,10 @@ export const upsertCart = async (userId: number | null, sessionId: string | null
   await tx.begin();
 
   try {
+    await new sql.Request(tx)
+      .input("cartId", sql.BigInt, cartId)
+      .query("DELETE FROM cart_items WHERE cart_id=@cartId");
+
     for (const item of items) {
       const stock = await new sql.Request(tx)
         .input("bookId", sql.BigInt, item.bookId)

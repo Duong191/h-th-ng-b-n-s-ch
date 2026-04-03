@@ -1,14 +1,25 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useBookstore } from '../../context/BookstoreContext';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
-  const { currentUser, logout, data } = useBookstore();
+  const { currentUser, logout, data, refreshBooksFromApi } = useBookstore();
   
   const pendingOrdersCount = useMemo(() => {
     return (data?.orders || []).filter(order => order.status === 'pending').length;
   }, [data?.orders]);
+
+  const outOfStockBooks = useMemo(
+    () => (data?.books || []).filter((b) => b && Number(b.stock) <= 0),
+    [data?.books]
+  );
+
+  useEffect(() => {
+    if (currentUser?.role === 'admin' || currentUser?.role === 'staff') {
+      refreshBooksFromApi();
+    }
+  }, [currentUser?.role, refreshBooksFromApi]);
 
   const handleLogout = () => {
     if (window.confirm('Bạn có chắc chắn muốn đăng xuất?')) {
@@ -85,6 +96,30 @@ export default function AdminLayout() {
 
         {/* Content */}
         <div className="admin-content">
+          {outOfStockBooks.length > 0 && (
+            <div
+              role="alert"
+              style={{
+                margin: '0 0 16px',
+                padding: '12px 16px',
+                background: '#fff3cd',
+                border: '1px solid #ffc107',
+                borderRadius: 8,
+                color: '#856404',
+              }}
+            >
+              <strong>Cảnh báo tồn kho:</strong> có {outOfStockBooks.length} đầu sách đang{' '}
+              <strong>hết hàng</strong> (tồn = 0). Vui lòng nhập thêm tại Quản lý kho hoặc cập nhật sách.
+              <ul style={{ margin: '8px 0 0 18px' }}>
+                {outOfStockBooks.slice(0, 8).map((b) => (
+                  <li key={b.id}>
+                    {b.title} (mã #{b.id})
+                  </li>
+                ))}
+              </ul>
+              {outOfStockBooks.length > 8 && <span>… và {outOfStockBooks.length - 8} đầu sách khác.</span>}
+            </div>
+          )}
           <Outlet />
         </div>
       </main>

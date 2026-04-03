@@ -1,13 +1,47 @@
-import { useMemo, useState } from 'react';
-import { NavLink, useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import BookCard from '../components/ui/BookCard';
 import { filterBooks, searchBooks, sortBooks } from '../services/booksService';
 
+/** Tối đa 4 sách / 1 hàng; 3 hàng / trang → 12 sách mỗi trang */
+const SHOP_COLS = 4;
+const SHOP_ROWS = 3;
+const BOOKS_PER_PAGE = SHOP_COLS * SHOP_ROWS;
+
+function buildPaginationItems(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 1) return [1];
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+  const out: (number | 'ellipsis')[] = [];
+  const ellipsis = () => {
+    if (out[out.length - 1] !== 'ellipsis') out.push('ellipsis');
+  };
+
+  if (current <= 4) {
+    const lastHead = Math.min(5, total);
+    for (let p = 1; p <= lastHead; p++) out.push(p);
+    if (total > lastHead + 1) {
+      ellipsis();
+      out.push(total);
+    } else {
+      for (let p = lastHead + 1; p <= total; p++) out.push(p);
+    }
+  } else if (current >= total - 3) {
+    out.push(1);
+    ellipsis();
+    const start = Math.max(2, total - 4);
+    for (let p = start; p <= total; p++) out.push(p);
+  } else {
+    out.push(1, 'ellipsis', current - 1, current, current + 1, 'ellipsis', total);
+  }
+
+  return out;
+}
+
 export default function ShopPage() {
-  const { data, loading, addToCart } = useBookstore();
+  const { data, loading } = useBookstore();
   const [params, setParams] = useSearchParams();
-  const navigate = useNavigate();
   const books = data?.books || [];
   const categories = data?.categories || [];
 
@@ -16,6 +50,7 @@ export default function ShopPage() {
   const search = params.get('search') || '';
   const selectedPrice = params.get('price') || 'all';
   const selectedRating = params.get('rating') || 'all';
+  const pageParam = Number(params.get('page') || '1');
 
   const filtered = useMemo(() => {
     let list = filterBooks(books, selectedCategory, selectedPrice, selectedRating);
@@ -23,8 +58,42 @@ export default function ShopPage() {
     return sortBooks(list, sortBy);
   }, [books, selectedCategory, selectedPrice, selectedRating, search, sortBy]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / BOOKS_PER_PAGE));
+  const currentPage = Math.min(Math.max(1, Number.isFinite(pageParam) ? pageParam : 1), totalPages);
+
+  useEffect(() => {
+    const raw = Number(params.get('page') || '1');
+    if (!Number.isFinite(raw) || raw < 1) {
+      const next = new URLSearchParams(params);
+      next.delete('page');
+      setParams(next, { replace: true });
+      return;
+    }
+    if (raw > totalPages && totalPages >= 1) {
+      const next = new URLSearchParams(params);
+      if (totalPages <= 1) next.delete('page');
+      else next.set('page', String(totalPages));
+      setParams(next, { replace: true });
+    }
+  }, [params, totalPages, setParams]);
+
+  const pagedBooks = useMemo(() => {
+    const start = (currentPage - 1) * BOOKS_PER_PAGE;
+    return filtered.slice(start, start + BOOKS_PER_PAGE);
+  }, [filtered, currentPage]);
+
+  const paginationItems = useMemo(() => buildPaginationItems(currentPage, totalPages), [currentPage, totalPages]);
+
+  const setPage = (p: number) => {
+    const next = new URLSearchParams(params);
+    if (p <= 1) next.delete('page');
+    else next.set('page', String(p));
+    setParams(next);
+  };
+
   const handleCategoryChange = (catId: string) => {
     const newParams = new URLSearchParams(params);
+    newParams.delete('page');
     if (catId === 'all') {
       newParams.delete('category');
     } else {
@@ -35,6 +104,7 @@ export default function ShopPage() {
 
   const handlePriceChange = (priceRange: string) => {
     const newParams = new URLSearchParams(params);
+    newParams.delete('page');
     if (priceRange === 'all') {
       newParams.delete('price');
     } else {
@@ -45,6 +115,7 @@ export default function ShopPage() {
 
   const handleRatingChange = (rating: string) => {
     const newParams = new URLSearchParams(params);
+    newParams.delete('page');
     if (rating === 'all') {
       newParams.delete('rating');
     } else {
@@ -56,6 +127,13 @@ export default function ShopPage() {
   const clearFilters = () => {
     setParams({});
     setSortBy('default');
+  };
+
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
+    const next = new URLSearchParams(params);
+    next.delete('page');
+    setParams(next);
   };
 
   if (loading) {
@@ -224,11 +302,19 @@ export default function ShopPage() {
             <div className="shop-main">
               <div className="shop-header">
                 <div className="shop-info">
-                  <p>Hiển thị <span>{filtered.length}</span> kết quả</p>
+                  <p>
+                    Hiển thị{' '}
+                    <span>
+                      {filtered.length === 0
+                        ? 0
+                        : `${(currentPage - 1) * BOOKS_PER_PAGE + 1}–${Math.min(currentPage * BOOKS_PER_PAGE, filtered.length)}`}
+                    </span>{' '}
+                    / <span>{filtered.length}</span> kết quả
+                  </p>
                 </div>
                 <div className="shop-sort">
                   <label>Sắp xếp:</label>
-                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  <select value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
                     <option value="default">Mặc định</option>
                     <option value="name-asc">Tên A-Z</option>
                     <option value="name-desc">Tên Z-A</option>
@@ -240,13 +326,44 @@ export default function ShopPage() {
                 </div>
               </div>
 
-              <div className="books-grid">
+              <div className="books-grid books-grid--shop-paged">
                 {filtered.length === 0 ? (
                   <p>Không tìm thấy sản phẩm nào</p>
                 ) : (
-                  filtered.map((book) => <BookCard key={book.id} book={book as any} onAddToCart={addToCart} />)
+                  pagedBooks.map((book) => <BookCard key={book.id} book={book as any} />)
                 )}
               </div>
+
+              {filtered.length > 0 && totalPages > 1 && (
+                <nav className="shop-pagination" aria-label="Phân trang sản phẩm">
+                  {paginationItems.map((item, idx) =>
+                    item === 'ellipsis' ? (
+                      <span key={`e-${idx}`} className="shop-pagination-ellipsis">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        className={`shop-pagination-page${item === currentPage ? ' shop-pagination-page--active' : ''}`}
+                        onClick={() => setPage(item)}
+                        aria-current={item === currentPage ? 'page' : undefined}
+                      >
+                        {item}
+                      </button>
+                    )
+                  )}
+                  <button
+                    type="button"
+                    className="shop-pagination-next"
+                    disabled={currentPage >= totalPages}
+                    onClick={() => setPage(currentPage + 1)}
+                    aria-label="Trang sau"
+                  >
+                    <i className="fas fa-chevron-right" aria-hidden />
+                  </button>
+                </nav>
+              )}
             </div>
           </div>
         </div>

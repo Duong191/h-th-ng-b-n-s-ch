@@ -30,6 +30,7 @@ router.post(
   asyncHandler(controller.createOrder)
 );
 router.get("/", asyncHandler(controller.listOrders));
+router.post("/:id/confirm-received", asyncHandler(controller.confirmDeliveryByCustomer));
 router.patch(
   "/:id/status",
   checkPermission(["admin", "staff", "orders.update"]),

@@ -9,22 +9,44 @@ import {
 } from 'react';
 import { discountedUnitPrice } from '../utils/format';
 import {
+  fetchCurrentUser,
   loginRequest,
   logoutRequest,
   registerRequest,
   updateProfileRequest,
 } from '../api/authApi';
-import { createOrderRequest, getOrders, updateOrderStatusRequest } from '../api/ordersApi';
+import {
+  confirmOrderReceivedRequest,
+  createOrderRequest,
+  getOrders,
+  updateOrderStatusRequest,
+} from '../api/ordersApi';
 import { createBookRequest, deleteBookRequest, updateBookRequest } from '../api/adminBooksApi';
 import { createBlogRequest, deleteBlogRequest, updateBlogRequest } from '../api/blogsApi';
 import { createInventoryLogRequest, getInventoryLogsRequest } from '../api/inventoryApi';
-import { getCartRequest } from '../api/cartApi';
+import { getCartRequest, updateCartRequest } from '../api/cartApi';
+import { getBooks } from '../api/publicApi';
 import { bootstrapFromBackend } from '../services/dataBootstrapService';
 
 const ACCESS_TOKEN_KEY = 'bookstoreAccessToken';
 const REFRESH_TOKEN_KEY = 'bookstoreRefreshToken';
 function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
+}
+
+/** Gộp các dòng trùng bookId (ví dụ gọi addToCart nhiều lần trước khi React kịp cập nhật state). */
+function mergeCartLineItems(cart: CartItem[]): CartItem[] {
+  const map = new Map<string, CartItem>();
+  for (const item of cart) {
+    const k = String(item.bookId);
+    const prev = map.get(k);
+    if (prev) {
+      prev.quantity += item.quantity;
+    } else {
+      map.set(k, { ...item });
+    }
+  }
+  return Array.from(map.values());
 }
 
 // ============ TYPE DEFINITIONS ============
@@ -218,6 +240,12 @@ export interface BookstoreContextValue {
   updateUserProfile: (userId: string, userData: Partial<User>) => User | null | Promise<User | null>;
   addOrder: (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>) => Order | Promise<Order>;
   updateOrder: (orderId: string, patch: Partial<Order>) => Order | null | Promise<Order | null>;
+  /** Khách xác nhận đã nhận hàng → hoàn thành (chỉ khi đang giao). */
+  confirmOrderReceived: (orderId: string) => Order | null | Promise<Order | null>;
+  /** Đồng bộ danh sách sách từ server (tồn kho sau đơn hàng / nhập kho). */
+  refreshBooksFromApi: () => Promise<void>;
+  /** Gộp dòng giỏ trùng sách (sửa dữ liệu cũ). */
+  dedupeCartLines: () => void;
   addBook: (bookData: Omit<Book, 'id' | 'createdAt'>) => Book | Promise<Book>;
   updateBook: (bookId: string, bookData: Partial<Book>) => Book | null | Promise<Book | null>;
   deleteBook: (bookId: string) => boolean | Promise<boolean>;
@@ -346,6 +374,44 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (loading) return;
+    const token = getAccessToken();
+    if (!token || !session?.userId) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const [user, orders, inventoryLogs, cartItems] = await Promise.all([
+          fetchCurrentUser(token).catch(() => null),
+          getOrders(token).catch(() => []),
+          getInventoryLogsRequest(token).catch(() => []),
+          getCartRequest({ token }).catch(() => []),
+        ]);
+        if (cancelled) return;
+        setData((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            users: user ? [user] : prev.users,
+            orders,
+            inventoryLogs,
+            cart: cartItems.map((item) => ({
+              bookId: item.bookId,
+              quantity: item.quantity,
+              addedAt: item.addedAt,
+            })),
+          };
+        });
+      } catch {
+        /* session or network error — keep catalog */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, session?.userId]);
+
   const showToast = useCallback((message: string, type: 'info' | 'success' | 'error' | 'warning' = 'info') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 4000);
@@ -378,7 +444,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
   );
 
   const getCartItems = useCallback((): CartItemWithDetails[] => {
-    const cart = getCart();
+    const cart = mergeCartLineItems(getCart());
     return cart
       .map((item) => {
         const book = getBookById(item.bookId);
@@ -622,24 +688,62 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     saveCart([]);
   }, [saveCart]);
 
+  const refreshBooksFromApi = useCallback(async () => {
+    try {
+      const books = await getBooks<Book>('page=1&limit=500');
+      persist((prev) => (prev ? { ...prev, books } : prev));
+    } catch {
+      /* ignore */
+    }
+  }, [persist]);
+
+  const dedupeCartLines = useCallback(() => {
+    persist((prev) => {
+      if (!prev?.cart?.length) return prev;
+      return { ...prev, cart: mergeCartLineItems(prev.cart) };
+    });
+  }, [persist]);
+
   const addOrder = useCallback(
     async (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> => {
       const token = getAccessToken();
       if (!token) {
         throw new Error('Bạn cần đăng nhập để đặt hàng');
       }
-      const created = await createOrderRequest(token, {
-        items: orderData.items.map((i) => ({ bookId: i.bookId, quantity: i.quantity })),
-        paymentMethod: orderData.paymentMethod,
-        shippingAddress: orderData.shippingAddress,
-      });
+      const itemsPayload = orderData.items.map((i) => ({
+        bookId: Number(i.bookId),
+        quantity: i.quantity
+      }));
+      if (itemsPayload.length === 0) {
+        throw new Error('Giỏ hàng trống');
+      }
+      await updateCartRequest({ items: itemsPayload }, { token });
+
+      const addr = orderData.shippingAddress;
+      const email = addr.email?.trim();
+      const created = await createOrderRequest(
+        token,
+        {
+          paymentMethod: orderData.paymentMethod,
+          shippingName: addr.name,
+          shippingPhone: addr.phone,
+          ...(email ? { shippingEmail: email } : {}),
+          shippingAddress: addr.street,
+          shippingCity: addr.city,
+          ...(addr.state?.trim() ? { shippingState: addr.state.trim() } : {}),
+          ...(addr.zipCode?.trim() ? { shippingZipcode: addr.zipCode.trim() } : {}),
+          ...(addr.country?.trim() ? { shippingCountry: addr.country.trim() } : {}),
+        },
+        orderData
+      );
       persist((prev) => ({
         ...prev,
         orders: [created, ...(prev.orders || [])],
       }));
+      await refreshBooksFromApi();
       return created;
     },
-    [persist]
+    [persist, refreshBooksFromApi]
   );
 
   const updateOrder = useCallback(
@@ -650,12 +754,50 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
       const token = getAccessToken();
       if (!token) return null;
       try {
-        const updated = await updateOrderStatusRequest(token, orderId, patch.status);
-        persist((prev) => ({
-          ...prev,
-          orders: (prev.orders || []).map((o) => (String(o.id) === String(orderId) ? updated : o)),
-        }));
-        return updated;
+        await updateOrderStatusRequest(token, orderId, patch.status);
+        let merged: Order | null = null;
+        persist((prev) => {
+          const existing = (prev.orders || []).find((o) => String(o.id) === String(orderId));
+          if (!existing) return prev;
+          merged = {
+            ...existing,
+            ...patch,
+            updatedAt: new Date().toISOString()
+          } as Order;
+          return {
+            ...prev,
+            orders: (prev.orders || []).map((o) => (String(o.id) === String(orderId) ? merged! : o))
+          };
+        });
+        return merged;
+      } catch {
+        return null;
+      }
+    },
+    [persist]
+  );
+
+  const confirmOrderReceived = useCallback(
+    async (orderId: string): Promise<Order | null> => {
+      const token = getAccessToken();
+      if (!token) return null;
+      try {
+        await confirmOrderReceivedRequest(token, orderId);
+        let merged: Order | null = null;
+        persist((prev) => {
+          const existing = (prev.orders || []).find((o) => String(o.id) === String(orderId));
+          if (!existing) return prev;
+          merged = {
+            ...existing,
+            status: 'completed',
+            updatedAt: new Date().toISOString(),
+          } as Order;
+          return {
+            ...prev,
+            orders: (prev.orders || []).map((o) => (String(o.id) === String(orderId) ? merged! : o)),
+          };
+        });
+        return merged;
       } catch {
         return null;
       }
@@ -954,8 +1096,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           : `Đã xuất ${quantity} sản phẩm`,
         'success'
       );
+      await refreshBooksFromApi();
     },
-    [persist, currentUser, showToast]
+    [persist, currentUser, showToast, refreshBooksFromApi]
   );
 
   const getInventoryLogs = useCallback(() => {
@@ -988,6 +1131,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
       updateUserProfile,
       addOrder,
       updateOrder,
+      confirmOrderReceived,
+      refreshBooksFromApi,
+      dedupeCartLines,
       addBook,
       updateBook,
       deleteBook,
@@ -1021,6 +1167,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
       updateUserProfile,
       addOrder,
       updateOrder,
+      confirmOrderReceived,
+      refreshBooksFromApi,
+      dedupeCartLines,
       addBook,
       updateBook,
       deleteBook,

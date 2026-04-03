@@ -118,10 +118,12 @@ export default function AdminOrdersPage() {
               filteredOrders.map((order) => {
                 const user = getUserById(order.userId);
                 const itemCount = order.items?.length || 0;
+                const customerLabel =
+                  user?.name || order.shippingAddress?.name || order.shippingAddress?.email || 'Khách';
                 return (
                   <tr key={order.id}>
                     <td>#{order.id.substring(0, 8)}</td>
-                    <td>{user?.name || 'Khách'}</td>
+                    <td>{customerLabel}</td>
                     <td>{itemCount} sản phẩm</td>
                     <td>{formatPrice(order.total)}</td>
                     <td>

@@ -37,6 +37,7 @@ export default function BookCard({ book, onAddToCart }: BookCardProps) {
   const imgRaw = Array.isArray(book.images) ? book.images[0] : book.image;
   const img = fixImagePath(imgRaw);
   const price = discountedUnitPrice(book);
+  const outOfStock = !book.stock || Number(book.stock) <= 0;
 
   const badges = [];
   if (book.trending) badges.push(<span key="t" className="book-badge trending">Xu hướng</span>);
@@ -54,6 +55,24 @@ export default function BookCard({ book, onAddToCart }: BookCardProps) {
       style={{ cursor: 'pointer' }}
     >
       <div className="book-image-container" style={{ position: 'relative' }}>
+        {outOfStock && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.45)',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 700,
+              fontSize: '0.95rem',
+              zIndex: 2,
+            }}
+          >
+            Hết hàng
+          </div>
+        )}
         {badges.length > 0 && <div className="book-badges">{badges}</div>}
         <img
           src={img}
@@ -83,13 +102,14 @@ export default function BookCard({ book, onAddToCart }: BookCardProps) {
           <button
             type="button"
             className="btn btn-primary"
-            style={{ marginTop: 8 }}
+            style={{ marginTop: 8, opacity: outOfStock ? 0.55 : 1 }}
+            disabled={outOfStock}
             onClick={(e) => {
               e.stopPropagation();
-              onAddToCart(book.id);
+              if (!outOfStock) onAddToCart(book.id);
             }}
           >
-            <i className="fas fa-shopping-cart" /> Thêm vào giỏ
+            <i className="fas fa-shopping-cart" /> {outOfStock ? 'Hết hàng' : 'Thêm vào giỏ'}
           </button>
         )}
       </div>

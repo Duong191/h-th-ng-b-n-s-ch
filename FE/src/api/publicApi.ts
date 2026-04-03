@@ -83,3 +83,9 @@ export async function getDetailedCategories<TDetailedCategory>(): Promise<TDetai
   const data = await httpRequest<ListResponse<TDetailedCategory>>('/categories/detailed');
   return unwrapList(data);
 }
+
+/** Một cuốn sách mới nhất từ API (tồn kho đúng với DB). */
+export async function fetchBookById(id: string): Promise<Book> {
+  const raw = await httpRequest<RawBook>(`/books/${encodeURIComponent(id)}`);
+  return mapBook(raw);
+}

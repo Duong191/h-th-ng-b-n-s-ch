@@ -76,6 +76,12 @@ export const getBookById = async (id: number) => {
     `SELECT
       b.*,
       c.name AS category_name,
+      (
+        SELECT TOP 1 bi.image_url
+        FROM book_images bi
+        WHERE bi.book_id = b.id
+        ORDER BY bi.is_primary DESC, bi.display_order ASC, bi.id ASC
+      ) AS image_url,
       b.review_count AS reviewCount,
       b.sold_count AS soldCount
      FROM books b

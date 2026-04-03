@@ -1,12 +1,16 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import { formatPrice } from '../utils/format';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { getCartItems, addOrder, clearCartStorage, currentUser, showToast } = useBookstore();
+  const { getCartItems, addOrder, clearCartStorage, currentUser, showToast, dedupeCartLines } = useBookstore();
   const items = getCartItems();
+
+  useEffect(() => {
+    dedupeCartLines();
+  }, [dedupeCartLines]);
   const total = items.reduce((s, i) => s + i.total, 0);
 
   if (items.length === 0) {

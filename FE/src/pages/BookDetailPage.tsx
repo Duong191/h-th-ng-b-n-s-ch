@@ -1,24 +1,32 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
+import type { Book } from '../context/BookstoreContext';
 import { formatPrice, discountedUnitPrice, fixImagePath } from '../utils/format';
 import BookCard from '../components/ui/BookCard';
 import { getRelatedBooks } from '../services/booksService';
+import { fetchBookById } from '../api/publicApi';
 
 export default function BookDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data, getBookById, addToCart, loading, currentUser, showToast } = useBookstore();
+  const { data, getBookById, addToCart, loading, currentUser, showToast, persist } = useBookstore();
   const book = id ? getBookById(id) : null;
+  /** Tồn kho mới nhất từ API (tránh cache cũ trên trang chi tiết). */
+  const [stockBook, setStockBook] = useState<Book | null>(null);
+  const displayBook = stockBook ?? book;
+  const stock = displayBook ? Number(displayBook.stock) : 0;
+  const outOfStock = stock <= 0;
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [reviews, setReviews] = useState<{ id: string; userId: string; rating: number; comment: string; createdAt: string }[]>([]);
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
+  const [relatedPage, setRelatedPage] = useState(0);
 
-  const bookWithExtras = book ? (book as any) : null;
-  const imagesRaw = bookWithExtras?.images || (book?.image ? [book.image] : []);
+  const bookWithExtras = displayBook ? (displayBook as any) : null;
+  const imagesRaw = bookWithExtras?.images || (displayBook?.image ? [displayBook.image] : []);
   const images = imagesRaw.map((img: string) => fixImagePath(img));
   const tags = Array.isArray(bookWithExtras?.tags) ? (bookWithExtras.tags as unknown[]).map((t) => String(t)) : [];
   const variants = useMemo(() => {
@@ -30,10 +38,16 @@ export default function BookDetailPage() {
     return ['Bìa mềm', 'Bìa cứng'];
   }, [tags]);
   const [selectedVariant, setSelectedVariant] = useState<string>(() => variants[0] || 'Bìa mềm');
+  const RELATED_PER = 5;
   const relatedBooks = useMemo(() => {
     if (!book || !data?.books) return [];
-    return getRelatedBooks(data.books, book.id, 4);
+    return getRelatedBooks(data.books, book.id, 5);
   }, [book, data]);
+  const relatedPages = Math.max(1, Math.ceil(relatedBooks.length / RELATED_PER));
+  const visibleRelatedBooks = useMemo(
+    () => relatedBooks.slice(relatedPage * RELATED_PER, (relatedPage + 1) * RELATED_PER),
+    [relatedBooks, relatedPage]
+  );
 
   useEffect(() => {
     setReviews([]);
@@ -42,9 +56,52 @@ export default function BookDetailPage() {
   }, [id]);
 
   useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+    setStockBook(null);
+    (async () => {
+      try {
+        const b = await fetchBookById(id);
+        if (cancelled) return;
+        const prevSnap = book;
+        const imageOk = Boolean(b.image && String(b.image).trim() !== '');
+        const merged: Book =
+          !imageOk && prevSnap?.image
+            ? ({ ...b, image: prevSnap.image, images: [prevSnap.image] } as Book)
+            : b;
+        setStockBook(merged);
+        persist((prev) => {
+          if (!prev) return prev;
+          const books = [...(prev.books || [])];
+          const idx = books.findIndex((x) => x && String(x.id) === String(merged.id));
+          if (idx >= 0) books[idx] = merged;
+          else books.push(merged);
+          return { ...prev, books };
+        });
+      } catch {
+        if (!cancelled) setStockBook(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [id, persist]);
+
+  useEffect(() => {
     // Keep selectedVariant in sync when book changes
     setSelectedVariant((prev) => (variants.includes(prev) ? prev : variants[0] || 'Bìa mềm'));
   }, [variants]);
+
+  useEffect(() => {
+    setRelatedPage(0);
+  }, [book?.id]);
+
+  useEffect(() => {
+    setQuantity((q) => {
+      if (outOfStock) return 1;
+      return Math.min(Math.max(1, q), Math.max(1, stock));
+    });
+  }, [stock, outOfStock]);
 
   const totalReviews = Number(book?.reviewCount || bookWithExtras?.reviews || reviews.length || 0);
   const avgRating = Number(book?.rating || 0);
@@ -64,27 +121,41 @@ export default function BookDetailPage() {
   if (loading) return <div className="container" style={{ padding: 60 }}>Đang tải…</div>;
   if (!book) return <div className="container" style={{ padding: 60 }}>Không tìm thấy sách</div>;
 
-  const price = discountedUnitPrice(book);
+  const price = discountedUnitPrice(displayBook!);
   const category = data?.categories?.find((c) => c.id === book.categoryId || c.id === (book as any).category);
   const sold = Number(book.soldCount || bookWithExtras?.salesCount || 0);
+  const detailRows = [
+    { label: 'Mã hàng', value: book.isbn || 'N/A' },
+    { label: 'Tên Nhà Cung Cấp', value: bookWithExtras?.brand || 'N/A' },
+    { label: 'Tác giả', value: book.author },
+    { label: 'NXB', value: book.publisher || 'N/A' },
+    { label: 'Năm XB', value: bookWithExtras?.publishYear || book.publishDate || 'N/A' },
+    { label: 'Trọng lượng (gr)', value: String(bookWithExtras?.weight || 400) },
+    { label: 'Kích Thước Bao Bì', value: bookWithExtras?.dimensions || '20.5 x 14.5 x 2.5 cm' },
+    { label: 'Số trang', value: String(book.pages || 'N/A') },
+    { label: 'Hình thức', value: bookWithExtras?.format || 'Bìa Mềm' },
+    { label: 'Ngôn ngữ', value: book.language || 'Tiếng Việt' },
+  ];
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(book.id);
+    if (!displayBook || outOfStock) {
+      showToast('Sách đang hết hàng', 'error');
+      return;
     }
+    addToCart(displayBook.id, quantity);
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
+    if (!displayBook || outOfStock) {
+      showToast('Sách đang hết hàng', 'error');
+      return;
+    }
+    addToCart(displayBook.id, quantity);
     navigate('/cart');
   };
 
   const handleSubmitReview = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    showToast('Tạm thời tắt tính năng đánh giá qua API để làm lại BE', 'info');
-  };
-
-  const handleDeleteReview = async (_reviewId: string) => {
     showToast('Tạm thời tắt tính năng đánh giá qua API để làm lại BE', 'info');
   };
 
@@ -110,7 +181,15 @@ export default function BookDetailPage() {
             {/* Left Column: Image Gallery */}
             <div className="book-gallery">
               <div className="main-image">
-                <img src={images[selectedImage] || book.image} alt={book.title} />
+                <img
+                  src={images[selectedImage] || fixImagePath(String(displayBook?.image || book.image || ''))}
+                  alt={book.title}
+                  onError={(e) => {
+                    const el = e.currentTarget;
+                    el.onerror = null;
+                    el.src = 'https://placehold.co/400x560?text=No+Image';
+                  }}
+                />
               </div>
               <div className="thumbnail-gallery">
                 {images.slice(0, 4).map((img: string, idx: number) => (
@@ -132,13 +211,25 @@ export default function BookDetailPage() {
 
               {/* Action Buttons */}
               <div className="book-actions">
-                <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                <button
+                  type="button"
+                  className="add-to-cart-btn"
+                  disabled={outOfStock}
+                  onClick={handleAddToCart}
+                  style={outOfStock ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}
+                >
                   <img src="/icon/book_details/add-to-cart.svg" alt="Cart" className="btn-icon" />
-                  Thêm vào giỏ hàng
+                  {outOfStock ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                 </button>
-                <button className="buy-now-btn" onClick={handleBuyNow}>
+                <button
+                  type="button"
+                  className="buy-now-btn"
+                  disabled={outOfStock}
+                  onClick={handleBuyNow}
+                  style={outOfStock ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}
+                >
                   <img src="/icon/book_details/thunder.svg" alt="Buy" className="btn-icon" />
-                  Mua ngay
+                  {outOfStock ? 'Không thể mua' : 'Mua ngay'}
                 </button>
               </div>
 
@@ -228,7 +319,13 @@ export default function BookDetailPage() {
               </div>
 
               <div className="availability">
-                <span className="availability-badge">{Math.max(1, Math.min(99, book.stock))} nhà sách còn hàng</span>
+                {outOfStock ? (
+                  <span className="availability-badge" style={{ background: '#c0392b', color: '#fff' }}>
+                    Sách đang hết hàng
+                  </span>
+                ) : (
+                  <span className="availability-badge">Còn {stock} cuốn trong kho Bookarazi</span>
+                )}
               </div>
 
             </div>
@@ -290,8 +387,10 @@ export default function BookDetailPage() {
               <div className="quantity-selector">
                 <h4>Số lượng</h4>
                 <div className="quantity-controls">
-                  <button 
-                    className="quantity-btn minus" 
+                  <button
+                    type="button"
+                    className="quantity-btn minus"
+                    disabled={outOfStock}
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   >
                     -
@@ -299,14 +398,19 @@ export default function BookDetailPage() {
                   <input
                     type="number"
                     className="quantity-input"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, Math.min(book.stock, parseInt(e.target.value) || 1)))}
-                    min="1"
-                    max={book.stock}
+                    value={outOfStock ? 0 : quantity}
+                    disabled={outOfStock}
+                    onChange={(e) =>
+                      setQuantity(Math.max(1, Math.min(stock, parseInt(e.target.value, 10) || 1)))
+                    }
+                    min={1}
+                    max={stock}
                   />
-                  <button 
-                    className="quantity-btn plus" 
-                    onClick={() => setQuantity(Math.min(book.stock, quantity + 1))}
+                  <button
+                    type="button"
+                    className="quantity-btn plus"
+                    disabled={outOfStock}
+                    onClick={() => setQuantity(Math.min(stock, quantity + 1))}
                   >
                     +
                   </button>
@@ -316,37 +420,13 @@ export default function BookDetailPage() {
 
               <div className="book-details-section block-content-product-detail block-info-detail-mobile">
                 <div className="details-block-header">Thông tin chi tiết</div>
-                <div className="details-table">
-                  <div className="detail-row">
-                    <span className="detail-label">Mã hàng</span>
-                    <span className="detail-value">{book.isbn || 'N/A'}</span>
-                    <span className="detail-label">Tên Nhà Cung Cấp</span>
-                    <span className="detail-value">{bookWithExtras?.brand || 'N/A'}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Tác giả</span>
-                    <span className="detail-value">{book.author}</span>
-                    <span className="detail-label">NXB</span>
-                    <span className="detail-value">{book.publisher || 'N/A'}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Năm XB</span>
-                    <span className="detail-value">{bookWithExtras?.publishYear || book.publishDate || 'N/A'}</span>
-                    <span className="detail-label">Trọng lượng (gr)</span>
-                    <span className="detail-value">{bookWithExtras?.weight || 400}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Kích Thước Bao Bì</span>
-                    <span className="detail-value">{bookWithExtras?.dimensions || '20.5 x 14.5 x 2.5 cm'}</span>
-                    <span className="detail-label">Số trang</span>
-                    <span className="detail-value">{book.pages || 'N/A'}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Hình thức</span>
-                    <span className="detail-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
-                    <span className="detail-label"></span>
-                    <span className="detail-value"></span>
-                  </div>
+                <div className="details-table details-table--balanced">
+                  {detailRows.map((row) => (
+                    <div key={row.label} className="detail-pair-row">
+                      <span className="detail-label">{row.label}</span>
+                      <span className="detail-value">{row.value}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {category && (
@@ -440,12 +520,41 @@ export default function BookDetailPage() {
           </div>
 
           {relatedBooks.length > 0 && (
-            <div className="related-books-section">
-              <h2 className="section-title">Sản phẩm liên quan</h2>
-              <div className="books-grid">
-                {relatedBooks.map((relBook) => (
-                  <BookCard key={relBook.id} book={relBook as any} onAddToCart={addToCart} />
-                ))}
+            <div className="related-books-section featured-like">
+              <div className="section-header">
+                <h2>Sản phẩm liên quan</h2>
+              </div>
+              <div className="featured-books-carousel">
+                <button
+                  type="button"
+                  className="carousel-nav prev"
+                  disabled={relatedPage <= 0}
+                  onClick={() => setRelatedPage((p) => Math.max(0, p - 1))}
+                >
+                  <i className="fas fa-chevron-left" />
+                </button>
+                <div className="books-container">
+                  <div className="books-carousel" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                    {visibleRelatedBooks.map((relBook) => (
+                      <div key={relBook.id} style={{ width: 200 }}>
+                        <BookCard book={relBook as any} onAddToCart={addToCart} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="carousel-nav next"
+                  disabled={relatedPage >= relatedPages - 1}
+                  onClick={() => setRelatedPage((p) => Math.min(relatedPages - 1, p + 1))}
+                >
+                  <i className="fas fa-chevron-right" />
+                </button>
+              </div>
+              <div className="view-more-container">
+                <NavLink to="/shop" className="view-more-btn">
+                  Xem thêm
+                </NavLink>
               </div>
             </div>
           )}

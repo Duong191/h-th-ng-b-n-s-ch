@@ -67,7 +67,7 @@ export default function Footer() {
                 <i className="fas fa-map-marker-alt" /> 123 Đường ABC, Quận 1, TP.HCM
               </li>
               <li>
-                <i className="fas fa-phone" /> 0932092002
+                <i className="fas fa-phone" /> 0586612788
               </li>
               <li>
                 <i className="fas fa-envelope" /> contact@bookarazi.com
