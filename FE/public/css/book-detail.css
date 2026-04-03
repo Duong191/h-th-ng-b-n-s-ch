@@ -7,16 +7,367 @@
 
 .book-detail-container {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 40px;
+    grid-template-columns: minmax(260px, 400px) minmax(280px, 520px);
+    gap: 28px 36px;
     margin-bottom: 40px;
     align-items: start;
+    justify-content: center;
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .book-right-column {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
+    min-width: 0;
+}
+
+/* ---------- Product summary card (Fahasa-like) ---------- */
+.product-summary-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 22px 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f0f0f0;
+}
+
+.product-summary-card__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.product-summary-card__badges .book-badge {
+    margin-bottom: 0;
+}
+
+.product-summary-card__title {
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.35;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+}
+
+.product-summary-card__meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+    margin-bottom: 14px;
+}
+
+.product-summary-card__meta-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.pds-meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+}
+
+.pds-meta-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    line-height: 1.3;
+}
+
+.pds-meta-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.pds-meta-value--link {
+    color: #2489f4;
+}
+
+.product-summary-card__rating-sold {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 6px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.pds-stars {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.pds-stars .star-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.pds-rating-text {
+    color: #ea580c;
+    font-weight: 500;
+}
+
+.pds-rating-sep {
+    color: #d1d5db;
+    font-weight: 300;
+}
+
+.pds-sold-text {
+    color: #6b7280;
+}
+
+.product-summary-card__price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 12px;
+    margin-bottom: 10px;
+}
+
+.pds-current-price {
+    font-size: clamp(1.5rem, 4vw, 1.85rem);
+    font-weight: 800;
+    color: #c92127;
+    letter-spacing: -0.02em;
+}
+
+.pds-original-price {
+    font-size: 15px;
+    color: #9ca3af;
+    text-decoration: line-through;
+    font-weight: 500;
+}
+
+.pds-discount-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #c92127;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.product-summary-card__promo {
+    margin-bottom: 14px;
+}
+
+.pds-promo-link {
+    font-size: 13px;
+    color: #c92127;
+    text-decoration: none;
+    line-height: 1.45;
+}
+
+.pds-promo-link:hover {
+    text-decoration: underline;
+}
+
+.product-summary-card__stock {
+    margin: 0;
+}
+
+.pds-stock-badge {
+    display: inline-block;
+    padding: 10px 14px;
+    background: #e8f3ff;
+    border: 1px solid #cfe6ff;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1d5ea8;
+}
+
+.pds-stock-badge--out {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+/* ---------- Shipping card ---------- */
+.shipping-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 22px 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f0f0f0;
+}
+
+.shipping-card__heading {
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.shipping-card__address-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.shipping-card__address-text {
+    margin: 0;
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.45;
+    flex: 1;
+    min-width: 0;
+}
+
+.shipping-card__address-text strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.shipping-card__change-btn {
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #c92127;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.shipping-card__change-btn:hover {
+    text-decoration: underline;
+}
+
+.shipping-card__method-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #fafafa;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.shipping-card__method-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.shipping-card__method-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.shipping-card__eta {
+    margin: 0 0 18px;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.shipping-card__vouchers-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.shipping-card__vouchers-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.shipping-card__vouchers-more {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c92127;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.shipping-card__vouchers-more:hover {
+    text-decoration: underline;
+}
+
+.shipping-card__voucher-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.shipping-card__voucher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fffbeb;
+    border: 1px dashed #fcd34d;
+    font-size: 11px;
+    line-height: 1.3;
+    color: #92400e;
+}
+
+.shipping-card__voucher-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+}
+
+.shipping-card__voucher-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 500;
+}
+
+.shipping-card__variants {
+    margin-top: 16px;
+    padding-top: 4px;
+}
+
+.shipping-card__quantity {
+    margin-top: 16px;
+}
+
+.shipping-card__subsection-title {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+}
+
+.shipping-card .quantity-controls {
+    margin-bottom: 0;
 }
 
 .block-content-product-detail {
@@ -618,7 +969,7 @@
     display: block;
 }
 
-/* DETAILS TABLE */
+/* DETAILS TABLE (legacy / other pages) */
 .details-table {
     display: grid;
     grid-template-columns: 1fr;
@@ -644,6 +995,41 @@
 .detail-value {
     font-size: 14px;
     color: #333;
+}
+
+/* Thông tin chi tiết — layout 2 cột (label | value), kiểu TMĐT */
+.book-detail-specs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.book-detail-specs__row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    column-gap: 24px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.book-detail-specs__label {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+.book-detail-specs__value {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #111827;
+    word-break: break-word;
 }
 
 .best-seller-link {
@@ -1068,3 +1454,5 @@
     display: grid;
     gap: 10px;
 }
+
+/* Gợi ý sản phẩm: toàn bộ style .recommend-* nằm trong recommendation.css (import trong main.css) */

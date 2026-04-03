@@ -1,6 +1,7 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useBookstore } from '../../context/BookstoreContext';
+import { formatPrice, discountedUnitPrice } from '../../utils/format';
 
 export default function AdminBookEditPage() {
   const { id } = useParams<{ id: string }>();
@@ -13,9 +14,7 @@ export default function AdminBookEditPage() {
     categoryId: '1',
     publishYear: '',
     price: '',
-    importPrice: '',
     discount: '0',
-    originalPrice: '',
     stock: '0',
     description: '',
     images: '',
@@ -53,9 +52,7 @@ export default function AdminBookEditPage() {
           categoryId: book.categoryId || book.category || '1',
           publishYear,
           price: String(book.price || ''),
-          importPrice: String(book.importPrice || ''),
           discount: String(book.discount || '0'),
-          originalPrice: String(book.originalPrice || ''),
           stock: String(book.stock || '0'),
           description: book.description || '',
           images: imagesStr,
@@ -90,9 +87,7 @@ export default function AdminBookEditPage() {
       category: formData.categoryId,
       publishYear: parseInt(formData.publishYear) || undefined,
       price: parseFloat(formData.price),
-      importPrice: parseFloat(formData.importPrice) || undefined,
       discount: parseFloat(formData.discount),
-      originalPrice: parseFloat(formData.originalPrice) || undefined,
       stock: parseInt(formData.stock),
       description: formData.description,
       ...(imagesArray.length > 0 ? { image: imagesArray[0], images: imagesArray } : {}),
@@ -121,6 +116,13 @@ export default function AdminBookEditPage() {
     }
     navigate('/admin/books');
   };
+
+  const previewPayPrice = useMemo(() => {
+    const p = parseFloat(formData.price);
+    const d = parseFloat(formData.discount) || 0;
+    if (!Number.isFinite(p) || p < 0) return null;
+    return discountedUnitPrice({ price: p, discount: d });
+  }, [formData.price, formData.discount]);
 
   return (
     <form className="admin-form" onSubmit={onSubmit}>
@@ -187,7 +189,7 @@ export default function AdminBookEditPage() {
         </div>
       </div>
 
-      {/* Price */}
+      {/* Price: một giá niêm yết; % giảm trừ vào khi tính tiền (cùng logic cửa hàng) */}
       <div className="form-row">
         <div className="form-group">
           <label className="form-label required">Giá bán (VNĐ)</label>
@@ -200,32 +202,10 @@ export default function AdminBookEditPage() {
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             required
           />
-          <small style={{ color: '#666', fontSize: '0.85rem' }}>Giá bán cho khách hàng</small>
+          <small style={{ color: '#666', fontSize: '0.85rem' }}>
+            Giá niêm yết hiển thị trên cửa hàng. Nếu có giảm giá bên dưới, khách chỉ trả phần đã trừ khuyến mãi.
+          </small>
         </div>
-        <div className="form-group">
-          <label className={`form-label ${isEdit ? '' : 'required'}`}>Giá nhập (VNĐ)</label>
-          <input
-            type="number"
-            className="form-input"
-            min="0"
-            step="1000"
-            value={formData.importPrice}
-            onChange={(e) => setFormData({ ...formData, importPrice: e.target.value })}
-            required={!isEdit}
-            disabled={isEdit}
-            style={isEdit ? { backgroundColor: '#f5f5f5', cursor: 'not-allowed' } : {}}
-          />
-          {isEdit ? (
-            <small style={{ color: '#666', fontSize: '0.85rem' }}>
-              Chỉ đọc. Muốn cập nhật giá nhập, vui lòng vào trang Quản lý Kho.
-            </small>
-          ) : (
-            <small style={{ color: '#666', fontSize: '0.85rem' }}>Giá vốn từ nhà cung cấp</small>
-          )}
-        </div>
-      </div>
-
-      <div className="form-row">
         <div className="form-group">
           <label className="form-label">Giảm giá (%)</label>
           <input
@@ -236,16 +216,11 @@ export default function AdminBookEditPage() {
             value={formData.discount}
             onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
           />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Giá gốc (nếu có)</label>
-          <input
-            type="number"
-            className="form-input"
-            min="0"
-            value={formData.originalPrice}
-            onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
-          />
+          {previewPayPrice != null && Number(formData.discount) > 0 && (
+            <small style={{ color: '#27ae60', fontSize: '0.85rem', display: 'block', marginTop: 6 }}>
+              Giá khách thanh toán: <strong>{formatPrice(previewPayPrice)}</strong>
+            </small>
+          )}
         </div>
       </div>
 

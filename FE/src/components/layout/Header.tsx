@@ -24,6 +24,10 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
     return [0, 1, 2, 3].map((i) => detailed.slice(i * per, i * per + per));
   }, [detailed]);
 
+  /** Giỏ hàng storefront: ẩn với admin/staff; hiển thị với khách và khách hàng (role user). */
+  const showStorefrontCart =
+    !currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'staff');
+
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const q = search.trim();
@@ -138,13 +142,15 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
                 </button>
               </form>
 
-              <NavLink to="/cart" className="cart-icon">
-                <img src="/icon/ico_cart_gray.jpg" alt="" className="icon-img" />
-                <span>Giỏ hàng</span>
-                <span className="cart-badge" id="cartBadge" style={{ display: cartItemCount > 0 ? 'block' : 'none' }}>
-                  {cartItemCount}
-                </span>
-              </NavLink>
+              {showStorefrontCart && (
+                <NavLink to="/cart" className="cart-icon">
+                  <img src="/icon/ico_cart_gray.jpg" alt="" className="icon-img" />
+                  <span>Giỏ hàng</span>
+                  <span className="cart-badge" id="cartBadge" style={{ display: cartItemCount > 0 ? 'block' : 'none' }}>
+                    {cartItemCount}
+                  </span>
+                </NavLink>
+              )}
 
               <div className="user-menu-wrapper" id="userMenuWrapper">
                 <button type="button" className="user-menu-icon" id="userMenuIcon" onClick={() => setMenuOpen((o) => !o)} style={{ position: 'relative' }}>

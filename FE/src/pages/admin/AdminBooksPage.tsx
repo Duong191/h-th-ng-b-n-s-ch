@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useBookstore } from '../../context/BookstoreContext';
-import { formatPrice, fixImagePath } from '../../utils/format';
+import { formatPrice, fixImagePath, discountedUnitPrice } from '../../utils/format';
 
 export default function AdminBooksPage() {
   const { data, deleteBook, showToast } = useBookstore();
@@ -68,9 +68,7 @@ export default function AdminBooksPage() {
               <th>Tên sách</th>
               <th>Tác giả</th>
               <th>Danh mục</th>
-              <th>Giá nhập</th>
-              <th>Giá bán</th>
-              <th>Lãi/cuốn</th>
+              <th>Giá bán (sau giảm)</th>
               <th>Giảm giá</th>
               <th>Tồn kho</th>
               <th>Thao tác</th>
@@ -79,7 +77,7 @@ export default function AdminBooksPage() {
           <tbody>
             {filteredBooks.length === 0 ? (
               <tr>
-                <td colSpan={10} className="text-center">
+                <td colSpan={8} className="text-center">
                   {searchTerm ? 'Không tìm thấy sách nào' : 'Chưa có sách nào'}
                 </td>
               </tr>
@@ -88,8 +86,7 @@ export default function AdminBooksPage() {
                 const imgRaw = (book as any).images?.[0] || book.image;
                 const img = fixImagePath(imgRaw);
                 const categoryId = (book as any).category || book.categoryId;
-                const profit = book.importPrice ? book.price - book.importPrice : book.price;
-                const profitPercent = book.importPrice ? ((profit / book.importPrice) * 100).toFixed(0) : 0;
+                const salePrice = discountedUnitPrice(book);
                 return (
                   <tr key={book.id}>
                     <td>
@@ -98,19 +95,7 @@ export default function AdminBooksPage() {
                     <td>{book.title}</td>
                     <td>{book.author}</td>
                     <td>{getCategoryName(categoryId)}</td>
-                    <td style={{ color: book.importPrice ? '#666' : '#e74c3c', fontWeight: book.importPrice ? 'normal' : 'bold' }}>
-                      {book.importPrice ? formatPrice(book.importPrice) : 'Chưa có'}
-                    </td>
-                    <td>{formatPrice(book.price)}</td>
-                    <td style={{ color: profit > 0 ? '#27ae60' : '#e74c3c', fontWeight: 'bold' }}>
-                      {book.importPrice ? (
-                        <>
-                          {formatPrice(profit)} <small>({profitPercent}%)</small>
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </td>
+                    <td>{formatPrice(salePrice)}</td>
                     <td>{book.discount}%</td>
                     <td>{book.stock}</td>
                     <td>

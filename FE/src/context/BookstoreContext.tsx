@@ -825,7 +825,6 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         title: payload.title,
         author: payload.author,
         price: Number(payload.price),
-        importPrice: payload.importPrice,
         discount: payload.discount,
         stock: Number(payload.stock),
         categoryId,

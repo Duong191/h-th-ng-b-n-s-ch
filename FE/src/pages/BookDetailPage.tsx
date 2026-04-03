@@ -3,8 +3,8 @@ import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import type { Book } from '../context/BookstoreContext';
 import { formatPrice, discountedUnitPrice, fixImagePath } from '../utils/format';
-import BookCard from '../components/ui/BookCard';
 import { getRelatedBooks } from '../services/booksService';
+import RecommendationSection from '../components/recommendation/RecommendationSection';
 import { fetchBookById } from '../api/publicApi';
 
 export default function BookDetailPage() {
@@ -23,7 +23,6 @@ export default function BookDetailPage() {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
-  const [relatedPage, setRelatedPage] = useState(0);
 
   const bookWithExtras = displayBook ? (displayBook as any) : null;
   const imagesRaw = bookWithExtras?.images || (displayBook?.image ? [displayBook.image] : []);
@@ -38,16 +37,10 @@ export default function BookDetailPage() {
     return ['Bìa mềm', 'Bìa cứng'];
   }, [tags]);
   const [selectedVariant, setSelectedVariant] = useState<string>(() => variants[0] || 'Bìa mềm');
-  const RELATED_PER = 5;
   const relatedBooks = useMemo(() => {
     if (!book || !data?.books) return [];
-    return getRelatedBooks(data.books, book.id, 5);
+    return getRelatedBooks(data.books, book.id, 80);
   }, [book, data]);
-  const relatedPages = Math.max(1, Math.ceil(relatedBooks.length / RELATED_PER));
-  const visibleRelatedBooks = useMemo(
-    () => relatedBooks.slice(relatedPage * RELATED_PER, (relatedPage + 1) * RELATED_PER),
-    [relatedBooks, relatedPage]
-  );
 
   useEffect(() => {
     setReviews([]);
@@ -91,10 +84,6 @@ export default function BookDetailPage() {
     // Keep selectedVariant in sync when book changes
     setSelectedVariant((prev) => (variants.includes(prev) ? prev : variants[0] || 'Bìa mềm'));
   }, [variants]);
-
-  useEffect(() => {
-    setRelatedPage(0);
-  }, [book?.id]);
 
   useEffect(() => {
     setQuantity((q) => {
@@ -254,177 +243,193 @@ export default function BookDetailPage() {
               </div>
             </div>
 
-            {/* Right Column: 3 content blocks */}
-            <div className="book-right-column">
-            <div className="book-info-section block-content-product-detail block-product-view-mobile">
-              <div className="book-header">
-                {bookWithExtras?.trending && <div className="book-badge">Xu hướng</div>}
-                {bookWithExtras?.bestSeller && <div className="book-badge">Bán chạy</div>}
-                {bookWithExtras?.isNew && <div className="book-badge">Mới</div>}
-                <div className="book-title-row">
-                  <h1 className="book-title">{book.title}</h1>
+            {/* Right column: product summary + shipping (Fahasa-like stacked cards) */}
+            <div className="book-right-column block-content-product-detail">
+              <div className="product-summary-card block-product-view-mobile">
+                <div className="product-summary-card__badges">
+                  {bookWithExtras?.trending && <span className="book-badge">Xu hướng</span>}
+                  {bookWithExtras?.bestSeller && <span className="book-badge">Bán chạy</span>}
+                  {bookWithExtras?.isNew && <span className="book-badge">Mới</span>}
                 </div>
+                <h1 className="product-summary-card__title">{book.title}</h1>
 
-                <div className="book-meta-top">
-                  <div className="book-info-grid">
-                    <div className="book-info-col">
-                      <div className="book-supplier">
-                        <span>Nhà cung cấp: <span>{bookWithExtras?.brand || 'N/A'}</span></span>
-                      </div>
-                      <div className="book-publisher">
-                        <span>Nhà xuất bản: <span>{book.publisher || 'N/A'}</span></span>
-                      </div>
+                <div className="product-summary-card__meta">
+                  <div className="product-summary-card__meta-col">
+                    <div className="pds-meta-row">
+                      <span className="pds-meta-label">Nhà cung cấp</span>
+                      <span className="pds-meta-value pds-meta-value--link">{String(bookWithExtras?.brand || 'N/A')}</span>
                     </div>
-                    <div className="book-meta">
-                      <div className="meta-item">
-                        <span className="meta-label">Tác giả:</span>
-                        <span className="meta-value">{book.author}</span>
-                      </div>
-                      <div className="meta-item">
-                        <span className="meta-label">Hình thức bìa:</span>
-                        <span className="meta-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
-                      </div>
+                    <div className="pds-meta-row">
+                      <span className="pds-meta-label">Nhà xuất bản</span>
+                      <span className="pds-meta-value">{book.publisher || 'N/A'}</span>
                     </div>
                   </div>
-                  <div className="book-rating">
-                    <div className="stars">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <img
-                          key={star}
-                          src="/icon/book_details/star.svg"
-                          alt="Star"
-                          className="star-icon"
-                          style={{ opacity: star <= (book.rating || 0) ? 1 : 0.3 }}
-                        />
-                      ))}
+                  <div className="product-summary-card__meta-col">
+                    <div className="pds-meta-row">
+                      <span className="pds-meta-label">Tác giả</span>
+                      <span className="pds-meta-value">{book.author}</span>
                     </div>
-                    <span className="rating-text">({book.reviewCount || bookWithExtras?.reviews || 0} đánh giá)</span>
-                    <span className="sales-count">| Đã bán {sold}+</span>
+                    <div className="pds-meta-row">
+                      <span className="pds-meta-label">Hình thức bìa</span>
+                      <span className="pds-meta-value">{bookWithExtras?.format || 'Bìa Mềm'}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="price-section">
-                <div className="current-price">{formatPrice(price)}</div>
-                {book.discount > 0 && (
-                  <>
-                    <div className="original-price">{formatPrice(book.price)}</div>
-                    <div className="discount-badge">-{book.discount}%</div>
-                  </>
-                )}
-              </div>
-
-              <div className="promo-link">
-                <a href="#">Chính sách khuyến mãi trên chỉ áp dụng tại Bookarazi.com &gt;</a>
-              </div>
-
-              <div className="availability">
-                {outOfStock ? (
-                  <span className="availability-badge" style={{ background: '#c0392b', color: '#fff' }}>
-                    Sách đang hết hàng
+                <div className="product-summary-card__rating-sold">
+                  <div className="pds-stars" aria-hidden>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <img
+                        key={star}
+                        src="/icon/book_details/star.svg"
+                        alt=""
+                        className="star-icon"
+                        style={{ opacity: star <= (book.rating || 0) ? 1 : 0.3 }}
+                      />
+                    ))}
+                  </div>
+                  <span className="pds-rating-text">({book.reviewCount || bookWithExtras?.reviews || 0} đánh giá)</span>
+                  <span className="pds-rating-sep" aria-hidden>
+                    |
                   </span>
-                ) : (
-                  <span className="availability-badge">Còn {stock} cuốn trong kho Bookarazi</span>
-                )}
+                  <span className="pds-sold-text">Đã bán {sold}+</span>
+                </div>
+
+                <div className="product-summary-card__price">
+                  <span className="pds-current-price">{formatPrice(price)}</span>
+                  {book.discount > 0 && (
+                    <>
+                      <span className="pds-original-price">{formatPrice(book.price)}</span>
+                      <span className="pds-discount-pill">-{book.discount}%</span>
+                    </>
+                  )}
+                </div>
+
+                <div className="product-summary-card__promo">
+                  <a
+                    href="#"
+                    className="pds-promo-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    Chính sách khuyến mãi trên chỉ áp dụng tại Bookarazi.com &gt;
+                  </a>
+                </div>
+
+                <div className="product-summary-card__stock">
+                  {outOfStock ? (
+                    <span className="pds-stock-badge pds-stock-badge--out">Sách đang hết hàng</span>
+                  ) : (
+                    <span className="pds-stock-badge">Còn {stock} cuốn trong kho Bookarazi</span>
+                  )}
+                </div>
               </div>
 
-            </div>
+              <div className="shipping-card block-info-delivery-mobile">
+                <h2 className="shipping-card__heading">Thông tin vận chuyển</h2>
+                <div className="shipping-card__address-row">
+                  <p className="shipping-card__address-text">
+                    Giao hàng đến <strong>Phường Bến Nghé, Quận 1, Hồ Chí Minh</strong>
+                  </p>
+                  <button type="button" className="shipping-card__change-btn">
+                    Thay đổi
+                  </button>
+                </div>
 
-              {/* Shipping Info */}
-              <div className="book-info-section block-content-product-detail block-info-delivery-mobile">
-              <div className="shipping-info">
-                <h4>Thông tin vận chuyển</h4>
-                <div className="shipping-location">
-                  <span>Giao hàng đến Phường Bến Nghé, Quận 1, Hồ Chí Minh</span>
-                  <a href="#" className="change-location">Thay đổi</a>
+                <div className="shipping-card__method-box">
+                  <img src="/icon/book_details/delivery-truck.svg" alt="" className="shipping-card__method-icon" />
+                  <div className="shipping-card__method-text">
+                    <span className="shipping-card__method-title">Giao hàng tiêu chuẩn</span>
+                  </div>
                 </div>
-                <div className="shipping-method">
-                  <img src="/icon/book_details/delivery-truck.svg" alt="Delivery" className="shipping-icon" />
-                  <span>Giao hàng tiêu chuẩn</span>
-                </div>
-                <div className="shipping-time">
-                  <span>Dự kiến giao trong 2-3 ngày</span>
-                </div>
-              </div>
+                <p className="shipping-card__eta">Dự kiến giao trong 2-3 ngày</p>
 
-              {/* Related Offers */}
-              <div className="related-offers">
-                <h4>Ưu đãi liên quan</h4>
-                <div className="offers-grid">
-                  {[
-                    { icon: '🏷️', text: 'Mã giảm 10k - toàn bộ đơn hàng' },
-                    { icon: '💳', text: 'Mã giảm 20k - cho đơn từ 150k' },
-                    { icon: '🎁', text: 'Mã giảm 25k - sàn TMĐT' },
-                    { icon: '🅿️', text: 'Zalopay: giảm 15k cho đơn từ 99k' },
-                  ].map((o) => (
-                    <div key={o.text} className="offer-card">
-                      <span className="offer-icon">{o.icon}</span>
-                      <span className="offer-text">{o.text}</span>
-                    </div>
-                  ))}
-                </div>
-                <a href="#" className="view-more-offers">Xem thêm &gt;</a>
-              </div>
-
-              {/* Classification */}
-              <div className="product-options">
-                <h4>Phân loại:</h4>
-                <div className="option-chips">
-                  {variants.slice(0, 6).map((v) => (
-                    <button
-                      key={v}
-                      type="button"
-                      className={`chip ${selectedVariant === v ? 'active' : ''}`}
-                      onClick={() => setSelectedVariant(v)}
+                <div className="shipping-card__vouchers">
+                  <div className="shipping-card__vouchers-head">
+                    <h3 className="shipping-card__vouchers-title">Ưu đãi liên quan</h3>
+                    <a
+                      href="#"
+                      className="shipping-card__vouchers-more"
+                      onClick={(e) => e.preventDefault()}
                     >
-                      {v}
-                    </button>
-                  ))}
+                      Xem thêm &gt;
+                    </a>
+                  </div>
+                  <div className="shipping-card__voucher-grid">
+                    {[
+                      { icon: '🏷️', text: 'Mã giảm 10k - toàn bộ đơn hàng' },
+                      { icon: '💳', text: 'Mã giảm 20k - cho đơn từ 150k' },
+                      { icon: '🎁', text: 'Mã giảm 25k - sàn TMĐT' },
+                      { icon: '🅿️', text: 'Zalopay: giảm 15k cho đơn từ 99k' },
+                    ].map((o) => (
+                      <div key={o.text} className="shipping-card__voucher">
+                        <span className="shipping-card__voucher-icon" aria-hidden>
+                          {o.icon}
+                        </span>
+                        <span className="shipping-card__voucher-text">{o.text}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Quantity Selector */}
-              <div className="quantity-selector">
-                <h4>Số lượng</h4>
-                <div className="quantity-controls">
-                  <button
-                    type="button"
-                    className="quantity-btn minus"
-                    disabled={outOfStock}
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    className="quantity-input"
-                    value={outOfStock ? 0 : quantity}
-                    disabled={outOfStock}
-                    onChange={(e) =>
-                      setQuantity(Math.max(1, Math.min(stock, parseInt(e.target.value, 10) || 1)))
-                    }
-                    min={1}
-                    max={stock}
-                  />
-                  <button
-                    type="button"
-                    className="quantity-btn plus"
-                    disabled={outOfStock}
-                    onClick={() => setQuantity(Math.min(stock, quantity + 1))}
-                  >
-                    +
-                  </button>
+                <div className="shipping-card__variants">
+                  <h3 className="shipping-card__subsection-title">Phân loại</h3>
+                  <div className="option-chips">
+                    {variants.slice(0, 6).map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        className={`chip ${selectedVariant === v ? 'active' : ''}`}
+                        onClick={() => setSelectedVariant(v)}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+
+                <div className="shipping-card__quantity">
+                  <h3 className="shipping-card__subsection-title">Số lượng</h3>
+                  <div className="quantity-controls">
+                    <button
+                      type="button"
+                      className="quantity-btn minus"
+                      disabled={outOfStock}
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      className="quantity-input"
+                      value={outOfStock ? 0 : quantity}
+                      disabled={outOfStock}
+                      onChange={(e) =>
+                        setQuantity(Math.max(1, Math.min(stock, parseInt(e.target.value, 10) || 1)))
+                      }
+                      min={1}
+                      max={stock}
+                    />
+                    <button
+                      type="button"
+                      className="quantity-btn plus"
+                      disabled={outOfStock}
+                      onClick={() => setQuantity(Math.min(stock, quantity + 1))}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="book-details-section block-content-product-detail block-info-detail-mobile">
                 <div className="details-block-header">Thông tin chi tiết</div>
-                <div className="details-table details-table--balanced">
+                <div className="book-detail-specs" role="list">
                   {detailRows.map((row) => (
-                    <div key={row.label} className="detail-pair-row">
-                      <span className="detail-label">{row.label}</span>
-                      <span className="detail-value">{row.value}</span>
+                    <div key={row.label} className="book-detail-specs__row" role="listitem">
+                      <div className="book-detail-specs__label">{row.label}</div>
+                      <div className="book-detail-specs__value">{row.value}</div>
                     </div>
                   ))}
                 </div>
@@ -520,43 +525,7 @@ export default function BookDetailPage() {
           </div>
 
           {relatedBooks.length > 0 && (
-            <div className="related-books-section featured-like">
-              <div className="section-header">
-                <h2>Sản phẩm liên quan</h2>
-              </div>
-              <div className="featured-books-carousel">
-                <button
-                  type="button"
-                  className="carousel-nav prev"
-                  disabled={relatedPage <= 0}
-                  onClick={() => setRelatedPage((p) => Math.max(0, p - 1))}
-                >
-                  <i className="fas fa-chevron-left" />
-                </button>
-                <div className="books-container">
-                  <div className="books-carousel" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                    {visibleRelatedBooks.map((relBook) => (
-                      <div key={relBook.id} style={{ width: 200 }}>
-                        <BookCard book={relBook as any} onAddToCart={addToCart} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="carousel-nav next"
-                  disabled={relatedPage >= relatedPages - 1}
-                  onClick={() => setRelatedPage((p) => Math.min(relatedPages - 1, p + 1))}
-                >
-                  <i className="fas fa-chevron-right" />
-                </button>
-              </div>
-              <div className="view-more-container">
-                <NavLink to="/shop" className="view-more-btn">
-                  Xem thêm
-                </NavLink>
-              </div>
-            </div>
+            <RecommendationSection title="Gợi ý cho bạn" books={relatedBooks} moreHref="/shop" moreLabel="Xem thêm" />
           )}
         </div>
       </section>

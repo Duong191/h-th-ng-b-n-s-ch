@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import BookCard from '../components/ui/BookCard';
-import { formatPrice, discountedUnitPrice, fixImagePath } from '../utils/format';
+import { fixImagePath } from '../utils/format';
+import RecommendationSection from '../components/recommendation/RecommendationSection';
 import { getBestSellersByCategory } from '../services/booksService';
 import { Book } from '../context/BookstoreContext';
 
@@ -24,8 +25,39 @@ function slicePage<T>(items: T[], page: number, per = PER): T[] {
   return items.slice(start, start + per);
 }
 
+/**
+ * Panel phải của section "Bảng xếp hạng bán chạy tuần" (trang chủ).
+ * Nhiệm vụ: hiển thị ảnh + tiêu đề + mô tả rút gọn của **một** cuốn sách — dữ liệu do cha truyền vào khi user hover hàng bên trái (không gọi API).
+ */
+function RankingPreviewDetailPanel({ book }: { book: BookWithExtras }) {
+  const cover = fixImagePath(book.images?.[0] || book.image);
+  const desc = (book.description || '').trim();
+  const shortDesc =
+    desc.length > 360 ? `${desc.slice(0, 360).trim()}…` : desc || 'Đang cập nhật mô tả sách.';
+
+  return (
+    <div className="ranking-preview-detail-card ranking-preview-detail-simple">
+      <div className="ranking-preview-detail-media">
+        <img
+          src={cover}
+          alt={book.title}
+          className="ranking-preview-detail-cover"
+          onError={(e) => {
+            const el = e.currentTarget;
+            el.onerror = null;
+            el.src = 'https://placehold.co/400x560?text=No+Image';
+          }}
+        />
+      </div>
+      <h2 className="ranking-preview-detail-heading">
+        <NavLink to={`/books/${book.id}`}>{book.title}</NavLink>
+      </h2>
+      <p className="ranking-preview-detail-desc">{shortDesc}</p>
+    </div>
+  );
+}
+
 export default function HomePage() {
-  const navigate = useNavigate();
   const { data, loading, addToCart } = useBookstore();
   const books = (data?.books || []) as BookWithExtras[];
 
@@ -81,8 +113,27 @@ export default function HomePage() {
   }, [comicsAll, comicTab]);
   const comicPages = Math.max(1, Math.ceil(comicFiltered.length / PER));
 
+  /** Tab danh mục cho bảng xếp hạng (id category khớp backend / booksService). */
   const [rankCat, setRankCat] = useState('1');
+  /** Top 5 sách bán chạy theo category — từ context, không fetch thêm. */
   const rankingPreview = useMemo(() => getBestSellersByCategory(books, rankCat).slice(0, 5), [books, rankCat]);
+  /**
+   * Id sách đang được hover ở cột trái; `null` = coi như chọn mặc định **hạng 1** (xem activeRankBook).
+   * Reset khi đổi tab danh mục để panel không hiển thị sách của category cũ.
+   */
+  const [activeRankBookId, setActiveRankBookId] = useState<string | null>(null);
+
+  /* Đổi tab danh mục → panel phải phải khớp list mới → bỏ id hover cũ (mặc định lại = hạng 1). */
+  useEffect(() => {
+    setActiveRankBookId(null);
+  }, [rankCat]);
+
+  /** Cuốn sách đang hiển thị ở panel phải: hover hoặc mặc định phần tử đầu danh sách. */
+  const activeRankBook = useMemo(() => {
+    if (!rankingPreview.length) return null;
+    const id = activeRankBookId ?? rankingPreview[0].id;
+    return rankingPreview.find((b) => String(b.id) === String(id)) ?? rankingPreview[0];
+  }, [rankingPreview, activeRankBookId]);
 
   const foreignAll = useMemo(
     () =>
@@ -123,7 +174,7 @@ export default function HomePage() {
 
   const recommendations = useMemo(() => {
     const shuffled = [...books].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, Math.min(35, books.length));
+    return shuffled.slice(0, Math.min(100, books.length));
   }, [books]);
 
   if (loading) {
@@ -261,6 +312,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/*
+        Section: Bảng xếp hạng bán chạy tuần (Fahasa-style).
+        Trái: danh sách top 5 — hover / focus hàng → setActiveRankBookId.
+        Phải: RankingPreviewDetailPanel theo activeRankBook (không reload, không API).
+      */}
       <section className="bestseller-ranking-preview">
         <div className="container">
           <div className="section-header ranking-preview-header">
@@ -286,52 +342,77 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-          <div className="ranking-preview-list">
-            {rankingPreview.length === 0 ? (
-              <p style={{ textAlign: 'center', padding: 40, color: '#666' }}>Chưa có sách trong danh mục này</p>
-            ) : (
-              rankingPreview.map((book, index) => {
-                const rank = index + 1;
-                const score =
-                  (book.salesCount || 0) * 10 + (book.rating || 0) * 100 + (book.reviews || 0) * 2;
-                const imgRaw = book.images?.[0] || book.image;
-                const img = fixImagePath(imgRaw);
-                return (
-                  <div key={book.id} className="ranking-preview-item">
-                    <div className="ranking-preview-rank">
-                      <div className="ranking-preview-rank-number">{String(rank).padStart(2, '0')}</div>
-                      <div className="ranking-preview-rank-trend">
-                        <i className="fas fa-arrow-up" />
-                      </div>
-                    </div>
-                    <div className="ranking-preview-item-content">
-                      <NavLink to={`/books/${book.id}`}>
-                        <img
-                          src={img}
-                          alt={book.title}
-                          className="ranking-preview-book-image"
-                          onError={(e) => {
-                            const target = e.currentTarget;
-                            target.onerror = null;
-                            target.src = 'https://placehold.co/240x320?text=No+Image';
-                          }}
-                        />
-                      </NavLink>
-                      <div className="ranking-preview-book-info">
-                        <h3 className="ranking-preview-book-title">
-                          <NavLink to={`/books/${book.id}`}>{book.title}</NavLink>
-                        </h3>
-                        <p className="ranking-preview-book-author">{book.author}</p>
-                        <div className="ranking-preview-book-score">
-                          <span className="score-value">{score.toLocaleString('vi-VN')}</span> điểm
+          {rankingPreview.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: 40, color: '#666' }}>Chưa có sách trong danh mục này</p>
+          ) : (
+            <div className="ranking-preview-layout">
+              {/* Cột trái: scroll dọc; CSS chặn overflow ngang (xem bestseller-ranking.css) */}
+              <div className="ranking-preview-list-col">
+                <div className="ranking-list ranking-preview-list-inner">
+                  {rankingPreview.map((book, index) => {
+                    const rank = index + 1;
+                    /* Điểm hiển thị — cùng công thức score với booksService (ranking nội bộ UI) */
+                    const score =
+                      (book.salesCount || 0) * 10 + (book.rating || 0) * 100 + (book.reviews || 0) * 2;
+                    const imgRaw = book.images?.[0] || book.image;
+                    const img = fixImagePath(imgRaw);
+                    const isActive = Boolean(
+                      activeRankBook && String(activeRankBook.id) === String(book.id)
+                    );
+                    return (
+                      <div
+                        key={book.id}
+                        className={`ranking-item ranking-preview-row ${isActive ? 'selected' : ''}`}
+                        onMouseEnter={() => setActiveRankBookId(String(book.id))}
+                        onFocus={() => setActiveRankBookId(String(book.id))}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`Hạng ${rank}: ${book.title}`}
+                        aria-pressed={isActive}
+                      >
+                        <div className="ranking-preview-rank">
+                          <div className="ranking-preview-rank-number">{String(rank).padStart(2, '0')}</div>
+                          <div className="ranking-preview-rank-trend">
+                            <i className="fas fa-arrow-up" aria-hidden />
+                          </div>
+                        </div>
+                        <div className="ranking-item-content">
+                          <img
+                            src={img}
+                            alt={book.title}
+                            className="ranking-preview-book-image"
+                            onError={(e) => {
+                              const target = e.currentTarget;
+                              target.onerror = null;
+                              target.src = 'https://placehold.co/240x320?text=No+Image';
+                            }}
+                          />
+                          <div className="ranking-preview-book-info">
+                            <h3 className="ranking-book-title">
+                              <NavLink to={`/books/${book.id}`} onClick={(e) => e.stopPropagation()}>
+                                {book.title}
+                              </NavLink>
+                            </h3>
+                            <p className="ranking-preview-book-author">{book.author}</p>
+                            <div className="ranking-preview-book-score">
+                              <span className="score-value">{score.toLocaleString('vi-VN')}</span> điểm
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Cột phải: nội dung đổi theo activeRankBook; aria-live để SR biết khi đổi sách */}
+              <aside className="ranking-preview-detail-col" aria-live="polite">
+                {activeRankBook && (
+                  <RankingPreviewDetailPanel key={activeRankBook.id} book={activeRankBook as BookWithExtras} />
+                )}
+              </aside>
+            </div>
+          )}
           <div className="view-more-container">
             <NavLink to="/bestseller-ranking" className="view-more-btn">
               Xem thêm
@@ -408,67 +489,7 @@ export default function HomePage() {
 
       <section className="recommendations-section">
         <div className="container">
-          <div className="recommendations-banner">
-            <i className="fas fa-sparkles" />
-            <h2>Gợi ý cho bạn</h2>
-            <i className="fas fa-sparkles" />
-          </div>
-          <div className="recommendations-container">
-            <div className="recommendations-grid books-grid">
-              {recommendations.map((book) => {
-                const price = discountedUnitPrice(book);
-                const imgRaw = book.images?.[0] || book.image;
-                const img = fixImagePath(imgRaw);
-                return (
-                  <div
-                    key={book.id}
-                    className="box-content"
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => navigate(`/books/${book.id}`)}
-                    onKeyDown={(e) => e.key === 'Enter' && navigate(`/books/${book.id}`)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div className="content-image">
-                      <div className="book-image-container">
-                        <img
-                          src={img}
-                          alt={book.title}
-                          className="book-image"
-                          loading="lazy"
-                          onError={(e) => {
-                            const target = e.currentTarget;
-                            target.onerror = null;
-                            target.src = 'https://placehold.co/400x560?text=No+Image';
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="content-info">
-                      <div className="book-info">
-                        <h3 className="book-title">{book.title}</h3>
-                        <div className="book-price-section">
-                          <div className="book-price">
-                            <span className="current-price">{formatPrice(price)}</span>
-                            {book.discount > 0 && <span className="discount-badge">-{book.discount}%</span>}
-                          </div>
-                          {book.originalPrice && book.originalPrice > price && (
-                            <span className="original-price">{formatPrice(book.originalPrice)}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="view-more-container">
-              <NavLink to="/shop" className="view-more-btn">
-                <span>Xem thêm</span>
-                <i className="fas fa-arrow-right" />
-              </NavLink>
-            </div>
-          </div>
+          <RecommendationSection title="Gợi ý cho bạn" books={recommendations} moreHref="/shop" moreLabel="Xem thêm" />
         </div>
       </section>
 

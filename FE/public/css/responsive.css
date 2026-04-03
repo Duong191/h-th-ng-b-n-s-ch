@@ -314,6 +314,7 @@
     .book-detail-container {
         grid-template-columns: 1fr;
         gap: 20px;
+        max-width: 100%;
     }
     
     .book-detail-section {
@@ -322,6 +323,30 @@
     
     .book-detail-container {
         padding: 0 15px;
+    }
+    
+    .product-summary-card,
+    .shipping-card {
+        padding: 16px 16px 18px;
+        border-radius: 12px;
+    }
+    
+    .product-summary-card__meta {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    
+    .shipping-card__voucher-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .shipping-card__address-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .shipping-card__change-btn {
+        align-self: flex-end;
     }
     
     .book-gallery {
@@ -391,6 +416,22 @@
     
     .detail-value {
         font-size: 13px;
+    }
+    
+    .book-detail-specs__row {
+        grid-template-columns: 1fr;
+        row-gap: 4px;
+        column-gap: 0;
+        align-items: stretch;
+        padding: 12px 0;
+    }
+    
+    .book-detail-specs__label {
+        font-size: 13px;
+    }
+    
+    .book-detail-specs__value {
+        font-size: 14px;
     }
     
     .hero {
@@ -674,6 +715,30 @@
         padding: 0.6rem 1rem;
         font-size: 0.9rem;
         min-width: 140px;
+    }
+}
+
+/*
+ * Section “Gợi ý cho bạn” — grid (mọi trang dùng .recommend-block)
+ * Load sau recommendation.css; !important để thắng rule global cũ nếu có.
+ */
+@media (min-width: 992px) {
+    .recommend-block .recommend-section .recommend-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        width: 100% !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .recommend-block .recommend-section .recommend-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .recommend-block .recommend-section .recommend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 }
 

@@ -1,3 +1,13 @@
+/*
+ * BESTSELLER RANKING — Xếp hạng bán chạy
+ *
+ * File này gồm:
+ * - Phần preview trên Home (class .bestseller-ranking-preview): layout 2 cột, hover list trái → panel phải.
+ * - Phần layout trang / block chung (.ranking-content, .ranking-item, …) dùng cho trang full ranking nếu có.
+ *
+ * Lưu ý preview Home: tránh transform translateX trên hàng (gây scrollbar ngang); dùng min-width:0 + overflow-x:hidden trên cột scroll.
+ */
+
 /* BESTSELLER RANKING SECTION */
 
 .bestseller-ranking-section {
@@ -6,7 +16,7 @@
     padding-bottom: var(--spacing-xl);
 }
 
-/* Ranking Preview on Homepage */
+/* --- Trang chủ: khối "Bảng xếp hạng bán chạy tuần" (tabs + card trắng) --- */
 .bestseller-ranking-preview {
     background: #f8f9fa;
     padding: var(--spacing-xl) 0;
@@ -170,6 +180,201 @@
 
 .ranking-preview-book-score .score-value {
     color: #2c3e50;
+}
+
+/*
+ * Home — grid 2 cột: trái = list (overflow-y auto, hidden-x), phải = ảnh + title + mô tả.
+ * React: onMouseEnter trên hàng → đổi state; không đổi rule layout khi đổi sách.
+ */
+.bestseller-ranking-preview .ranking-preview-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+    gap: 0;
+    align-items: stretch;
+    margin-bottom: var(--spacing-lg);
+    min-height: 520px;
+    border: 1px solid #e9ecef;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background: #fff;
+}
+
+.bestseller-ranking-preview .ranking-preview-list-col {
+    border-right: 1px solid #e9ecef;
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: #fff;
+}
+
+.bestseller-ranking-preview .ranking-preview-list-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    max-height: 560px;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.bestseller-ranking-preview .ranking-preview-row.ranking-item {
+    margin: 0;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    transform: none;
+}
+
+/* translateX gây tràn ngang + scrollbar ngang — chỉ đổi nền/viền */
+.bestseller-ranking-preview .ranking-preview-row.ranking-item:hover {
+    transform: none;
+    background: #f9fafb;
+}
+
+.bestseller-ranking-preview .ranking-preview-row.ranking-item.selected {
+    background: #fff8f8;
+    border-color: rgba(231, 76, 60, 0.45);
+    box-shadow: 0 2px 10px rgba(231, 76, 60, 0.08);
+}
+
+.bestseller-ranking-preview .ranking-preview-row .ranking-item-content {
+    min-width: 0;
+    flex: 1;
+    max-width: 100%;
+}
+
+.bestseller-ranking-preview .ranking-preview-row .ranking-preview-book-image {
+    flex-shrink: 0;
+    width: 72px;
+    height: 96px;
+    max-width: 72px;
+    object-fit: cover;
+}
+
+.bestseller-ranking-preview .ranking-preview-row .ranking-preview-book-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.bestseller-ranking-preview .ranking-preview-row.ranking-item:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.bestseller-ranking-preview .ranking-book-title {
+    margin: 0 0 4px;
+}
+
+.bestseller-ranking-preview .ranking-book-title a {
+    color: #c92127;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.bestseller-ranking-preview .ranking-book-title a:hover {
+    color: #a01820;
+    text-decoration: underline;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-col {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: #fafbfc;
+    position: relative;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-simple {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-media {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-cover {
+    display: block;
+    max-width: min(100%, 260px);
+    width: 100%;
+    height: auto;
+    max-height: 340px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-card {
+    animation: rankingPreviewDetailIn 0.28s ease-out;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-heading {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-heading a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-heading a:hover {
+    color: var(--primary-color);
+}
+
+.bestseller-ranking-preview .ranking-preview-detail-desc {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #5c6370;
+    text-align: justify;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+@keyframes rankingPreviewDetailIn {
+    from {
+        opacity: 0.72;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 1024px) {
+    .bestseller-ranking-preview .ranking-preview-layout {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .bestseller-ranking-preview .ranking-preview-list-col {
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+        max-height: none;
+    }
+
+    .bestseller-ranking-preview .ranking-preview-list-inner {
+        max-height: none;
+    }
+
+    .bestseller-ranking-preview .ranking-preview-detail-col {
+        position: static;
+        max-height: none;
+    }
 }
 
 /* Ranking Header */

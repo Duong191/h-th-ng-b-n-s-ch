@@ -110,7 +110,7 @@ export function getBestSellersByCategory(books: BookWithExtras[], categoryId: st
   return list.sort((a, b) => calculateRankingScore(b) - calculateRankingScore(a));
 }
 
-export function getRelatedBooks(books: Book[], bookId: string, limit = 4): Book[] {
+export function getRelatedBooks(books: Book[], bookId: string, limit = 80): Book[] {
   const current = books.find((b) => String(b.id) === String(bookId));
   if (!current) return [];
   const currentCat = (current as any).category || current.categoryId;
