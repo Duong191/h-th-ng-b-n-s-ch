@@ -1,21 +1,39 @@
+/** File này xử lý nghiệp vụ lấy/cập nhật hồ sơ người dùng. */
 import { getDb, sql } from "../config/db";
 import { AppError } from "../utils/appError";
 import { mapDbUserToFeUser } from "../utils/userMapper";
+import { getUserAuthData } from "./rbac.service";
+
+const primaryRoleName = (roles: string[]): string => {
+  if (roles.includes("admin")) return "admin";
+  if (roles.includes("staff")) return "staff";
+  return "user";
+};
 
 export const getMe = async (userId: number) => {
   const pool = await getDb();
   const rs = await pool.request().input("id", sql.BigInt, userId).query(
     `SELECT TOP 1
-      u.id, u.email, u.first_name, u.last_name, u.phone, u.gender, u.birth_date, u.avatar_url, u.is_active, u.created_at, u.updated_at,
-      r.name AS role_name
-     FROM users
-     u
-     LEFT JOIN user_roles ur ON ur.user_id = u.id
-     LEFT JOIN roles r ON r.id = ur.role_id
+      u.id, u.email, u.first_name, u.last_name, u.phone, u.gender, u.birth_date, u.avatar_url, u.is_active, u.created_at, u.updated_at
+     FROM users u
      WHERE u.id=@id AND u.is_deleted=0`
   );
   if (!rs.recordset.length) throw new AppError(404, "User not found");
-  return mapDbUserToFeUser(rs.recordset[0]);
+
+  const auth = await getUserAuthData(userId);
+  const roles = auth?.roles ?? [];
+  const permissions = auth?.permissions ?? [];
+
+  const user = mapDbUserToFeUser({
+    ...rs.recordset[0],
+    role_name: primaryRoleName(roles)
+  } as Parameters<typeof mapDbUserToFeUser>[0]);
+
+  return {
+    ...user,
+    roles,
+    permissions
+  };
 };
 
 export const updateMe = async (

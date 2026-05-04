@@ -1,3 +1,4 @@
+/** File này khai báo route xác thực: register, login, refresh, logout. */
 import { Router } from "express";
 import { z } from "zod";
 import * as controller from "../controllers/auth.controller";

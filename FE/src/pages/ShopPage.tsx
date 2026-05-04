@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { NavLink, useSearchParams } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import BookCard from '../components/ui/BookCard';
-import { filterBooks, searchBooks, sortBooks } from '../services/booksService';
+import { filterBooks, isFeaturedBook, isMarkedNew, searchBooks, sortBooks } from '../services/booksService';
 
 /** Tối đa 4 sách / 1 hàng; 3 hàng / trang → 12 sách mỗi trang */
 const SHOP_COLS = 4;
@@ -50,13 +50,36 @@ export default function ShopPage() {
   const search = params.get('search') || '';
   const selectedPrice = params.get('price') || 'all';
   const selectedRating = params.get('rating') || 'all';
+  const listFilter = params.get('filter') || '';
   const pageParam = Number(params.get('page') || '1');
 
+  const normalizeKey = (value: string): string =>
+    String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, (ch) => (ch === 'đ' ? 'd' : 'D'))
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+  const resolvedCategoryId = useMemo(() => {
+    if (selectedCategory === 'all') return 'all';
+    const byId = categories.find((c) => String(c.id) === String(selectedCategory));
+    if (byId) return String(byId.id);
+    const key = normalizeKey(selectedCategory);
+    const bySlug = categories.find((c) => normalizeKey((c as any).slug || c.name || '') === key);
+    return bySlug ? String(bySlug.id) : selectedCategory;
+  }, [selectedCategory, categories]);
+
   const filtered = useMemo(() => {
-    let list = filterBooks(books, selectedCategory, selectedPrice, selectedRating);
+    let list = filterBooks(books, resolvedCategoryId, selectedPrice, selectedRating);
+    if (listFilter === 'featured') list = list.filter(isFeaturedBook);
+    if (listFilter === 'new') list = list.filter(isMarkedNew);
     if (search) list = searchBooks(list, search);
-    return sortBooks(list, sortBy);
-  }, [books, selectedCategory, selectedPrice, selectedRating, search, sortBy]);
+    const effectiveSort =
+      listFilter === 'new' && sortBy === 'default' ? 'newest' : sortBy;
+    return sortBooks(list, effectiveSort);
+  }, [books, resolvedCategoryId, selectedPrice, selectedRating, listFilter, search, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / BOOKS_PER_PAGE));
   const currentPage = Math.min(Math.max(1, Number.isFinite(pageParam) ? pageParam : 1), totalPages);
@@ -94,6 +117,8 @@ export default function ShopPage() {
   const handleCategoryChange = (catId: string) => {
     const newParams = new URLSearchParams(params);
     newParams.delete('page');
+    /** Đổi danh mục = duyệt theo kệ; giữ `search` làm “Tất cả”/danh mục vẫn chỉ vài kết quả vì từ khóa cũ trong URL. */
+    newParams.delete('search');
     if (catId === 'all') {
       newParams.delete('category');
     } else {
@@ -148,10 +173,10 @@ export default function ShopPage() {
           <NavLink to="/">Trang chủ</NavLink>
           <span>/</span>
           <span>Cửa hàng</span>
-          {selectedCategory !== 'all' && categories.find(c => c.id === selectedCategory) && (
+          {resolvedCategoryId !== 'all' && categories.find(c => String(c.id) === resolvedCategoryId) && (
             <>
               <span>/</span>
-              <span>{categories.find(c => c.id === selectedCategory)?.name}</span>
+              <span>{categories.find(c => String(c.id) === resolvedCategoryId)?.name}</span>
             </>
           )}
         </div>
@@ -181,9 +206,9 @@ export default function ShopPage() {
                       <input
                         type="radio"
                         name="category"
-                        value={cat.id}
-                        checked={selectedCategory === cat.id}
-                        onChange={() => handleCategoryChange(cat.id)}
+                        value={String(cat.id)}
+                        checked={resolvedCategoryId === String(cat.id)}
+                        onChange={() => handleCategoryChange(String(cat.id))}
                       />
                       <span>{cat.name}</span>
                     </label>

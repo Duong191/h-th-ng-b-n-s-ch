@@ -1,3 +1,4 @@
+/** File này tải role và permission của user từ cơ sở dữ liệu. */
 import { getDb, sql } from "../config/db";
 
 export const getUserAuthData = async (userId: number) => {

@@ -1,3 +1,4 @@
+/** File này xử lý API giỏ hàng cho user đăng nhập và khách vãng lai. */
 import { Request, Response } from "express";
 import * as cartService from "../services/cart.service";
 import { AppError } from "../utils/appError";

@@ -1,3 +1,4 @@
+/** File này xử lý nghiệp vụ đơn hàng cho user và quản trị. */
 import { getDb, sql } from "../config/db";
 import { AppError } from "../utils/appError";
 import { parsePagination } from "../utils/pagination";

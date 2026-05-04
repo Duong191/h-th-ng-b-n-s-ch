@@ -1,3 +1,4 @@
+/** File này remap ảnh từ seed JSON sang bản ghi sách hiện có trong DB. */
 import fs from "fs";
 import path from "path";
 import { getDb, sql } from "../config/db";

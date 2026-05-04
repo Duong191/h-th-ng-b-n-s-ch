@@ -1,3 +1,4 @@
+/** File này xử lý request đăng ký, đăng nhập, refresh và đăng xuất. */
 import { Request, Response } from "express";
 import * as authService from "../services/auth.service";
 

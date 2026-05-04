@@ -1,4 +1,4 @@
-﻿/*
+/*
 ================================================================================
   BOOKSTORE DATABASE - ALL-IN-ONE INSTALLATION SCRIPT
   
@@ -62,9 +62,7 @@ BEGIN
     PRINT '  ! Database already exists: bookstore_db';
 END
 GO
-
-USE bookstore_db;
-GO
+ 
 
 -- ============================================================================
 -- STEP 2: CREATE TABLES
@@ -1020,13 +1018,13 @@ AND NOT EXISTS (SELECT 1 FROM role_permissions WHERE role_id = @user_role_id AND
 PRINT '  ✓ role permissions assigned';
 GO
 
--- Seed Users
+-- Seed Users — mat khau dev mac dinh: 1 (bcrypt 10 rounds, dong bo BCRYPT_HASH_DEV_PASSWORD_1 trong BE)
 SET IDENTITY_INSERT users ON;
 MERGE INTO users AS target
 USING (VALUES
-    (1, 'admin@bookstore.com', '$2b$10$demo_hash_admin123', 'Admin', 'User', '0123456789', N'Nam', '1990-01-01', NULL, 1, 0),
-    (2, 'staff@bookstore.com', '$2b$10$demo_hash_staff123', 'Staff', 'Member', '0987654321', N'Nữ', '1995-05-15', NULL, 1, 0),
-    (3, 'user@example.com', '$2b$10$demo_hash_user123', 'John', 'Doe', '0909123456', N'Nam', '1992-08-20', NULL, 1, 0)
+    (1, 'admin@bookstore.com', '$2b$10$Qm1PTtEa2.EPCScWdPPxouw2Jc5xT2l1VCin3BeqmYwl/p2dZctj2', N'Admin', N'System', '0123456789', N'Nam', '1990-01-01', NULL, 1, 0),
+    (2, 'staff@bookstore.com', '$2b$10$Qm1PTtEa2.EPCScWdPPxouw2Jc5xT2l1VCin3BeqmYwl/p2dZctj2', N'Staff', N'Demo', '0987654321', N'Nữ', '1995-05-15', NULL, 1, 0),
+    (3, 'user@example.com', '$2b$10$Qm1PTtEa2.EPCScWdPPxouw2Jc5xT2l1VCin3BeqmYwl/p2dZctj2', N'John', N'Doe', '0909123456', N'Nam', '1992-08-20', NULL, 1, 0)
 ) AS source (id, email, password_hash, first_name, last_name, phone, gender, birth_date, avatar_url, is_active, is_deleted)
 ON target.id = source.id
 WHEN NOT MATCHED THEN
@@ -1078,11 +1076,11 @@ USING (VALUES
     (1, '978-604-2-25888-8', N'Nhà Giả Kim', N'Paulo Coelho', N'NXB Hội Nhà Văn', '2020-01-15', 1, N'Tác phẩm nổi tiếng', 227, N'Tiếng Việt', 79000, 55000, 15, 150, 1, 1, 0, 0, 4.8, 1250, 609, 3420, 1, 0),
     (2, '978-604-2-14725-7', N'Đắc Nhân Tâm', N'Dale Carnegie', N'NXB Tổng Hợp', '2019-05-20', 7, N'Nghệ thuật giao tiếp', 320, N'Tiếng Việt', 89000, 62000, 20, 200, 1, 1, 1, 0, 4.9, 2100, 1500, 5680, 1, 0),
     (3, '978-604-2-06654-3', N'Nguyên Lý Marketing', N'Philip Kotler', N'NXB Lao Động', '2021-03-10', 2, N'Giáo trình Marketing', 850, N'Tiếng Việt', 299000, 210000, 10, 80, 0, 0, 0, 0, 4.6, 340, 156, 890, 1, 0),
-    (4, '978-0-13-468599-1', N'Clean Code', N'Robert C. Martin', N'Prentice Hall', '2008-08-01', 8, N'Agile Software Craftsmanship', 464, N'English', 450000, 320000, 5, 45, 1, 0, 1, 0, 4.7, 523, 234, 1234, 1, 0),
-    (5, '978-604-2-17892-3', N'IELTS Academic 16', N'Cambridge', N'Cambridge Press', '2022-06-15', 6, N'Đề thi IELTS', 156, N'English', 250000, 180000, 10, 120, 0, 1, 0, 1, 4.5, 890, 567, 2340, 1, 0),
+    (4, '978-0-13-468599-1', N'Lập Trình Sạch (Clean Code)', N'Robert C. Martin', N'Prentice Hall', '2008-08-01', 8, N'Agile Software Craftsmanship', 464, N'English', 450000, 320000, 5, 45, 1, 0, 1, 0, 4.7, 523, 234, 1234, 1, 0),
+    (5, '978-604-2-17892-3', N'Cambridge IELTS 16 Academic', N'Cambridge', N'Cambridge Press', '2022-06-15', 6, N'Đề thi IELTS', 156, N'English', 250000, 180000, 10, 120, 0, 1, 0, 1, 4.5, 890, 567, 2340, 1, 0),
     (6, '978-604-2-19876-1', N'Doraemon Tập 1', N'Fujiko F. Fujio', N'NXB Kim Đồng', '2018-01-01', 5, N'Truyện Doraemon', 196, N'Tiếng Việt', 25000, 18000, 0, 300, 0, 1, 0, 0, 4.8, 756, 890, 4560, 1, 0),
     (7, '978-604-2-08765-4', N'Lược Sử Thời Gian', N'Stephen Hawking', N'NXB Trẻ', '2020-09-10', 3, N'Vũ trụ học', 256, N'Tiếng Việt', 129000, 90000, 12, 65, 1, 0, 0, 0, 4.7, 432, 178, 1890, 1, 0),
-    (8, '978-604-2-11234-5', N'Sapiens', N'Yuval Noah Harari', N'NXB Trẻ', '2021-02-28', 4, N'Lịch sử loài người', 543, N'Tiếng Việt', 189000, 132000, 15, 95, 1, 1, 1, 0, 4.9, 1876, 892, 6234, 1, 0),
+    (8, '978-604-2-11234-5', N'Sapiens: Lược Sử Loài Người', N'Yuval Noah Harari', N'NXB Trẻ', '2021-02-28', 4, N'Lịch sử loài người', 543, N'Tiếng Việt', 189000, 132000, 15, 95, 1, 1, 1, 0, 4.9, 1876, 892, 6234, 1, 0),
     (9, '978-604-2-15678-9', N'Tư Duy Nhanh Và Chậm', N'Daniel Kahneman', N'NXB Thế Giới', '2020-11-20', 7, N'Hai hệ tư duy', 512, N'Tiếng Việt', 169000, 118000, 10, 110, 0, 1, 0, 0, 4.6, 654, 423, 2345, 1, 0),
     (10, '978-604-2-19999-8', N'Conan Tập 50', N'Aoyama Gosho', N'NXB Kim Đồng', '2019-08-15', 5, N'Thám tử Conan', 180, N'Tiếng Việt', 23000, 16000, 0, 250, 0, 0, 0, 0, 4.7, 432, 678, 3456, 1, 0)
 ) AS source (id, isbn, title, author, publisher, publish_date, category_id, description, pages, language, price, import_price, discount, stock, featured, bestseller, trending, is_new, rating, review_count, sold_count, view_count, is_active, is_deleted)
@@ -1097,11 +1095,11 @@ GO
 -- Seed Book Images
 INSERT INTO book_images (book_id, image_url, is_primary, display_order, created_at)
 SELECT book_id, image_url, is_primary, display_order, GETUTCDATE() FROM (VALUES
-    (1, '/images/books/nha-gia-kim.jpg', 1, 1), (2, '/images/books/dac-nhan-tam.jpg', 1, 1),
-    (3, '/images/books/nguyen-ly-marketing.jpg', 1, 1), (4, '/images/books/clean-code.jpg', 1, 1),
-    (5, '/images/books/ielts-16.jpg', 1, 1), (6, '/images/books/doraemon-1.jpg', 1, 1),
-    (7, '/images/books/luoc-su-thoi-gian.jpg', 1, 1), (8, '/images/books/sapiens.jpg', 1, 1),
-    (9, '/images/books/tu-duy-nhanh-cham.jpg', 1, 1), (10, '/images/books/conan-50.jpg', 1, 1)
+    (1, '/img/nhagiakim.jpg', 1, 1), (2, '/img/dac-nhan-tam.jpg', 1, 1),
+    (3, '/img/nguyen-ly-marketing.jpg', 1, 1), (4, '/img/clean-code.jpg', 1, 1),
+    (5, '/img/ielts-16.jpg', 1, 1), (6, '/img/doraemon-1.jpg', 1, 1),
+    (7, '/img/luoc-su-thoi-gian.jpg', 1, 1), (8, '/img/sapiens.jpg', 1, 1),
+    (9, '/img/tu-duy-nhanh-cham.jpg', 1, 1), (10, '/img/conan-50.jpg', 1, 1)
 ) AS img(book_id, image_url, is_primary, display_order)
 WHERE NOT EXISTS (SELECT 1 FROM book_images WHERE book_images.book_id = img.book_id);
 PRINT '  ✓ book images';
@@ -1157,10 +1155,10 @@ PRINT '  ✓ Categories: 8';
 PRINT '  ✓ Books: 10';
 PRINT '  ✓ Suppliers: 3';
 PRINT '';
-PRINT 'Test Accounts:';
-PRINT '  - admin@bookstore.com / admin123 (Role: admin)';
-PRINT '  - staff@bookstore.com / staff123 (Role: staff)';
-PRINT '  - user@example.com / user123 (Role: user)';
+PRINT 'Test accounts (dev, password = 1 for all seeded users):';
+PRINT '  - admin@bookstore.com (admin)';
+PRINT '  - staff@bookstore.com (staff)';
+PRINT '  - user@example.com (user)';
 PRINT '';
 PRINT 'Next Steps:';
 PRINT '  1. Verify: SELECT * FROM users;';

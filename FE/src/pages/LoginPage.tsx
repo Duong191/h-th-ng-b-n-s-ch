@@ -117,12 +117,15 @@ export default function LoginPage() {
                     </div>
                   </form>
                   <div className="demo-accounts">
-                    <h3>Tài khoản demo</h3>
+                    <h3>Tài khoản demo (mật khẩu: 1)</h3>
                     <div className="demo-account">
-                      <strong>Admin:</strong> admin@bookstore.com / admin123
+                      <strong>Admin:</strong> admin@bookstore.com
                     </div>
                     <div className="demo-account">
-                      <strong>User:</strong> user@example.com / user123
+                      <strong>Staff:</strong> staff@bookstore.com
+                    </div>
+                    <div className="demo-account">
+                      <strong>User:</strong> user@example.com
                     </div>
                   </div>
                 </div>

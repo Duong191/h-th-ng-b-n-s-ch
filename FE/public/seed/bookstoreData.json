@@ -2,11 +2,11 @@
   "users": [
     {
       "id": "1",
-      "name": "Admin User",
+      "name": "Admin System",
       "firstName": "Admin",
-      "lastName": "User",
+      "lastName": "System",
       "email": "admin@bookstore.com",
-      "password": "admin123",
+      "password": "1",
       "phone": "0123456789",
       "gender": "Nam",
       "birthday": {
@@ -28,11 +28,37 @@
     },
     {
       "id": "2",
+      "name": "Staff Demo",
+      "firstName": "Staff",
+      "lastName": "Demo",
+      "email": "staff@bookstore.com",
+      "password": "1",
+      "phone": "0987654321",
+      "gender": "Nữ",
+      "birthday": {
+        "day": "15",
+        "month": "05",
+        "year": "1995"
+      },
+      "role": "staff",
+      "address": {
+        "street": "456 Staff Street",
+        "city": "Hà Nội",
+        "state": "Hà Nội",
+        "zipCode": "100000",
+        "country": "Vietnam"
+      },
+      "avatar": "",
+      "isActive": true,
+      "createdAt": "2024-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "3",
       "name": "John Doe",
       "firstName": "John",
       "lastName": "Doe",
       "email": "user@example.com",
-      "password": "user123",
+      "password": "1",
       "phone": "0987654321",
       "gender": "Nam",
       "birthday": {
@@ -441,7 +467,7 @@
     },
     {
       "id": "5",
-      "title": "Clean Code",
+      "title": "Lập Trình Sạch (Clean Code)",
       "author": "Robert C. Martin",
       "publisher": "AlphaBooks",
       "isbn": "978-604-2-12349-4",
@@ -451,8 +477,8 @@
       "discount": 20,
       "category": "8",
       "images": [
-        "img/muado.jpg",
-        "img/muado.jpg"
+        "img/clean-code.jpg",
+        "img/clean-code.jpg"
       ],
       "stock": 20,
       "pages": 464,
@@ -485,8 +511,8 @@
       "discount": 20,
       "category": "4",
       "images": [
-        "img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg",
-        "img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg"
+        "img/sapiens.jpg",
+        "img/sapiens.jpg"
       ],
       "stock": 45,
       "pages": 512,

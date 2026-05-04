@@ -1,3 +1,4 @@
+/** File này khai báo route giỏ hàng, hỗ trợ cả guest và user login. */
 import { Router } from "express";
 import { z } from "zod";
 import * as controller from "../controllers/cart.controller";

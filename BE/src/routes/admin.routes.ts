@@ -1,3 +1,4 @@
+/** File này khai báo route admin cho quản lý sách và tồn kho. */
 import { Router } from "express";
 import { z } from "zod";
 import * as bookController from "../controllers/book.controller";

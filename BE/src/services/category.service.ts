@@ -1,3 +1,4 @@
+/** File này xử lý nghiệp vụ lấy danh mục và dữ liệu danh mục mở rộng. */
 import { getDb } from "../config/db";
 
 export const listCategories = async () => {

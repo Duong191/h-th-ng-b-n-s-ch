@@ -1,3 +1,4 @@
+/** File này xử lý API đơn hàng: tạo, xem danh sách và cập nhật trạng thái. */
 import { Request, Response } from "express";
 import * as orderService from "../services/order.service";
 import { AppError } from "../utils/appError";

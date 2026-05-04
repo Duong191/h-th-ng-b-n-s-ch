@@ -1,0 +1,3454 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Văn học",
+      "slug": "van-hoc",
+      "icon": "fas fa-book-open"
+    },
+    {
+      "id": "2",
+      "name": "Kinh tế",
+      "slug": "kinh-te",
+      "icon": "fas fa-chart-line"
+    },
+    {
+      "id": "3",
+      "name": "Khoa học",
+      "slug": "khoa-hoc",
+      "icon": "fas fa-flask"
+    },
+    {
+      "id": "4",
+      "name": "Lịch sử",
+      "slug": "lich-su",
+      "icon": "fas fa-landmark"
+    },
+    {
+      "id": "5",
+      "name": "Thiếu nhi",
+      "slug": "thieu-nhi",
+      "icon": "fas fa-child"
+    },
+    {
+      "id": "6",
+      "name": "Ngoại ngữ",
+      "slug": "ngoai-ngu",
+      "icon": "fas fa-language"
+    },
+    {
+      "id": "7",
+      "name": "Tâm lý học",
+      "slug": "tam-ly-hoc",
+      "icon": "fas fa-brain"
+    },
+    {
+      "id": "8",
+      "name": "Công nghệ",
+      "slug": "cong-nghe",
+      "icon": "fas fa-laptop"
+    }
+  ],
+  "books": [
+    {
+      "title": "Mưa Đỏ",
+      "author": "Chu Lai",
+      "category": "Văn học",
+      "isbn": "978-604-2-12345-6",
+      "description": "Những miền cảm xúc đan xen giữa nụ cười - nước mắt, nỗi đau - niềm vui, sự sống - cái chết, những thăng hoa - mất mát, sự hy sinh của những người cha, người chồng, người con, những người lính, những đồng chí, đồng đội đã không tiếc máu xương trong cuộc chiến đấu 81 ngày đêm bảo vệ thành Cổ Quảng Trị, bảo vệ Tổ quốc với những gian khổ, thiểu thốn lẫn những mất mát đau thương. Đó là một tiểu đội có 7 người lính với 7 tính cách, số phận, suy nghĩ và xuất thân khác nhau. Có người lãng tử, có người bộc trực, có anh lính nhút nhát, có anh lính gan dạ nhưng hơn tất cả họ là một gia đình, luôn có nhau dù đang giữa ranh giới mong manh sự sống và cái chết cận kề..",
+      "price": 184500,
+      "stock": 50,
+      "tags": [
+        "văn học",
+        "chiến tranh",
+        "lịch sử"
+      ],
+      "images": [
+        "img/muado.jpg"
+      ],
+      "publisher": "Nhà xuất bản Văn học",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 5,
+      "reviewsCount": 1250,
+      "salesCount": 609,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/muado.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Hồ Điệp Và Kình Ngư",
+      "author": "Nguyễn Nhật Ánh",
+      "category": "Văn học",
+      "isbn": "978-604-2-12346-3",
+      "description": "Cuốn tiểu thuyết về tình bạn và những cuộc phiêu lưu kỳ diệu của những người bạn trẻ.",
+      "price": 111600,
+      "stock": 30,
+      "tags": [
+        "văn học",
+        "thiếu nhi",
+        "phiêu lưu"
+      ],
+      "images": [
+        "img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg"
+      ],
+      "publisher": "Nhà xuất bản Trẻ",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.5,
+      "reviewsCount": 890,
+      "salesCount": 181,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Vạn Xuân",
+      "author": "Yveline Féray",
+      "category": "Văn học",
+      "isbn": "978-604-2-12347-0",
+      "description": "Vạn Xuân - Tập 1: Được sáng tác trong suốt 7 năm (1982-1988), Vạn Xuân của Yveline Féray không chỉ là một tiểu thuyết mà còn là một hành trình dài, đầy đủ chi tiết và sâu lắng về cuộc đời và sự nghiệp của Nguyễn Trãi - “một đại thi hào, một nhà văn cừ khôi, vừa là một chiến lược gia có tầm mắt viễn thấu, một nhà ngoại giao tài tình, một nhạc sĩ lịch lãm, một nhà địa lý thông thái và là một nhà sư phạm tuyệt vời”.Vượt lên khuôn khổ của một cuốn tiểu thuyết lịch sử thông thường - với độ dày gần 1200 trang - tác phẩm đồ sộ này gồm hai quyển, chia thành 9 tập nhỏ và được xem là một thiên sử thi bằng văn chương, không chỉ “phục hiện được cuộc đời và sự nghiệp của Nguyễn Trãi” mà còn có bức tranh toàn cảnh của Đại Việt thế kỷ XV - một giai đoạn huy hoàng nhưng cũng đầy bi tráng trong lịch sử dân tộc. Đó là bức tranh vô cùng chân thực và sâu sắc về những ngày tháng cuối thời Trần đang độ suy tàn; những dự định dựng xây triều mới của tướng quân Lê Quý Ly; những cuộc bình định phương Nam; sự gắn bó mật thiết giữa Nguyễn Trãi - Lê Lợi trong cuộc khởi nghĩa Lam Sơn và chiến thắng của quân dân Đại Việt trước quân Minh; những ngày hoảng loạn của Vương Thông cùng bè lũ xâm lược; rồi những xung đột lợi ích và âm mưu của bọn gian thần trong triều đình nhà Lê sau chiến thắng; nỗi đau đáu của Nguyễn Trãi về vận nước trong những tháng ngày ông ẩn cư ở Côn Sơn và đặc biệt là tấn bi kịch vườn Lệ Chi đầy oan khiên khiến gia đình Nguyễn Trãi bị kết án tru di tam tộc…Điều ấn tượng nhất của tác phẩm này chính là sự thấu hiểu sâu sắc mà tác giả người Pháp dành cho nhân vật, bà không chỉ tái hiện một cách trung thực bối cảnh lịch sử phức tạp của thời đại, mà còn lột tả được chiều sâu tâm lý của Nguyễn Trãi, từ những thành tựu rực rỡ đến những bi kịch nghiệt ngã.",
+      "price": 180000,
+      "stock": 25,
+      "tags": [
+        "văn học",
+        "lịch sử",
+        "phong kiến"
+      ],
+      "images": [
+        "img/van_xuan.jpg"
+      ],
+      "publisher": "Nhà xuất bản Văn học",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 650,
+      "salesCount": 320,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/van_xuan.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Nhà Giả Kim",
+      "author": "Paulo Coelho",
+      "category": "Văn học",
+      "isbn": "978-604-2-12348-7",
+      "description": "Cuốn tiểu thuyết nổi tiếng về hành trình tìm kiếm ý nghĩa cuộc sống.",
+      "price": 67000,
+      "stock": 40,
+      "tags": [
+        "văn học",
+        "triết học",
+        "cảm hứng"
+      ],
+      "images": [
+        "img/nhagiakim.jpg"
+      ],
+      "publisher": "Nhà xuất bản Hội nhà văn",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.8,
+      "reviewsCount": 2100,
+      "salesCount": 1500,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/nhagiakim.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Lập Trình Sạch (Clean Code)",
+      "author": "Robert C. Martin",
+      "category": "Công nghệ",
+      "isbn": "978-604-2-12349-4",
+      "description": "Cuốn sách hướng dẫn cách viết code sạch, dễ đọc và dễ bảo trì.",
+      "price": 280000,
+      "stock": 20,
+      "tags": [
+        "lập trình",
+        "công nghệ",
+        "phần mềm"
+      ],
+      "images": [],
+      "publisher": "AlphaBooks",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 950,
+      "salesCount": 1200,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Sapiens: Lược Sử Loài Người",
+      "author": "Yuval Noah Harari",
+      "category": "Lịch sử",
+      "isbn": "978-604-2-12351-7",
+      "description": "Cuốn sách về lịch sử loài người từ thời kỳ đồ đá đến nền văn minh hiện đại.",
+      "price": 168000,
+      "stock": 45,
+      "tags": [
+        "lịch sử",
+        "khoa học",
+        "nhân loại học"
+      ],
+      "images": [],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 3200,
+      "salesCount": 2800,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "4 Nguyên Tắc Thực Thi",
+      "author": "Chris McChesney, Sean Covey, Jim Huling",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12352-4",
+      "description": "Cuốn sách về cách thực hiện chiến lược và đạt được mục tiêu trong kinh doanh.",
+      "price": 195000,
+      "stock": 35,
+      "tags": [
+        "kinh doanh",
+        "quản trị",
+        "chiến lược"
+      ],
+      "images": [
+        "img/4nguyentacthucthi.jpg"
+      ],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.6,
+      "reviewsCount": 1200,
+      "salesCount": 890,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/4nguyentacthucthi.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Bí Mật Tư Duy",
+      "author": "Carol S. Dweck",
+      "category": "Tâm lý học",
+      "isbn": "978-604-2-12353-1",
+      "description": "Cuốn sách về mindset và cách phát triển tư duy tích cực để thành công.",
+      "price": 145000,
+      "stock": 28,
+      "tags": [
+        "tâm lý",
+        "phát triển bản thân",
+        "tư duy"
+      ],
+      "images": [
+        "img/bimattuduy.jpg"
+      ],
+      "publisher": "AlphaBooks",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 980,
+      "salesCount": 650,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/bimattuduy.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Nghệ Thuật Đàm Phán",
+      "author": "Roger Fisher, William Ury",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12354-8",
+      "description": "Cuốn sách về kỹ năng đàm phán và thương lượng trong kinh doanh.",
+      "price": 175000,
+      "stock": 42,
+      "tags": [
+        "kinh doanh",
+        "đàm phán",
+        "thương lượng"
+      ],
+      "images": [
+        "img/nghethuatdamphan.jpg"
+      ],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 1500,
+      "salesCount": 1100,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/nghethuatdamphan.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Nhà Lãnh Đạo Không Chức Danh",
+      "author": "Robin Sharma",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12355-5",
+      "description": "Cuốn sách về cách trở thành nhà lãnh đạo hiệu quả mà không cần chức danh.",
+      "price": 165000,
+      "stock": 38,
+      "tags": [
+        "lãnh đạo",
+        "quản trị",
+        "phát triển"
+      ],
+      "images": [
+        "img/Nhalanhdaokhongchucdanh.jpg"
+      ],
+      "publisher": "AlphaBooks",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.5,
+      "reviewsCount": 1100,
+      "salesCount": 750,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/Nhalanhdaokhongchucdanh.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Quản Lý Nghiệp",
+      "author": "Peter Drucker",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12356-2",
+      "description": "Cuốn sách kinh điển về quản lý và lãnh đạo trong tổ chức.",
+      "price": 225000,
+      "stock": 25,
+      "tags": [
+        "quản trị",
+        "lãnh đạo",
+        "kinh doanh"
+      ],
+      "images": [
+        "img/quanlynghiep.jpg"
+      ],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.8,
+      "reviewsCount": 1800,
+      "salesCount": 1200,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/quanlynghiep.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Vị Giám Đốc 1 Phút",
+      "author": "Ken Blanchard, Spencer Johnson",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12357-9",
+      "description": "Cuốn sách về cách quản lý hiệu quả trong thời gian ngắn.",
+      "price": 135000,
+      "stock": 33,
+      "tags": [
+        "quản trị",
+        "hiệu quả",
+        "thời gian"
+      ],
+      "images": [
+        "img/vigiamdoc1phut.jpg"
+      ],
+      "publisher": "AlphaBooks",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 850,
+      "salesCount": 580,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/vigiamdoc1phut.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "MBA",
+      "author": "Peter Navarro",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12358-6",
+      "description": "Cuốn sách tổng hợp kiến thức MBA cần thiết cho nhà quản lý.",
+      "price": 285000,
+      "stock": 20,
+      "tags": [
+        "MBA",
+        "quản trị",
+        "kinh doanh"
+      ],
+      "images": [
+        "img/MBA.jpg"
+      ],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 1200,
+      "salesCount": 900,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/MBA.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Một Đời Quản Trị",
+      "author": "Jack Welch",
+      "category": "Kinh tế",
+      "isbn": "978-604-2-12359-3",
+      "description": "Cuốn sách về kinh nghiệm quản trị của cựu CEO General Electric.",
+      "price": 195000,
+      "stock": 30,
+      "tags": [
+        "quản trị",
+        "lãnh đạo",
+        "kinh nghiệm"
+      ],
+      "images": [
+        "img/motdoiquantri.jpg"
+      ],
+      "publisher": "AlphaBooks",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.6,
+      "reviewsCount": 1400,
+      "salesCount": 950,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/motdoiquantri.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Ứng Dụng AI Vào Doanh Nghiệp",
+      "author": "Thomas Davenport",
+      "category": "Công nghệ",
+      "isbn": "978-604-2-12360-0",
+      "description": "Cuốn sách về cách ứng dụng trí tuệ nhân tạo trong kinh doanh.",
+      "price": 245000,
+      "stock": 22,
+      "tags": [
+        "AI",
+        "công nghệ",
+        "kinh doanh"
+      ],
+      "images": [
+        "img/_ng-d_ng-ai-v_o-doanh-nghi_p_9.jpg"
+      ],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.5,
+      "reviewsCount": 650,
+      "salesCount": 420,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/_ng-d_ng-ai-v_o-doanh-nghi_p_9.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Vị Tu Sĩ",
+      "author": "Robin Sharma",
+      "category": "Tâm lý học",
+      "isbn": "978-604-2-12361-7",
+      "description": "Cuốn sách về triết lý sống và cách tìm kiếm hạnh phúc.",
+      "price": 155000,
+      "stock": 35,
+      "tags": [
+        "triết lý",
+        "hạnh phúc",
+        "phát triển"
+      ],
+      "images": [
+        "img/vitusi.jpg"
+      ],
+      "publisher": "AlphaBooks",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 1100,
+      "salesCount": 720,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/vitusi.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Combo Sách Tri Thức",
+      "author": "Nhiều tác giả",
+      "category": "Công nghệ",
+      "isbn": "978-604-2-12362-4",
+      "description": "Bộ sách tổng hợp kiến thức từ nhiều lĩnh vực khác nhau.",
+      "price": 450000,
+      "stock": 15,
+      "tags": [
+        "combo",
+        "tri thức",
+        "tổng hợp"
+      ],
+      "images": [
+        "img/combosachtrithuc.jpg"
+      ],
+      "publisher": "Nhà xuất bản Thế giới",
+      "language": "Tiếng Việt",
+      "format": "Hardcover",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.8,
+      "reviewsCount": 800,
+      "salesCount": 350,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/combosachtrithuc.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 16",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12363-1",
+      "description": "Tập 16 của bộ truyện tranh nổi tiếng Chú Thuật Hồi Chiến. Tiếp tục cuộc phiêu lưu đầy kịch tính với những trận chiến mãnh liệt và những khám phá mới về thế giới chú thuật.",
+      "price": 35000,
+      "stock": 50,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-16.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.9,
+      "reviewsCount": 1250,
+      "salesCount": 890,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-16.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_bia_tap-16.jpg",
+            "score": 0.714,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-17.jpg",
+            "score": 0.51,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 17",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12364-8",
+      "description": "Tập 17 của bộ truyện tranh Chú Thuật Hồi Chiến. Những bí mật về thế giới chú thuật dần được hé lộ, cùng những nhân vật mới và những trận chiến đầy căng thẳng.",
+      "price": 35000,
+      "stock": 45,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-17.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 1100,
+      "salesCount": 750,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-17.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_bia_tap-17.jpg",
+            "score": 0.714,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-16.jpg",
+            "score": 0.51,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 20",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12365-5",
+      "description": "Tập 20 của bộ truyện tranh Chú Thuật Hồi Chiến. Cốt truyện ngày càng phức tạp với những tình tiết bất ngờ và những nhân vật đầy sức hút.",
+      "price": 35000,
+      "stock": 40,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-20.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 1350,
+      "salesCount": 1200,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-20.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_bia_tap-20.jpg",
+            "score": 0.714,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-21.jpg",
+            "score": 0.51,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 21",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12366-2",
+      "description": "Tập 21 của bộ truyện tranh Chú Thuật Hồi Chiến. Những trận chiến đỉnh cao và những khoảnh khắc cảm động trong hành trình của các nhân vật.",
+      "price": 35000,
+      "stock": 38,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-21.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 980,
+      "salesCount": 680,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-21.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_bia_tap-21.jpg",
+            "score": 0.714,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-20.jpg",
+            "score": 0.51,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 22",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12367-9",
+      "description": "Tập 22 của bộ truyện tranh Chú Thuật Hồi Chiến. Những bí mật về quá khứ và tương lai dần được tiết lộ, tạo nên những tình tiết hấp dẫn.",
+      "price": 35000,
+      "stock": 42,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_mockup_tap-22.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 1050,
+      "salesCount": 820,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_mockup_tap-22.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_mockup_tap-22.jpg",
+            "score": 0.671,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-20.jpg",
+            "score": 0.51,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 25 (Bản Thường)",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12368-6",
+      "description": "Tập 25 của bộ truyện tranh Chú Thuật Hồi Chiến. Những sự kiện quan trọng diễn ra, đánh dấu bước ngoặt lớn trong cốt truyện.",
+      "price": 35000,
+      "stock": 35,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 1450,
+      "salesCount": 1100,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc.jpg",
+            "score": 0.66,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc-copy-0.jpg",
+            "score": 0.624,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 25 (Bản Đặc Biệt)",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12369-3",
+      "description": "Tập 25 bản đặc biệt của bộ truyện tranh Chú Thuật Hồi Chiến. Bao gồm các trang minh họa đặc biệt và nội dung độc quyền.",
+      "price": 45000,
+      "stock": 25,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc-copy-0.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Hardcover",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 5,
+      "reviewsCount": 890,
+      "salesCount": 650,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc-copy-0.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc.jpg",
+            "score": 0.68,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc.jpg",
+            "score": 0.68,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Chú Thuật Hồi Chiến - Tập 26",
+      "author": "Gege Akutami",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12370-0",
+      "description": "Tập 26 mới nhất của bộ truyện tranh Chú Thuật Hồi Chiến. Tiếp tục hành trình đầy thử thách với những tình tiết mới và những nhân vật đáng nhớ.",
+      "price": 35000,
+      "stock": 48,
+      "tags": [
+        "manga",
+        "comic",
+        "truyện tranh",
+        "chu-thuat-hoi-chien"
+      ],
+      "images": [
+        "img/chu-thuat-hoi-chien_ban-thuong_tap-26_bia_obi_card-pvc.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.9,
+      "reviewsCount": 1600,
+      "salesCount": 1350,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_tap-26_bia_obi_card-pvc.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/manga-comic/chu-thuat-hoi-chien_ban-thuong_tap-26_bia_obi_card-pvc.jpg",
+            "score": 0.561,
+            "strategy": "fuzzy"
+          },
+          {
+            "image": "img/chu-thuat-hoi-chien_ban-thuong_bia_tap-16.jpg",
+            "score": 0.51,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Hồ Điệp Và Kình Ngư",
+      "author": "Nguyễn Nhật Ánh",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12371-7",
+      "description": "Câu chuyện cảm động về tình bạn và những kỷ niệm tuổi thơ đẹp đẽ. Một tác phẩm dành cho thiếu nhi với những bài học ý nghĩa về cuộc sống.",
+      "price": 85000,
+      "stock": 60,
+      "tags": [
+        "truyện thiếu nhi",
+        "văn học",
+        "tuổi thơ"
+      ],
+      "images": [
+        "img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 890,
+      "salesCount": 520,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Truyện Cổ Tích Việt Nam",
+      "author": "Nhiều tác giả",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12372-4",
+      "description": "Tuyển tập những câu chuyện cổ tích quen thuộc của Việt Nam, được minh họa đẹp mắt, phù hợp cho các em nhỏ.",
+      "price": 95000,
+      "stock": 45,
+      "tags": [
+        "truyện thiếu nhi",
+        "cổ tích",
+        "văn học dân gian"
+      ],
+      "images": [
+        "img/image_186943.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Hardcover",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 650,
+      "salesCount": 380,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/image_186943.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Dế Mèn Phiêu Lưu Ký",
+      "author": "Tô Hoài",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12373-1",
+      "description": "Tác phẩm kinh điển của nhà văn Tô Hoài kể về cuộc phiêu lưu của chú Dế Mèn. Một câu chuyện đầy ý nghĩa về tình bạn và lòng dũng cảm.",
+      "price": 75000,
+      "stock": 55,
+      "tags": [
+        "truyện thiếu nhi",
+        "văn học",
+        "kinh điển"
+      ],
+      "images": [
+        "img/image_232912.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 1200,
+      "salesCount": 890,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/image_232912.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Truyện Tranh Khoa Học - Vũ Trụ Kỳ Diệu",
+      "author": "Nhiều tác giả",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12374-8",
+      "description": "Khám phá vũ trụ qua những hình ảnh minh họa sống động và câu chuyện hấp dẫn. Giúp các em nhỏ hiểu thêm về thế giới xung quanh.",
+      "price": 68000,
+      "stock": 40,
+      "tags": [
+        "truyện thiếu nhi",
+        "khoa học",
+        "giáo dục"
+      ],
+      "images": [
+        "img/8935244869002.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": true,
+      "rating": 4.6,
+      "reviewsCount": 420,
+      "salesCount": 280,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/8935244869002.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Truyện Cổ Tích Thế Giới - Tập 1",
+      "author": "Nhiều tác giả",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12375-5",
+      "description": "Tuyển tập những câu chuyện cổ tích nổi tiếng từ khắp nơi trên thế giới, được kể lại một cách sinh động và dễ hiểu cho các em nhỏ.",
+      "price": 88000,
+      "stock": 50,
+      "tags": [
+        "truyện thiếu nhi",
+        "cổ tích",
+        "thế giới"
+      ],
+      "images": [
+        "img/8935244872361.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Hardcover",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 780,
+      "salesCount": 450,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/8935244872361.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Truyện Tranh Lịch Sử Việt Nam",
+      "author": "Nhiều tác giả",
+      "category": "Thiếu nhi",
+      "isbn": "978-604-2-12376-2",
+      "description": "Học lịch sử qua những câu chuyện được kể bằng hình ảnh sinh động. Giúp các em nhỏ yêu thích và hiểu rõ hơn về lịch sử dân tộc.",
+      "price": 92000,
+      "stock": 35,
+      "tags": [
+        "truyện thiếu nhi",
+        "lịch sử",
+        "giáo dục"
+      ],
+      "images": [
+        "img/8935280900905.jpg"
+      ],
+      "publisher": "Nhà xuất bản Kim Đồng",
+      "language": "Tiếng Việt",
+      "format": "Hardcover",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 560,
+      "salesCount": 320,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/8935280900905.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Oxford English Grammar",
+      "author": "John Eastwood",
+      "category": "Ngoại ngữ",
+      "isbn": "978-0-19-431351-1",
+      "description": "Sách ngữ pháp tiếng Anh tổng quát, phù hợp cho học sinh, sinh viên và người đi làm muốn hệ thống lại kiến thức.",
+      "price": 180000,
+      "stock": 40,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "grammar"
+      ],
+      "images": [
+        "img/sach_tieng_anh/9781009195119.jpg"
+      ],
+      "publisher": "Oxford University Press",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.8,
+      "reviewsCount": 980,
+      "salesCount": 1200,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/9781009195119.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/english-grammar.jpg",
+            "score": 0.682,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tự Học 2000 Từ Vựng Tiếng Anh",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8931805006084",
+      "description": "Bộ từ vựng tiếng Anh thông dụng kèm ví dụ minh hoạ, giúp bạn ghi nhớ nhanh và áp dụng vào giao tiếp hằng ngày.",
+      "price": 120000,
+      "stock": 50,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "từ vựng"
+      ],
+      "images": [
+        "img/sach_tieng_anh/8931805006084.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.6,
+      "reviewsCount": 450,
+      "salesCount": 600,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/8931805006084.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Ngữ Pháp Căn Bản Tiếng Anh",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8935343700565",
+      "description": "Giáo trình ngữ pháp tiếng Anh căn bản, trình bày rõ ràng, nhiều ví dụ và bài tập ứng dụng.",
+      "price": 110000,
+      "stock": 60,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "grammar",
+        "căn bản"
+      ],
+      "images": [
+        "img/sach_tieng_anh/8935343700565.jpg"
+      ],
+      "publisher": "NXB Giáo Dục",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.5,
+      "reviewsCount": 320,
+      "salesCount": 700,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/8935343700565.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Ngữ Pháp Nâng Cao Tiếng Anh",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8935343700572",
+      "description": "Tài liệu ngữ pháp tiếng Anh nâng cao dành cho học sinh khá giỏi và luyện thi chứng chỉ quốc tế.",
+      "price": 135000,
+      "stock": 45,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "grammar",
+        "nâng cao"
+      ],
+      "images": [
+        "img/sach_tieng_anh/8935343700572.jpg"
+      ],
+      "publisher": "NXB Giáo Dục",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.4,
+      "reviewsCount": 280,
+      "salesCount": 520,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/8935343700572.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "English Vocabulary In Use - Intermediate",
+      "author": "Michael McCarthy",
+      "category": "Ngoại ngữ",
+      "isbn": "8936110989558",
+      "description": "Sách từ vựng tiếng Anh theo chủ đề, phù hợp cho trình độ trung cấp, kèm bài tập và đáp án.",
+      "price": 195000,
+      "stock": 35,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "vocabulary"
+      ],
+      "images": [
+        "img/sach_tieng_anh/8936110989558.jpg"
+      ],
+      "publisher": "Cambridge University Press",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 1200,
+      "salesCount": 1500,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/8936110989558.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Academic Writing Skills",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "9781009195119",
+      "description": "Tài liệu luyện kỹ năng viết học thuật tiếng Anh, chuẩn bị cho môi trường đại học và nghiên cứu.",
+      "price": 210000,
+      "stock": 30,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "writing",
+        "academic"
+      ],
+      "images": [
+        "img/sach_tieng_anh/9781009195119.jpg"
+      ],
+      "publisher": "Cambridge University Press",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 260,
+      "salesCount": 430,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/9781009195119.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Giáo Trình Tiếng Anh Căn Bản",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "9786043350296",
+      "description": "Giáo trình tiếng Anh căn bản cho người mới bắt đầu, bao gồm nghe, nói, đọc, viết.",
+      "price": 140000,
+      "stock": 55,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "giáo trình"
+      ],
+      "images": [
+        "img/sach_tieng_anh/9786043350296.jpg"
+      ],
+      "publisher": "NXB Giáo Dục",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.5,
+      "reviewsCount": 380,
+      "salesCount": 680,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/9786043350296.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Giáo Trình Tiếng Anh Nâng Cao",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "9786043356366",
+      "description": "Giáo trình tiếng Anh nâng cao giúp mở rộng vốn từ và cấu trúc câu phức tạp.",
+      "price": 165000,
+      "stock": 40,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "giáo trình",
+        "nâng cao"
+      ],
+      "images": [
+        "img/sach_tieng_anh/9786043356366.jpg"
+      ],
+      "publisher": "NXB Giáo Dục",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.4,
+      "reviewsCount": 290,
+      "salesCount": 510,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/9786043356366.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "IELTS Speaking 6.0+",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IELTS-SPEAKING-6",
+      "description": "Tài liệu luyện thi IELTS Speaking band 6.0+ với mẫu câu, từ vựng theo chủ đề và audio tham khảo.",
+      "price": 185000,
+      "stock": 35,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "ielts",
+        "speaking"
+      ],
+      "images": [
+        "img/sach_tieng_anh/b_a-1_ielts-speaking-6.0.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.8,
+      "reviewsCount": 760,
+      "salesCount": 980,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/b_a-1_ielts-speaking-6.0.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Từ Vựng IELTS 8.0",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IELTS-VOCAB-8",
+      "description": "Tổng hợp từ vựng nâng cao cho IELTS band 7.0 - 8.0 kèm ví dụ và bài tập.",
+      "price": 190000,
+      "stock": 30,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "ielts",
+        "từ vựng"
+      ],
+      "images": [
+        "img/sach_tieng_anh/b_a-18aca-1_1.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 640,
+      "salesCount": 900,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/b_a-18aca-1_1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tổng Hợp Đề Thi IELTS General",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IELTS-GENERAL-TESTS",
+      "description": "Bộ đề luyện thi IELTS General Training kèm đáp án và gợi ý trả lời chi tiết.",
+      "price": 195000,
+      "stock": 28,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "ielts",
+        "general"
+      ],
+      "images": [
+        "img/sach_tieng_anh/b_a-18gen-1.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.5,
+      "reviewsCount": 380,
+      "salesCount": 560,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/b_a-18gen-1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Barron's TOEIC 6th Edition",
+      "author": "Lin Lougheed",
+      "category": "Ngoại ngữ",
+      "isbn": "barrons-toeic-6th",
+      "description": "Giáo trình luyện thi TOEIC nổi tiếng, phiên bản thứ 6, bao gồm đề thi mẫu và mẹo làm bài.",
+      "price": 230000,
+      "stock": 32,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "toeic"
+      ],
+      "images": [
+        "img/sach_tieng_anh/barronn-toeic-6th.jpg"
+      ],
+      "publisher": "Barron's",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 1500,
+      "salesCount": 2000,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/barronn-toeic-6th.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Giải Thích Ngữ Pháp Tiếng Anh",
+      "author": "Mai Lan Hương",
+      "category": "Ngoại ngữ",
+      "isbn": "GIAI-THICH-NGUPHAP",
+      "description": "Sách giải thích chi tiết các điểm ngữ pháp tiếng Anh thường gặp, phù hợp cho học sinh phổ thông.",
+      "price": 125000,
+      "stock": 60,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "grammar"
+      ],
+      "images": [
+        "img/sach_tieng_anh/bia1_gtnpta_b_n-m_i.jpg"
+      ],
+      "publisher": "NXB Đà Nẵng",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.6,
+      "reviewsCount": 700,
+      "salesCount": 1100,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/bia1_gtnpta_b_n-m_i.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "IELTS Reading Intensive",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IELTS-READING-INT",
+      "description": "Tài liệu chuyên sâu kỹ năng đọc IELTS với bài tập phân loại theo dạng câu hỏi.",
+      "price": 185000,
+      "stock": 34,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "ielts",
+        "reading"
+      ],
+      "images": [
+        "img/sach_tieng_anh/bia1-ielts-19aca.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.5,
+      "reviewsCount": 420,
+      "salesCount": 650,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/bia1-ielts-19aca.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Collins Reading for IELTS",
+      "author": "Els Van Geyte",
+      "category": "Ngoại ngữ",
+      "isbn": "COLLINS-READING-IELTS",
+      "description": "Sách luyện kỹ năng đọc trong kỳ thi IELTS với bài tập sát đề thi thực tế.",
+      "price": 210000,
+      "stock": 28,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "ielts",
+        "reading"
+      ],
+      "images": [
+        "img/sach_tieng_anh/collins_readingforielts_1.jpg"
+      ],
+      "publisher": "Collins",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.8,
+      "reviewsCount": 980,
+      "salesCount": 1300,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/collins_readingforielts_1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tự Học Giao Tiếp Tiếng Anh Hằng Ngày",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "893-SELF-SPEAK-01",
+      "description": "Sách tự học giao tiếp tiếng Anh với các mẫu câu thông dụng trong đời sống.",
+      "price": 98000,
+      "stock": 70,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "giao tiếp"
+      ],
+      "images": [
+        "img/sach_tieng_anh/image_195509_1_18959.jpg"
+      ],
+      "publisher": "NXB Thanh Niên",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 310,
+      "salesCount": 540,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/image_195509_1_18959.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tự Học Tiếng Anh Qua Hình Ảnh",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "893-SELF-PICTURE-EN",
+      "description": "Bộ sách học tiếng Anh qua hình ảnh sinh động, giúp ghi nhớ từ vựng lâu hơn.",
+      "price": 115000,
+      "stock": 55,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "từ vựng",
+        "hình ảnh"
+      ],
+      "images": [
+        "img/sach_tieng_anh/image_195509_1_30085.jpg"
+      ],
+      "publisher": "NXB Thanh Niên",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.4,
+      "reviewsCount": 290,
+      "salesCount": 500,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/image_195509_1_30085.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "3000 Từ Vựng Tiếng Anh Quan Trọng",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "VOCAB-3000-EN",
+      "description": "Tổng hợp 3000 từ vựng tiếng Anh thông dụng nhất kèm nghĩa và ví dụ.",
+      "price": 125000,
+      "stock": 65,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "từ vựng"
+      ],
+      "images": [
+        "img/sach_tieng_anh/image_224922.jpg"
+      ],
+      "publisher": "NXB Lao Động",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.7,
+      "reviewsCount": 540,
+      "salesCount": 880,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/image_224922.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tiếng Anh Cho Người Mất Gốc",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "ENGLISH-BEGINNER-0",
+      "description": "Giáo trình tiếng Anh cho người mất gốc, bắt đầu từ phát âm đến câu giao tiếp đơn giản.",
+      "price": 135000,
+      "stock": 70,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "mất gốc"
+      ],
+      "images": [
+        "img/sach_tieng_anh/image_227755.jpg"
+      ],
+      "publisher": "NXB Lao Động",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.6,
+      "reviewsCount": 420,
+      "salesCount": 760,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/image_227755.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tiếng Anh Giao Tiếp Trong Công Việc",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "ENGLISH-BUSINESS",
+      "description": "Sách luyện giao tiếp tiếng Anh trong môi trường công sở, phỏng vấn và thuyết trình.",
+      "price": 155000,
+      "stock": 48,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "business",
+        "giao tiếp"
+      ],
+      "images": [
+        "img/sach_tieng_anh/image_236141.jpg"
+      ],
+      "publisher": "NXB Lao Động",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 300,
+      "salesCount": 520,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/image_236141.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tự Học Tiếng Anh Qua Truyện Ngắn",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "ENGLISH-STORIES",
+      "description": "Học tiếng Anh qua các truyện ngắn thú vị, giúp nâng cao vốn từ và cấu trúc câu.",
+      "price": 99000,
+      "stock": 80,
+      "tags": [
+        "sách tiếng anh",
+        "english",
+        "truyện ngắn"
+      ],
+      "images": [
+        "img/sach_tieng_anh/unnamed_1.jpg"
+      ],
+      "publisher": "NXB Thanh Niên",
+      "language": "Tiếng Anh",
+      "format": "Paperback",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.2,
+      "reviewsCount": 250,
+      "salesCount": 480,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/unnamed_1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Thi Năng Lực Nhật Ngữ N5",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8934974187127",
+      "description": "Sách luyện thi năng lực Nhật ngữ N5 với đầy đủ các kỹ năng: Hán tự, từ vựng, ngữ pháp, đọc hiểu, nghe hiểu.",
+      "price": 125000,
+      "stock": 60,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n5"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/8934974187127.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.7,
+      "reviewsCount": 450,
+      "salesCount": 850,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/8934974187127.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/sach_tieng_nhat/luyen_thi_nang_luc_nhat_ngu_n5_han_tu__tu_vung__ngu_phap__doc_hieu__nghe_hieu_1_2020_11_16_14_51_24.jpg",
+            "score": 0.97,
+            "strategy": "slug"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Thi JLPT N4 Toàn Diện",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8934974204480",
+      "description": "Giáo trình luyện thi JLPT N4 với phương pháp học hiệu quả, bài tập phong phú.",
+      "price": 135000,
+      "stock": 55,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n4"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/8934974204480.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.6,
+      "reviewsCount": 380,
+      "salesCount": 720,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/8934974204480.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Thi JLPT N3 - Ngữ Pháp",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8934974204503",
+      "description": "Sách luyện thi JLPT N3 tập trung vào ngữ pháp với các mẫu câu quan trọng.",
+      "price": 145000,
+      "stock": 48,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n3",
+        "ngữ pháp"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/8934974204503.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.5,
+      "reviewsCount": 320,
+      "salesCount": 600,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/8934974204503.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Kanji Sơ Cấp - Hán Tự Tiếng Nhật",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8935072893552",
+      "description": "Sách học Hán tự cơ bản dành cho người mới bắt đầu học tiếng Nhật.",
+      "price": 89000,
+      "stock": 70,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "kanji",
+        "hán tự"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/8935072893552.jpg"
+      ],
+      "publisher": "NXB Đại Học Quốc Gia",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 280,
+      "salesCount": 680,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/8935072893552.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Mimikara Oboeru - Học Tiếng Nhật Qua Nghe",
+      "author": "Nishi-in",
+      "category": "Ngoại ngữ",
+      "isbn": "8935086855843",
+      "description": "Phương pháp học tiếng Nhật qua nghe hiệu quả, phù hợp mọi trình độ.",
+      "price": 155000,
+      "stock": 42,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "mimikara",
+        "nghe"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/8935086855843_1.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 510,
+      "salesCount": 920,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/8935086855843_1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Shin Nihongo 500 Mon - N3",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "8935086856680",
+      "description": "Bộ đề luyện thi JLPT N3 với 500 câu hỏi đa dạng.",
+      "price": 165000,
+      "stock": 38,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n3",
+        "500 mon"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/8935086856680.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.6,
+      "reviewsCount": 340,
+      "salesCount": 640,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/8935086856680.jpg",
+            "score": 1,
+            "strategy": "declared"
+          },
+          {
+            "image": "img/sach_tieng_nhat/combo-8935086856680-8935086858035.jpg",
+            "score": 0.99,
+            "strategy": "isbn"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Minna no Nihongo - Bản Dịch Tiếng Việt",
+      "author": "3A Network",
+      "category": "Ngoại ngữ",
+      "isbn": "9786044022697",
+      "description": "Giáo trình tiếng Nhật phổ biến nhất thế giới với bản dịch tiếng Việt chi tiết.",
+      "price": 125000,
+      "stock": 65,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "minna no nihongo",
+        "giáo trình"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/9786044022697-1.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.9,
+      "reviewsCount": 720,
+      "salesCount": 1450,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/9786044022697-1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Từ Vựng Tiếng Nhật Theo Chủ Đề",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "9786047763603",
+      "description": "Học từ vựng tiếng Nhật theo chủ đề giúp ghi nhớ hiệu quả.",
+      "price": 95000,
+      "stock": 75,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "từ vựng"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/9786047763603.jpg"
+      ],
+      "publisher": "NXB Lao Động",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 250,
+      "salesCount": 520,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/9786047763603.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Combo Shin Nihongo N3 + N2",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "COMBO-SHIN-N3-N2",
+      "description": "Combo 2 cuốn luyện thi JLPT N3 và N2 với giá ưu đãi.",
+      "price": 285000,
+      "stock": 30,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n3",
+        "n2",
+        "combo"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/combo-8935086856680-8935086858035.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 420,
+      "salesCount": 780,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/combo-8935086856680-8935086858035.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Giao Tiếp Tiếng Nhật Hàng Ngày",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-1453",
+      "description": "Học tiếng Nhật giao tiếp trong các tình huống thực tế hàng ngày.",
+      "price": 115000,
+      "stock": 52,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "giao tiếp"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_1453.jpg"
+      ],
+      "publisher": "NXB Thanh Niên",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 310,
+      "salesCount": 580,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_1453.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Nghe JLPT N2",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-26612",
+      "description": "Sách luyện kỹ năng nghe cho kỳ thi JLPT N2 với nhiều bài tập thực hành.",
+      "price": 155000,
+      "stock": 45,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n2",
+        "nghe"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_26612.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.7,
+      "reviewsCount": 390,
+      "salesCount": 710,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_26612.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Đọc Hiểu Tiếng Nhật Nâng Cao",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-29719",
+      "description": "Nâng cao kỹ năng đọc hiểu tiếng Nhật với các bài tập từ cơ bản đến nâng cao.",
+      "price": 135000,
+      "stock": 48,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "đọc hiểu"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_29719.jpg"
+      ],
+      "publisher": "NXB Đại Học Quốc Gia",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.5,
+      "reviewsCount": 280,
+      "salesCount": 540,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_29719.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Kanji N1 - Hán Tự Cao Cấp",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-32597",
+      "description": "Học Hán tự trình độ N1 với phương pháp khoa học, dễ nhớ.",
+      "price": 185000,
+      "stock": 35,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n1",
+        "kanji"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_32597.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 340,
+      "salesCount": 620,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_32597.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Ngữ Pháp Tiếng Nhật N1",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-32598",
+      "description": "Tổng hợp ngữ pháp tiếng Nhật N1 với giải thích chi tiết và ví dụ minh họa.",
+      "price": 175000,
+      "stock": 40,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n1",
+        "ngữ pháp"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_32598.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.9,
+      "reviewsCount": 480,
+      "salesCount": 890,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_32598.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Từ Vựng JLPT N5",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-4385",
+      "description": "Học từ vựng tiếng Nhật N5 một cách có hệ thống và khoa học.",
+      "price": 85000,
+      "stock": 80,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n5",
+        "từ vựng"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_4385_1.jpg"
+      ],
+      "publisher": "NXB Lao Động",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": true,
+      "trending": false,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 320,
+      "salesCount": 720,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_4385_1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tiếng Nhật Cho Người Mới Bắt Đầu",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-7960",
+      "description": "Giáo trình tiếng Nhật dành cho người mới bắt đầu với phương pháp dễ hiểu.",
+      "price": 105000,
+      "stock": 68,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "sơ cấp",
+        "giáo trình"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_7960.jpg"
+      ],
+      "publisher": "NXB Thanh Niên",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 290,
+      "salesCount": 610,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_7960.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Bài Tập Tiếng Nhật Trung Cấp",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "IMAGE-195509-8463",
+      "description": "Bộ bài tập tiếng Nhật trung cấp giúp củng cố kiến thức một cách toàn diện.",
+      "price": 145000,
+      "stock": 50,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "trung cấp",
+        "bài tập"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/image_195509_1_8463.jpg"
+      ],
+      "publisher": "NXB Đại Học Quốc Gia",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.5,
+      "reviewsCount": 270,
+      "salesCount": 530,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/image_195509_1_8463.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Thi Năng Lực Nhật Ngữ N5 - Hán Tự, Từ Vựng, Ngữ Pháp",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "LUYEN-THI-N5-FULL",
+      "description": "Sách luyện thi toàn diện cho JLPT N5 bao gồm Hán tự, từ vựng, ngữ pháp, đọc hiểu và nghe hiểu.",
+      "price": 165000,
+      "stock": 55,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n5",
+        "toàn diện"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/luyen_thi_nang_luc_nhat_ngu_n5_han_tu__tu_vung__ngu_phap__doc_hieu__nghe_hieu_1_2020_11_16_14_51_24.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": true,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.8,
+      "reviewsCount": 520,
+      "salesCount": 950,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/luyen_thi_nang_luc_nhat_ngu_n5_han_tu__tu_vung__ngu_phap__doc_hieu__nghe_hieu_1_2020_11_16_14_51_24.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Ngữ Pháp Tiếng Nhật Cơ Bản",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "NP-JAPANESE",
+      "description": "Tổng hợp ngữ pháp tiếng Nhật cơ bản cho người mới học.",
+      "price": 95000,
+      "stock": 72,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "ngữ pháp",
+        "cơ bản"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/np.jpg"
+      ],
+      "publisher": "NXB Lao Động",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 240,
+      "salesCount": 500,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/np.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Kanji Trung Cấp",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "NXBTRE-KANJI-02",
+      "description": "Học Hán tự trung cấp với phương pháp ghi nhớ hiệu quả.",
+      "price": 125000,
+      "stock": 58,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "kanji",
+        "trung cấp"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/nxbtre_full_02192018_041934.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 270,
+      "salesCount": 560,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/nxbtre_full_02192018_041934.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Thi JLPT N2 - Đọc Hiểu",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "NXBTRE-N2-READ",
+      "description": "Sách luyện kỹ năng đọc hiểu cho kỳ thi JLPT N2.",
+      "price": 155000,
+      "stock": 42,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n2",
+        "đọc hiểu"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/nxbtre_full_05202023_032037-_1_.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.7,
+      "reviewsCount": 360,
+      "salesCount": 680,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/nxbtre_full_05202023_032037-_1_.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Tiếng Nhật Giao Tiếp Công Sở",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "NXBTRE-BUSINESS",
+      "description": "Học tiếng Nhật giao tiếp trong môi trường công sở và kinh doanh.",
+      "price": 135000,
+      "stock": 46,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "giao tiếp",
+        "business"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/nxbtre_full_19442024_034428_1.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.6,
+      "reviewsCount": 310,
+      "salesCount": 590,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/nxbtre_full_19442024_034428_1.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Từ Vựng Tiếng Nhật Theo Cấp Độ",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "NXBTRE-VOCAB",
+      "description": "Học từ vựng tiếng Nhật theo từng cấp độ từ N5 đến N1.",
+      "price": 115000,
+      "stock": 64,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "từ vựng"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/nxbtre_full_23232018_092301.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.4,
+      "reviewsCount": 290,
+      "salesCount": 550,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/nxbtre_full_23232018_092301.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Luyện Thi JLPT N3 - Nghe Hiểu",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "NXBTRE-N3-LISTEN",
+      "description": "Sách luyện kỹ năng nghe hiểu cho kỳ thi JLPT N3 với bài tập thực hành.",
+      "price": 145000,
+      "stock": 50,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "jlpt",
+        "n3",
+        "nghe hiểu"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/nxbtre_full_31532023_025343.jpg"
+      ],
+      "publisher": "NXB Tre",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": true,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": true,
+      "rating": 4.7,
+      "reviewsCount": 380,
+      "salesCount": 720,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/nxbtre_full_31532023_025343.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Từ Vựng Tiếng Nhật Tổng Hợp",
+      "author": "Nhiều tác giả",
+      "category": "Ngoại ngữ",
+      "isbn": "TV-JAPANESE",
+      "description": "Tổng hợp từ vựng tiếng Nhật quan trọng theo chủ đề.",
+      "price": 105000,
+      "stock": 60,
+      "tags": [
+        "sách tiếng nhật",
+        "japanese",
+        "từ vựng",
+        "tổng hợp"
+      ],
+      "images": [
+        "img/sach_tieng_nhat/tv.jpg"
+      ],
+      "publisher": "NXB Tổng Hợp",
+      "language": "Tiếng Nhật",
+      "format": "Bìa mềm",
+      "featured": false,
+      "bestSeller": false,
+      "trending": true,
+      "isNew": false,
+      "rating": 4.3,
+      "reviewsCount": 260,
+      "salesCount": 510,
+      "mapping": {
+        "confidence": "high",
+        "matchedBy": "declared",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_nhat/tv.jpg",
+            "score": 1,
+            "strategy": "declared"
+          }
+        ]
+      },
+      "source": "FE/public/seed/bookstoreData.json"
+    },
+    {
+      "title": "Nhà Giả Kim",
+      "author": "Paulo Coelho",
+      "category": null,
+      "isbn": "978-604-2-25888-8",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [
+        "img/nhagiakim.jpg"
+      ],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "medium",
+        "matchedBy": "fuzzy",
+        "topCandidates": [
+          {
+            "image": "img/nhagiakim.jpg",
+            "score": 0.818,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Đắc Nhân Tâm",
+      "author": "Dale Carnegie",
+      "category": null,
+      "isbn": "978-604-2-14725-7",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [
+        "img/dat-rung-phuong-nam.jpg"
+      ],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "low",
+        "matchedBy": "fuzzy",
+        "topCandidates": [
+          {
+            "image": "img/dat-rung-phuong-nam.jpg",
+            "score": 0.474,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Nguyên Lý Marketing",
+      "author": "Philip Kotler",
+      "category": null,
+      "isbn": "978-604-2-06654-3",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Cambridge IELTS 16 Academic",
+      "author": "Cambridge",
+      "category": null,
+      "isbn": "978-604-2-17892-3",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [
+        "img/sach_tieng_anh/bia1-ielts-19aca.jpg"
+      ],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "low",
+        "matchedBy": "fuzzy",
+        "topCandidates": [
+          {
+            "image": "img/sach_tieng_anh/bia1-ielts-19aca.jpg",
+            "score": 0.481,
+            "strategy": "fuzzy"
+          }
+        ]
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Doraemon Tập 1",
+      "author": "Fujiko F. Fujio",
+      "category": null,
+      "isbn": "978-604-2-19876-1",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Lược Sử Thời Gian",
+      "author": "Stephen Hawking",
+      "category": null,
+      "isbn": "978-604-2-08765-4",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Sapiens: Lược Sử Loài Người",
+      "author": "Yuval Noah Harari",
+      "category": null,
+      "isbn": "978-604-2-11234-5",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Tư Duy Nhanh Và Chậm",
+      "author": "Daniel Kahneman",
+      "category": null,
+      "isbn": "978-604-2-15678-9",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "BE/SQLQuery1.sql"
+    },
+    {
+      "title": "Conan Tập 50",
+      "author": "Aoyama Gosho",
+      "category": null,
+      "isbn": "978-604-2-19999-8",
+      "description": null,
+      "price": null,
+      "stock": null,
+      "tags": [],
+      "images": [],
+      "publisher": null,
+      "language": null,
+      "format": null,
+      "featured": false,
+      "bestSeller": false,
+      "trending": false,
+      "isNew": false,
+      "rating": null,
+      "reviewsCount": null,
+      "salesCount": null,
+      "mapping": {
+        "confidence": "unmapped",
+        "matchedBy": "none",
+        "topCandidates": []
+      },
+      "source": "BE/SQLQuery1.sql"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+/** File này đọc và chuẩn hóa biến môi trường cho backend. */
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,8 +23,9 @@ export const env = {
     server: must("DB_SERVER", "localhost"),
     database: must("DB_NAME", "bookstore_db"),
     port: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
-    instanceName: process.env.DB_INSTANCE ?? "",
-    trustServerCertificate: (process.env.DB_TRUST_CERT ?? "true") === "true"
+    instanceName: process.env.DB_INSTANCE?.trim() || undefined,
+    trustServerCertificate: (process.env.DB_TRUST_CERT ?? "true") === "true",
+    encrypt: (process.env.DB_ENCRYPT ?? "true") === "true"
   },
   jwt: {
     accessSecret: must("JWT_ACCESS_SECRET", "access_secret_dev"),

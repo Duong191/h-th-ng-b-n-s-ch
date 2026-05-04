@@ -1,3 +1,4 @@
+/** File này khai báo route thao tác thông tin người dùng hiện tại. */
 import { Router } from "express";
 import { z } from "zod";
 import * as controller from "../controllers/user.controller";

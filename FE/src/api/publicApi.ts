@@ -10,9 +10,10 @@ function unwrapList<T>(payload: ListResponse<T>): T[] {
   return [];
 }
 
-type RawBook = Record<string, unknown>;
+export type RawBook = Record<string, unknown>;
 
-function mapBook(raw: RawBook): Book & {
+/** Chuẩn hóa dòng sách từ API (public hoặc admin trả về snake_case). */
+export function mapBook(raw: RawBook): Book & {
   featured?: boolean;
   bestseller?: boolean;
   bestSeller?: boolean;

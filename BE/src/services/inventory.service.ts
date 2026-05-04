@@ -1,3 +1,4 @@
+/** File này xử lý nghiệp vụ tồn kho và giao dịch kho. */
 import { getDb, sql } from "../config/db";
 import { parsePagination } from "../utils/pagination";
 

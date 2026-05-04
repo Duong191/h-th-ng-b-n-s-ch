@@ -23,7 +23,8 @@ export default function AdminBookEditPage() {
     pages: '',
     language: 'Tiếng Việt',
     format: 'Paperback',
-    isNew: false,
+    /** Thêm sách mới: mặc định lên kệ “Sách mới”; sửa sách: mặc định tắt cho tới khi load dữ liệu. */
+    isNew: !id,
     bestSeller: false,
     trending: false,
     featured: false,
@@ -90,7 +91,9 @@ export default function AdminBookEditPage() {
       discount: parseFloat(formData.discount),
       stock: parseInt(formData.stock),
       description: formData.description,
-      ...(imagesArray.length > 0 ? { image: imagesArray[0], images: imagesArray } : {}),
+      /** Luôn gửi để backend ghi vào `book_images` và không mất sau khi tải lại từ API. */
+      images: imagesArray,
+      ...(imagesArray.length > 0 ? { image: imagesArray[0] } : {}),
       tags: tagsArray,
       isbn: formData.isbn,
       pages: parseInt(formData.pages) || undefined,
@@ -253,11 +256,14 @@ export default function AdminBookEditPage() {
         <label className="form-label required">Mô tả</label>
         <textarea
           className="form-textarea"
-          rows={6}
+          rows={12}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           required
         />
+        <small style={{ color: '#666', marginTop: 6, display: 'block' }}>
+          Xuống dòng: nhấn Enter. In đậm: bọc <code>**như thế này**</code> (dán từ Word thường mất định dạng — cần chỉnh trong ô này).
+        </small>
       </div>
 
       {/* Images */}

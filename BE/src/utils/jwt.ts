@@ -1,3 +1,4 @@
+/** File này ký và kiểm tra access/refresh token JWT. */
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { TokenPayload } from "../types";

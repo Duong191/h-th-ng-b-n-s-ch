@@ -1,3 +1,4 @@
+/** File này kiểm tra nhanh kết nối DB phục vụ health check. */
 import { getDb } from "../config/db";
 
 export const checkDbHealth = async () => {

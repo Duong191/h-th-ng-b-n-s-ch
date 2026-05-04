@@ -4,7 +4,7 @@ import { useBookstore } from '../context/BookstoreContext';
 import BookCard from '../components/ui/BookCard';
 import { fixImagePath } from '../utils/format';
 import RecommendationSection from '../components/recommendation/RecommendationSection';
-import { getBestSellersByCategory } from '../services/booksService';
+import { getBestSellersByCategory, isMarkedNew } from '../services/booksService';
 import { Book } from '../context/BookstoreContext';
 
 const PER = 5;
@@ -20,9 +20,62 @@ interface BookWithExtras extends Book {
   originalPrice?: number;
 }
 
+function normalizeText(value: unknown): string {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[đĐ]/g, (ch) => (ch === 'đ' ? 'd' : 'D'))
+    .toLowerCase()
+    .trim();
+}
+
+function hasAnyKeyword(value: unknown, keywords: string[]): boolean {
+  const normalized = normalizeText(value);
+  return keywords.some((k) => normalized.includes(normalizeText(k)));
+}
+
+function isMangaComicBook(book: BookWithExtras): boolean {
+  const categoryId = String((book as any).category ?? book.categoryId ?? '');
+  const categoryName = String((book as any).categoryName ?? '');
+  const title = String(book.title || '');
+  const imageRaw = String(book.images?.[0] || book.image || '');
+  const tags = Array.isArray(book.tags) ? book.tags.map((t) => String(t)) : [];
+  const tagText = tags.join(' ');
+
+  if (categoryId === '9') return true;
+  if (hasAnyKeyword(categoryName, ['manga', 'comic'])) return true;
+  if (hasAnyKeyword(tagText, ['manga', 'comic'])) return true;
+  if (imageRaw.toLowerCase().includes('/manga-comic/')) return true;
+  // Manga thường có format tập; không dùng đơn lẻ vì có thể dính sách thiếu nhi khác.
+  if (hasAnyKeyword(title, ['chú thuật hồi chiến', 'doraemon', 'conan'])) return true;
+  return false;
+}
+
+function isThieuNhiBook(book: BookWithExtras): boolean {
+  const categoryId = String((book as any).category ?? book.categoryId ?? '');
+  const categoryName = String((book as any).categoryName ?? '');
+  const tags = Array.isArray(book.tags) ? book.tags.map((t) => String(t)) : [];
+  const tagText = tags.join(' ');
+
+  if (categoryId === '5') return true;
+  if (hasAnyKeyword(categoryName, ['thieu nhi', 'thiếu nhi'])) return true;
+  if (hasAnyKeyword(tagText, ['thieu nhi', 'thiếu nhi'])) return true;
+  return false;
+}
+
 function slicePage<T>(items: T[], page: number, per = PER): T[] {
   const start = page * per;
   return items.slice(start, start + per);
+}
+
+/** Fisher–Yates shuffle (copy vào mảng mới, không chỉnh sửa danh gốc). */
+function shuffleRandom<T>(items: readonly T[]): T[] {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
 }
 
 /**
@@ -61,52 +114,42 @@ export default function HomePage() {
   const { data, loading, addToCart } = useBookstore();
   const books = (data?.books || []) as BookWithExtras[];
 
-  const featured = useMemo(() => books.filter((b) => b.featured), [books]);
+  /** Xáo thứ tự sách nổi bật khi vào trang chủ (mỗi lần mount / khi danh sách books đổi). */
+  const featured = useMemo(
+    () => shuffleRandom(books.filter((b) => b.featured)),
+    [books]
+  );
   const [featPage, setFeatPage] = useState(0);
   const featPages = Math.max(1, Math.ceil(featured.length / PER));
 
+  const newBooks = useMemo(() => {
+    const marked = books.filter((b) => isMarkedNew(b));
+    return [...marked].sort(
+      (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
+  }, [books]);
+  const [newBooksPage, setNewBooksPage] = useState(0);
+  const newBooksPages = Math.max(1, Math.ceil(newBooks.length / PER));
+
+  useEffect(() => {
+    setFeatPage(0);
+    setNewBooksPage(0);
+  }, [books]);
+
   const comicsAll = useMemo(
-    () =>
-      books.filter((b) => {
-        const categoryId = String((b as any).category ?? b.categoryId ?? '');
-        const categoryName = String((b as any).categoryName ?? '').toLowerCase();
-        return (
-          categoryId === '5' ||
-          categoryId === '9' ||
-          categoryName.includes('manga') ||
-          categoryName.includes('comic') ||
-          categoryName.includes('thiếu nhi') ||
-          categoryName.includes('thieu nhi')
-        );
-      }),
+    () => books.filter((b) => isMangaComicBook(b) || isThieuNhiBook(b)),
     [books]
   );
   const [comicTab, setComicTab] = useState('manga-comic');
   const [comicPage, setComicPage] = useState(0);
   const comicFiltered = useMemo(() => {
     if (comicTab === 'manga-comic') {
-      return comicsAll.filter(
-        (b) => {
-          const categoryId = String((b as any).category ?? b.categoryId ?? '');
-          const categoryName = String((b as any).categoryName ?? '').toLowerCase();
-          const hasMangaTag =
-            Array.isArray(b.tags) &&
-            b.tags.some((t) => String(t).toLowerCase().includes('manga') || String(t).toLowerCase().includes('comic'));
-          return categoryId === '9' || categoryName.includes('manga') || categoryName.includes('comic') || hasMangaTag;
-        }
-      );
+      return comicsAll.filter((b) => isMangaComicBook(b));
     }
     if (comicTab === 'truyen-thieu-nhi') {
       return comicsAll.filter((b) => {
-        const categoryId = String((b as any).category ?? b.categoryId ?? '');
-        const categoryName = String((b as any).categoryName ?? '').toLowerCase();
-        if (categoryId === '5' || categoryName.includes('thiếu nhi') || categoryName.includes('thieu nhi')) {
-          return true;
-        }
-        const hasMangaTag =
-          Array.isArray(b.tags) &&
-          b.tags.some((t) => String(t).toLowerCase().includes('manga') || String(t).toLowerCase().includes('comic'));
-        return !hasMangaTag && categoryId !== '9' && !categoryName.includes('manga') && !categoryName.includes('comic');
+        if (isMangaComicBook(b)) return false;
+        return isThieuNhiBook(b);
       });
     }
     return comicsAll;
@@ -238,6 +281,50 @@ export default function HomePage() {
           </div>
           <div className="view-more-container">
             <NavLink to="/shop?filter=featured" className="view-more-btn">
+              Xem Thêm
+            </NavLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="featured-books">
+        <div className="container">
+          <div className="section-header">
+            <h2>Sách Mới</h2>
+          </div>
+          <div className="featured-books-carousel">
+            <button
+              type="button"
+              className="carousel-nav prev"
+              disabled={newBooksPage <= 0}
+              onClick={() => setNewBooksPage((p) => Math.max(0, p - 1))}
+            >
+              <i className="fas fa-chevron-left" />
+            </button>
+            <div className="books-container">
+              <div className="books-carousel" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                {newBooks.length === 0 ? (
+                  <p style={{ padding: 40, color: '#666' }}>Chưa có sách mới — hãy thêm sách và bật “Mới” trong admin.</p>
+                ) : (
+                  slicePage(newBooks, newBooksPage).map((book) => (
+                    <div key={book.id} style={{ width: 200 }}>
+                      <BookCard book={book as any} onAddToCart={addToCart} />
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="carousel-nav next"
+              disabled={newBooksPage >= newBooksPages - 1}
+              onClick={() => setNewBooksPage((p) => Math.min(newBooksPages - 1, p + 1))}
+            >
+              <i className="fas fa-chevron-right" />
+            </button>
+          </div>
+          <div className="view-more-container">
+            <NavLink to="/shop?filter=new" className="view-more-btn">
               Xem Thêm
             </NavLink>
           </div>

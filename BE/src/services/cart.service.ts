@@ -1,3 +1,4 @@
+/** File này xử lý nghiệp vụ giỏ hàng và đồng bộ item trong DB. */
 import { getDb, sql } from "../config/db";
 import { AppError } from "../utils/appError";
 

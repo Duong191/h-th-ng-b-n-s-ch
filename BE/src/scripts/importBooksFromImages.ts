@@ -1,3 +1,4 @@
+/** File này đối soát ảnh local và cập nhật image_url cho sách trong DB. */
 import fs from "fs";
 import path from "path";
 import { getDb, sql } from "../config/db";

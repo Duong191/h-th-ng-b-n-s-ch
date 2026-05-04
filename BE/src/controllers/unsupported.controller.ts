@@ -1,3 +1,4 @@
+/** File này trả phản hồi cho endpoint có trong spec nhưng chưa hỗ trợ. */
 import { Request, Response } from "express";
 
 export const schemaNotImplemented = (_req: Request, res: Response) => {

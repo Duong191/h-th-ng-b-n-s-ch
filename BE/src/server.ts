@@ -1,10 +1,16 @@
+/** File này khởi động server, kiểm tra DB và bootstrap dữ liệu mặc định. */
 import app from "./app";
 import { env } from "./config/env";
-import { probeDbConnection } from "./config/db";
+import { getSafeDbConnectionSummary, probeDbConnection } from "./config/db";
+import { ensureDefaultAdmin } from "./services/auth.service";
 
 const bootstrap = async (): Promise<void> => {
   try {
+    // eslint-disable-next-line no-console
+    console.log("DB config (no secrets):", JSON.stringify(getSafeDbConnectionSummary(), null, 2));
+
     const dbInfo = await probeDbConnection();
+    await ensureDefaultAdmin();
     // eslint-disable-next-line no-console
     console.log("DB connection: SUCCESS");
     // eslint-disable-next-line no-console

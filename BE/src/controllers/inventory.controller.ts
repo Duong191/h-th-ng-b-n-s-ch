@@ -1,3 +1,4 @@
+/** File này xử lý API tồn kho và giao dịch nhập/xuất kho. */
 import { Request, Response } from "express";
 import * as inventoryService from "../services/inventory.service";
 

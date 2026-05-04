@@ -1,3 +1,4 @@
+/** File này khai báo route đơn hàng cho user và quản trị viên. */
 import { Router } from "express";
 import { z } from "zod";
 import * as controller from "../controllers/order.controller";

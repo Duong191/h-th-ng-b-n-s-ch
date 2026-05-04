@@ -1,3 +1,4 @@
+/** File này xử lý API lấy danh mục sách theo nhiều mức chi tiết. */
 import { Request, Response } from "express";
 import * as categoryService from "../services/category.service";
 

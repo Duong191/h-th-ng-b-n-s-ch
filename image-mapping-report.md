@@ -1,0 +1,107 @@
+# Image Mapping Report
+
+- Tổng số ảnh tìm thấy: **83**
+- Tổng số sách trong SQL hiện tại: **10**
+- Tổng số sách khôi phục được: **86**
+- Sách map ảnh exact: **75**
+- Sách map ảnh fuzzy: **1**
+- Sách cần kiểm tra thủ công: **10**
+- Ảnh chưa được dùng: **0**
+- Ảnh bị dùng trùng: **5**
+- Danh sách các sách còn "No Image": **0**
+
+## Toàn bộ ảnh sách tìm thấy
+- /img/4nguyentacthucthi.jpg
+- /img/8935244869002.jpg
+- /img/8935244872361.jpg
+- /img/8935280900905.jpg
+- /img/MBA.jpg
+- /img/Nhalanhdaokhongchucdanh.jpg
+- /img/_ng-d_ng-ai-v_o-doanh-nghi_p_9.jpg
+- /img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg
+- /img/bimattuduy.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_bia_tap-16.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_bia_tap-17.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_bia_tap-20.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_bia_tap-21.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_mockup_tap-22.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc-copy-0.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_tap-25_bia_card-pvc.jpg
+- /img/chu-thuat-hoi-chien_ban-thuong_tap-26_bia_obi_card-pvc.jpg
+- /img/combosachtrithuc.jpg
+- /img/dat-rung-phuong-nam.jpg
+- /img/image_186943.jpg
+- /img/image_232912.jpg
+- /img/motdoiquantri.jpg
+- /img/muado.jpg
+- /img/nghethuatdamphan.jpg
+- /img/nhagiakim.jpg
+- /img/quanlynghiep.jpg
+- /img/sach_tieng_anh/8931805006084.jpg
+- /img/sach_tieng_anh/8935343700565.jpg
+- /img/sach_tieng_anh/8935343700572.jpg
+- /img/sach_tieng_anh/8936110989558.jpg
+- /img/sach_tieng_anh/9781009195119.jpg
+- /img/sach_tieng_anh/9786043350296.jpg
+- /img/sach_tieng_anh/9786043356366.jpg
+- /img/sach_tieng_anh/b_a-18aca-1_1.jpg
+- /img/sach_tieng_anh/b_a-18gen-1.jpg
+- /img/sach_tieng_anh/b_a-1_ielts-speaking-6.0.jpg
+- /img/sach_tieng_anh/barronn-toeic-6th.jpg
+- /img/sach_tieng_anh/bia1-ielts-19aca.jpg
+- /img/sach_tieng_anh/bia1_gtnpta_b_n-m_i.jpg
+- /img/sach_tieng_anh/collins_readingforielts_1.jpg
+- /img/sach_tieng_anh/image_195509_1_18959.jpg
+- /img/sach_tieng_anh/image_195509_1_30085.jpg
+- /img/sach_tieng_anh/image_224922.jpg
+- /img/sach_tieng_anh/image_227755.jpg
+- /img/sach_tieng_anh/image_236141.jpg
+- /img/sach_tieng_anh/unnamed_1.jpg
+- /img/sach_tieng_nhat/8934974187127.jpg
+- /img/sach_tieng_nhat/8934974204480.jpg
+- /img/sach_tieng_nhat/8934974204503.jpg
+- /img/sach_tieng_nhat/8935072893552.jpg
+- /img/sach_tieng_nhat/8935086855843_1.jpg
+- /img/sach_tieng_nhat/8935086856680.jpg
+- /img/sach_tieng_nhat/9786044022697-1.jpg
+- /img/sach_tieng_nhat/9786047763603.jpg
+- /img/sach_tieng_nhat/combo-8935086856680-8935086858035.jpg
+- /img/sach_tieng_nhat/image_195509_1_1453.jpg
+- /img/sach_tieng_nhat/image_195509_1_26612.jpg
+- /img/sach_tieng_nhat/image_195509_1_29719.jpg
+- /img/sach_tieng_nhat/image_195509_1_32597.jpg
+- /img/sach_tieng_nhat/image_195509_1_32598.jpg
+- /img/sach_tieng_nhat/image_195509_1_4385_1.jpg
+- /img/sach_tieng_nhat/image_195509_1_7960.jpg
+- /img/sach_tieng_nhat/image_195509_1_8463.jpg
+- /img/sach_tieng_nhat/luyen_thi_nang_luc_nhat_ngu_n5_han_tu__tu_vung__ngu_phap__doc_hieu__nghe_hieu_1_2020_11_16_14_51_24.jpg
+- /img/sach_tieng_nhat/np.jpg
+- /img/sach_tieng_nhat/nxbtre_full_02192018_041934.jpg
+- /img/sach_tieng_nhat/nxbtre_full_05202023_032037-_1_.jpg
+- /img/sach_tieng_nhat/nxbtre_full_19442024_034428_1.jpg
+- /img/sach_tieng_nhat/nxbtre_full_23232018_092301.jpg
+- /img/sach_tieng_nhat/nxbtre_full_31532023_025343.jpg
+- /img/sach_tieng_nhat/tv.jpg
+- /img/van_xuan.jpg
+- /img/vigiamdoc1phut.jpg
+- /img/vitusi.jpg
+- https://placehold.co/400x560?text=Conan%20T%E1%BA%ADp%2050
+- https://placehold.co/400x560?text=Doraemon%20T%E1%BA%ADp%201
+- https://placehold.co/400x560?text=L%C6%B0%E1%BB%A3c%20S%E1%BB%AD%20Th%E1%BB%9Di%20Gian
+- https://placehold.co/400x560?text=L%E1%BA%ADp%20Tr%C3%ACnh%20S%E1%BA%A1ch%20(Clean%20Code)
+- https://placehold.co/400x560?text=Nguy%C3%AAn%20L%C3%BD%20Marketing
+- https://placehold.co/400x560?text=Sapiens%3A%20L%C6%B0%E1%BB%A3c%20S%E1%BB%AD%20Lo%C3%A0i%20Ng%C6%B0%E1%BB%9Di
+- https://placehold.co/400x560?text=T%C6%B0%20Duy%20Nhanh%20V%C3%A0%20Ch%E1%BA%ADm
+
+## Ảnh chưa được dùng
+- Không có
+
+## Ảnh bị dùng trùng
+- /img/bia-2d_ho-diep-va-kinh-ngu_17307.jpg: Hồ Điệp Và Kình Ngư | Hồ Điệp Và Kình Ngư
+- /img/nhagiakim.jpg: Nhà Giả Kim | Nhà Giả Kim
+- https://placehold.co/400x560?text=Sapiens%3A%20L%C6%B0%E1%BB%A3c%20S%E1%BB%AD%20Lo%C3%A0i%20Ng%C6%B0%E1%BB%9Di: Sapiens: Lược Sử Loài Người | Sapiens: Lược Sử Loài Người
+- /img/sach_tieng_anh/9781009195119.jpg: Oxford English Grammar | Academic Writing Skills
+- /img/sach_tieng_anh/bia1-ielts-19aca.jpg: IELTS Reading Intensive | Cambridge IELTS 16 Academic
+
+## Danh sách các sách còn No Image
+- Không có

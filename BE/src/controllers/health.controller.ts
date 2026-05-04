@@ -1,3 +1,4 @@
+/** File này cung cấp endpoint health check cho app và database. */
 import { Request, Response } from "express";
 import { checkDbHealth } from "../services/health.service";
 

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import type { Book } from '../context/BookstoreContext';
@@ -6,6 +6,12 @@ import { formatPrice, discountedUnitPrice, fixImagePath } from '../utils/format'
 import { getRelatedBooks } from '../services/booksService';
 import RecommendationSection from '../components/recommendation/RecommendationSection';
 import { fetchBookById } from '../api/publicApi';
+import { bookDescriptionToElements } from '../utils/bookDescription';
+
+/** Chiều cao tối đa khi thu gọn mô tả (px) — vượt quá thì hiện "Xem thêm". */
+const COLLAPSED_DESC_MAX_PX = 280;
+/** Nếu đo chiều cao lệch (font/CSS), xem văn dài cỡ này thì vẫn hiện nút. */
+const LONG_DESCRIPTION_CHARS = 520;
 
 export default function BookDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +29,11 @@ export default function BookDetailPage() {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
+  /** Mô tả dài: thu gọn / mở rộng (giống mẫu Fahasa). */
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [descriptionNeedsToggle, setDescriptionNeedsToggle] = useState(false);
+  const descriptionMeasureRef = useRef<HTMLDivElement>(null);
+
 
   const bookWithExtras = displayBook ? (displayBook as any) : null;
   const imagesRaw = bookWithExtras?.images || (displayBook?.image ? [displayBook.image] : []);
@@ -45,8 +56,54 @@ export default function BookDetailPage() {
   useEffect(() => {
     setReviews([]);
     setReviewLoading(false);
+    setDescriptionExpanded(false);
+    setDescriptionNeedsToggle(false);
     return () => {};
   }, [id]);
+
+  const descriptionText = (displayBook?.description ?? book?.description ?? '').trim();
+
+  useEffect(() => {
+    let rafId = 0;
+    let resizeObserver: ResizeObserver | null = null;
+
+    const measure = (): void => {
+      const el = descriptionMeasureRef.current;
+      if (!el) {
+        setDescriptionNeedsToggle(descriptionText.length >= LONG_DESCRIPTION_CHARS);
+        return;
+      }
+      const tallEnough = el.scrollHeight > COLLAPSED_DESC_MAX_PX + 8;
+      const longEnough = descriptionText.length >= LONG_DESCRIPTION_CHARS;
+      setDescriptionNeedsToggle(tallEnough || longEnough);
+    };
+
+    /** Đo sau layout (double rAF tránh scrollHeight = 0 lúc mới paint / font loading). */
+    const scheduleMeasure = (): void => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        requestAnimationFrame(measure);
+      });
+    };
+
+    const attachResizeObserver = (): void => {
+      resizeObserver?.disconnect();
+      const el = descriptionMeasureRef.current;
+      if (typeof ResizeObserver === 'undefined' || !el) return;
+      resizeObserver = new ResizeObserver(() => scheduleMeasure());
+      resizeObserver.observe(el);
+    };
+
+    scheduleMeasure();
+    attachResizeObserver();
+    window.addEventListener('resize', scheduleMeasure);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', scheduleMeasure);
+    };
+  }, [descriptionText, displayBook?.id]);
 
   useEffect(() => {
     if (!id) return;
@@ -445,7 +502,26 @@ export default function BookDetailPage() {
                 <div className="details-block-header" style={{ marginTop: 20 }}>Mô tả sản phẩm</div>
                 <div className="product-description">
                   <h3>{book.title}</h3>
-                  <div className="description-content">{book.description || 'Chưa có mô tả'}</div>
+                  <div
+                    className={
+                      descriptionNeedsToggle && !descriptionExpanded
+                        ? 'description-content-shell description-content-shell--collapsed'
+                        : 'description-content-shell'
+                    }
+                  >
+                    <div ref={descriptionMeasureRef} className="description-content">
+                      {descriptionText ? bookDescriptionToElements(descriptionText) : 'Chưa có mô tả'}
+                    </div>
+                  </div>
+                  {descriptionNeedsToggle && (
+                    <button
+                      type="button"
+                      className="product-description-toggle"
+                      onClick={() => setDescriptionExpanded((v) => !v)}
+                    >
+                      {descriptionExpanded ? 'Rút gọn' : 'Xem thêm'}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

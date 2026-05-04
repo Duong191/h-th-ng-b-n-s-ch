@@ -5,6 +5,8 @@ export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   user: User;
+  roles: string[];
+  permissions: string[];
 }
 
 export async function loginRequest(email: string, password: string): Promise<LoginResponse> {
@@ -20,8 +22,8 @@ export async function registerRequest(payload: {
   email: string;
   password: string;
   phone?: string;
-}): Promise<{ user: User }> {
-  return httpRequest<{ user: User }>('/auth/register', {
+}): Promise<LoginResponse> {
+  return httpRequest<LoginResponse>('/auth/register', {
     method: 'POST',
     body: JSON.stringify(payload),
   });

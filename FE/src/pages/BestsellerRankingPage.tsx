@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import { getBestSellersByCategory } from '../services/booksService';
-import { formatPrice } from '../utils/format';
+import { formatPrice, fixImagePath } from '../utils/format';
 
 export default function BestsellerRankingPage() {
   const { data, loading } = useBookstore();
@@ -40,7 +40,16 @@ export default function BestsellerRankingPage() {
             ranking.map((book, index) => (
               <div key={book.id} style={{ borderBottom: '1px solid #eee', padding: 20, display: 'flex', gap: 20 }}>
                 <div style={{ fontWeight: 'bold', fontSize: 24 }}>{index + 1}</div>
-                <img src={book.image} alt={book.title} style={{ width: 60, height: 90, objectFit: 'cover' }} />
+                <img
+                  src={fixImagePath((book as any).images?.[0] || book.image)}
+                  alt={book.title}
+                  style={{ width: 60, height: 90, objectFit: 'cover' }}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = 'https://placehold.co/240x320?text=No+Image';
+                  }}
+                />
                 <div style={{ flex: 1 }}>
                   <NavLink to={`/books/${book.id}`}>
                     <h3>{book.title}</h3>

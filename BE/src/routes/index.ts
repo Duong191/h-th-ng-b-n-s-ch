@@ -1,3 +1,4 @@
+/** File này gom toàn bộ route API và gắn các endpoint hệ thống. */
 import { Router } from "express";
 import authRoutes from "./auth.routes";
 import usersRoutes from "./users.routes";

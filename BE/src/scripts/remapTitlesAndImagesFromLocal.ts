@@ -1,3 +1,4 @@
+/** File này dò ảnh local để remap lại tiêu đề và ảnh bìa cho sách. */
 import fs from "fs";
 import path from "path";
 import { getDb, sql } from "../config/db";

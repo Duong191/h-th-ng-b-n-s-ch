@@ -66,6 +66,9 @@ export interface User {
     year: string;
   };
   role: 'user' | 'admin' | 'staff';
+  /** RBAC: từ API login / users/me khi backend trả về */
+  roles?: string[];
+  permissions?: string[];
   address: {
     street: string;
     city: string;
@@ -541,8 +544,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         const parts = name.trim().split(/\s+/);
         const firstName = parts[0] || 'User';
         const lastName = parts.slice(1).join(' ') || 'User';
-        await registerRequest({ firstName, lastName, email, password, phone });
-        const { accessToken, refreshToken, user } = await loginRequest(email, password);
+        const { accessToken, refreshToken, user } = await registerRequest({ firstName, lastName, email, password, phone });
         const [orders, inventoryLogs, cartItems] = await Promise.all([
           getOrders(accessToken).catch(() => []),
           getInventoryLogsRequest(accessToken).catch(() => []),
@@ -821,6 +823,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           : String(publishRaw).match(/^\d{4}$/)
             ? `${publishRaw}-01-01`
             : String(publishRaw);
+      const imagesArr = Array.isArray(payload.images)
+        ? (payload.images as unknown[]).map((x) => String(x)).filter(Boolean)
+        : [];
       const created = await createBookRequest(token, {
         title: payload.title,
         author: payload.author,
@@ -829,7 +834,8 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         stock: Number(payload.stock),
         categoryId,
         description: payload.description,
-        image: payload.image,
+        ...(imagesArr.length ? { image: imagesArr[0] } : {}),
+        ...(imagesArr.length ? { images: imagesArr } : {}),
         isbn,
         publisher: payload.publisher,
         publishDate,
@@ -866,6 +872,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
             ? `${publishRaw}-01-01`
             : String(publishRaw);
       try {
+        const imagesPayload = Array.isArray(payload.images)
+          ? (payload.images as unknown[]).map((x) => String(x)).filter(Boolean)
+          : undefined;
         const updated = await updateBookRequest(token, bookId, {
           title: payload.title,
           author: payload.author,
@@ -874,7 +883,12 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           stock: payload.stock == null || payload.stock === '' ? undefined : Number(payload.stock),
           categoryId,
           description: payload.description,
-          image: payload.image,
+          ...(payload.image != null && payload.image !== ''
+            ? { image: payload.image }
+            : imagesPayload?.length
+              ? { image: imagesPayload[0] }
+              : {}),
+          ...(imagesPayload !== undefined ? { images: imagesPayload } : {}),
           isbn,
           publisher: payload.publisher,
           publishDate,

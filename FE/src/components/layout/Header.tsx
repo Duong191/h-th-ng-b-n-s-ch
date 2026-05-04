@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { NavLink, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useBookstore } from '../../context/BookstoreContext';
 
 interface HeaderProps {
@@ -8,10 +8,19 @@ interface HeaderProps {
 
 export default function Header({ topBarVariant = 'default' }: HeaderProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { data, currentUser, cartItemCount, logout } = useBookstore();
   const [search, setSearch] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
+
+  /** Trùng với URL `/shop?search=…` để không bị lệch (URL lọc nhưng ô input còn chữ cũ). */
+  useEffect(() => {
+    if (!location.pathname.startsWith('/shop')) return;
+    const q = searchParams.get('search');
+    setSearch(q ?? '');
+  }, [location.pathname, location.search, searchParams]);
 
   const detailed = data?.detailedCategories || [];
   
@@ -23,6 +32,47 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
     const per = Math.ceil(detailed.length / 4) || 1;
     return [0, 1, 2, 3].map((i) => detailed.slice(i * per, i * per + per));
   }, [detailed]);
+
+  const fallbackSubsByCategory: Record<string, string[]> = {
+    'khoa hoc': [
+      'Khoa học thường thức',
+      'Khám phá vũ trụ',
+      'Sinh học - Y học',
+      'Môi trường - Trái đất',
+    ],
+  };
+
+  const getCategorySubs = (category: { name: string; id: string; subCategories?: { name: string; link: string }[] }) => {
+    const existing = (category.subCategories || []).slice(0, 4);
+    if (existing.length >= 4) return existing;
+
+    const normalizedName = String(category.name || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, (ch) => (ch === 'đ' ? 'd' : 'D'))
+      .toLowerCase()
+      .trim();
+    const fallbackNames = fallbackSubsByCategory[normalizedName] || [];
+    const fallbackSubs = fallbackNames.map((name) => ({
+      name,
+      link: `/shop?category=${encodeURIComponent(String(category.id))}&sub=${encodeURIComponent(
+        name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[đĐ]/g, (ch) => (ch === 'đ' ? 'd' : 'D'))
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '')
+      )}`,
+    }));
+
+    const merged = [...existing];
+    for (const item of fallbackSubs) {
+      if (merged.length >= 4) break;
+      if (!merged.some((x) => x.name === item.name)) merged.push(item);
+    }
+    return merged;
+  };
 
   /** Giỏ hàng storefront: ẩn với admin/staff; hiển thị với khách và khách hàng (role user). */
   const showStorefrontCart =
@@ -87,7 +137,7 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
                               <h3 className="category-title">{category.name}</h3>
                               <div className="category-subcategories">
                                 {(() => {
-                                  const subs = (category.subCategories || []).slice(0, 4);
+                                  const subs = getCategorySubs(category);
                                   const placeholders = Array.from({ length: Math.max(0, 4 - subs.length) });
                                   return (
                                     <>

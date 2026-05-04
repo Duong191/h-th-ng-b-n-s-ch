@@ -1,3 +1,4 @@
+/** File này chuyển đổi dữ liệu user từ DB sang format frontend. */
 type DbUserRow = {
   id: number | string;
   email: string;

@@ -1,8 +1,10 @@
+/** File này xác thực access token và nạp quyền người dùng vào request. */
 import { NextFunction, Request, Response } from "express";
 import { verifyAccessToken } from "../utils/jwt";
 import { AppError } from "../utils/appError";
 import { getUserAuthData } from "../services/rbac.service";
 
+/** Xác thực Bearer JWT; tải roles/permissions từ DB. */
 export const authMiddleware = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
@@ -21,3 +23,6 @@ export const authMiddleware = async (req: Request, _res: Response, next: NextFun
     next(error);
   }
 };
+
+/** Alias tên gọi authenticate() */
+export const authenticate = authMiddleware;

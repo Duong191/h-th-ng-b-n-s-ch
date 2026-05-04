@@ -1,3 +1,4 @@
+/** File này validate request bằng Zod trước khi vào controller. */
 import { NextFunction, Request, Response } from "express";
 import { ZodError, ZodTypeAny } from "zod";
 import { AppError } from "../utils/appError";

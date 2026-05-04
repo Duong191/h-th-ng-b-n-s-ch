@@ -1,3 +1,4 @@
+/** File này khai báo route lấy dữ liệu danh mục sách. */
 import { Router } from "express";
 import * as controller from "../controllers/category.controller";
 import { asyncHandler } from "../utils/asyncHandler";

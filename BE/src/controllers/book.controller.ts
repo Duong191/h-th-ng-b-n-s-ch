@@ -1,3 +1,4 @@
+/** File này xử lý API sách: danh sách, chi tiết và CRUD cho admin. */
 import { Request, Response } from "express";
 import * as bookService from "../services/book.service";
 
