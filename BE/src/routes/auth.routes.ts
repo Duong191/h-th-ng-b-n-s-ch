@@ -29,5 +29,10 @@ router.post(
 );
 router.post("/refresh", validateRequest(z.object({ body: z.object({ refreshToken: z.string().min(1) }) })), asyncHandler(controller.refresh));
 router.post("/logout", validateRequest(z.object({ body: z.object({ refreshToken: z.string().min(1) }) })), asyncHandler(controller.logout));
+router.post(
+  "/reset-password",
+  validateRequest(z.object({ body: z.object({ email: z.string().email() }) })),
+  asyncHandler(controller.resetPassword)
+);
 
 export default router;

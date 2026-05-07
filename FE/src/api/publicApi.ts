@@ -3,6 +3,7 @@ import type { Book } from '../context/BookstoreContext';
 
 type ListResponse<T> = T[] | { items?: T[]; data?: T[] };
 
+/** Đồng bộ format response list giữa nhiều endpoint backend. */
 function unwrapList<T>(payload: ListResponse<T>): T[] {
   if (Array.isArray(payload)) return payload;
   if (Array.isArray(payload.items)) return payload.items;
@@ -66,20 +67,24 @@ export function mapBook(raw: RawBook): Book & {
   };
 }
 
+/** Health check nhanh cho API backend. */
 export async function getHealthStatus(): Promise<{ status: string; service: string }> {
   return httpRequest('/health');
 }
 
+/** Lấy danh sách sách public rồi map về model FE thống nhất. */
 export async function getBooks<TBook>(params = 'page=1&limit=100'): Promise<TBook[]> {
   const data = await httpRequest<ListResponse<RawBook>>(`/books?${params}`);
   return unwrapList(data).map((b) => mapBook(b) as unknown as TBook);
 }
 
+/** Lấy danh mục cấp 1. */
 export async function getCategories<TCategory>(): Promise<TCategory[]> {
   const data = await httpRequest<ListResponse<TCategory>>('/categories');
   return unwrapList(data);
 }
 
+/** Lấy danh mục chi tiết để render mega menu. */
 export async function getDetailedCategories<TDetailedCategory>(): Promise<TDetailedCategory[]> {
   const data = await httpRequest<ListResponse<TDetailedCategory>>('/categories/detailed');
   return unwrapList(data);

@@ -1,27 +1,27 @@
 /* CSS VARIABLES */
 :root {
     /* PRIMARY COLORS */
-    --primary-color: #e74c3c;
-    --primary-dark: #c0392b;
-    --primary-light: #fadbd8;
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #dbeafe;
     
-    --secondary-color: #2c3e50;
-    --accent-color: #f39c12;
+    --secondary-color: #0f172a;
+    --accent-color: #38bdf8;
     
     /* BACKGROUND COLORS */
     --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
+    --bg-secondary: #f5f7fb;
     --bg-dark: #2c3e50;
     
     /* TEXT COLORS */
-    --text-primary: #2c3e50;
-    --text-secondary: #7f8c8d;
-    --text-muted: #95a5a6;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
     --text-light: #bdc3c7;
     
     /* BORDER COLORS */
-    --border-color: #e9ecef;
-    --border-light: #f1f2f6;
+    --border-color: #e2e8f0;
+    --border-light: #f1f5f9;
     
     /* FONT SIZES - Fluid Typography with clamp() */
     --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
@@ -45,15 +45,15 @@
     --spacing-2xl: 3rem;
     
     /* BORDER RADIUS */
-    --border-radius: 0.375rem;
-    --border-radius-lg: 0.5rem;
-    --border-radius-xl: 0.75rem;
+    --border-radius: 0.625rem;
+    --border-radius-lg: 0.875rem;
+    --border-radius-xl: 1.125rem;
     
     /* SHADOWS */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.1);
+    --shadow-lg: 0 16px 32px rgba(15, 23, 42, 0.12);
+    --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.16);
     
     /* TRANSITIONS */
     --transition: all 0.3s ease;

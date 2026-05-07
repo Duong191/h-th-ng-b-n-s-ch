@@ -1,9 +1,14 @@
-import { useState, useMemo, FormEvent } from 'react';
+import { useState, useMemo, FormEvent, useEffect } from 'react';
 import { useBookstore } from '../../context/BookstoreContext';
 import { formatDateTime, formatPrice } from '../../utils/format';
 
 export default function AdminInventoryPage() {
-  const { data, getBookById, getUserById, addInventoryLog, getInventoryLogs } = useBookstore();
+  const { data, getBookById, getUserById, addInventoryLog, getInventoryLogs, refreshInventoryLogsFromApi } =
+    useBookstore();
+
+  useEffect(() => {
+    void refreshInventoryLogsFromApi();
+  }, [refreshInventoryLogsFromApi]);
   const books = data?.books || [];
   const [showImportForm, setShowImportForm] = useState(false);
   const [filterType, setFilterType] = useState<'all' | 'import' | 'export'>('all');
@@ -38,7 +43,8 @@ export default function AdminInventoryPage() {
       return;
     }
 
-    await Promise.resolve(addInventoryLog(bookId, 'import', quantity, note, importPrice));
+    const ok = await addInventoryLog(bookId, 'import', quantity, note, importPrice);
+    if (!ok) return;
     setShowImportForm(false);
     (e.target as HTMLFormElement).reset();
   };
@@ -157,7 +163,7 @@ export default function AdminInventoryPage() {
                     <td style={{ fontWeight: 'bold', color: log.type === 'import' ? '#e74c3c' : '#27ae60' }}>
                       {log.type === 'import' && totalCost > 0 ? `-${formatPrice(totalCost)}` : '-'}
                     </td>
-                    <td>{user?.name || 'System'}</td>
+                    <td>{log.creatorName?.trim() || user?.name || '—'}</td>
                     <td>{log.note || '-'}</td>
                   </tr>
                 );
@@ -170,28 +176,11 @@ export default function AdminInventoryPage() {
       {/* Import Stock Modal */}
       {showImportForm && (
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0,0,0,0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-          }}
+          className="admin-modal-backdrop"
           onClick={() => setShowImportForm(false)}
         >
           <div
-            style={{
-              background: 'white',
-              padding: 40,
-              borderRadius: 10,
-              maxWidth: 600,
-              width: '90%',
-            }}
+            className="admin-modal"
             onClick={(e) => e.stopPropagation()}
           >
             <h2>Nhập Kho</h2>

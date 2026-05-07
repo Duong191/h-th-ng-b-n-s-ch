@@ -2,6 +2,93 @@
 import { getDb, sql } from "../config/db";
 import { parsePagination } from "../utils/pagination";
 
+export type InventoryTransactionItem = {
+  id: string;
+  bookId: string;
+  type: "import" | "export";
+  quantity: number;
+  importPrice?: number;
+  note: string;
+  userId: string;
+  createdAt: string;
+  creatorName?: string;
+};
+
+const mapInventoryTransactionRow = (row: Record<string, unknown>): InventoryTransactionItem => {
+  const rawType = String(row.transaction_type ?? "").toLowerCase();
+  const qty = Number(row.quantity);
+  const quantity = Number.isFinite(qty) ? Math.abs(qty) : 0;
+
+  let uiType: "import" | "export" = "import";
+  if (rawType === "import") uiType = "import";
+  else if (rawType === "export" || rawType === "order") uiType = "export";
+  else if (rawType === "adjustment") uiType = qty < 0 ? "export" : "import";
+
+  let createdIso: string;
+  const ca = row.created_at as Date | string | undefined;
+  if (ca instanceof Date) createdIso = ca.toISOString();
+  else createdIso = new Date(String(ca)).toISOString();
+
+  const cf = row.creator_first_name != null ? String(row.creator_first_name).trim() : "";
+  const cl = row.creator_last_name != null ? String(row.creator_last_name).trim() : "";
+  const creatorName = [cf, cl].filter(Boolean).join(" ").trim();
+
+  let importPrice: number | undefined;
+  if (row.import_price != null && row.import_price !== "") {
+    const ip = Number(row.import_price);
+    if (Number.isFinite(ip)) importPrice = ip;
+  }
+
+  return {
+    id: String(row.id),
+    bookId: String(row.book_id),
+    type: uiType,
+    quantity,
+    ...(importPrice !== undefined ? { importPrice } : {}),
+    note: row.note != null ? String(row.note) : "",
+    userId: row.created_by != null ? String(row.created_by) : "",
+    createdAt: createdIso,
+    ...(creatorName ? { creatorName } : {})
+  };
+};
+
+/** Lịch sử giao dịch từ `inventory_transactions` (FE hiển thị sau reload / đóng tab). */
+export const listInventoryTransactions = async (
+  query: Record<string, unknown>
+): Promise<{ items: InventoryTransactionItem[]; meta: { page: number; limit: number; total: number } }> => {
+  const pageRaw = Number(query.page ?? 1);
+  const limitRaw = Number(query.limit ?? 200);
+  const page = Number.isFinite(pageRaw) ? Math.max(1, Math.floor(pageRaw)) : 1;
+  const limit = Number.isFinite(limitRaw) ? Math.min(500, Math.max(1, Math.floor(limitRaw))) : 200;
+  const offset = (page - 1) * limit;
+
+  const pool = await getDb();
+  const rs = await pool
+    .request()
+    .input("limit", sql.Int, limit)
+    .input("offset", sql.Int, offset)
+    .query(
+      `SELECT it.id, it.book_id, it.transaction_type, it.quantity, it.import_price, it.note,
+              it.created_by, it.created_at,
+              u.first_name AS creator_first_name, u.last_name AS creator_last_name
+       FROM inventory_transactions it
+       LEFT JOIN users u ON u.id = it.created_by AND u.is_deleted = 0
+       ORDER BY it.created_at DESC, it.id DESC
+       OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY;
+
+       SELECT COUNT(*) AS total FROM inventory_transactions;`
+    );
+
+  const recordsets = rs.recordsets as unknown as Array<Array<Record<string, unknown>>>;
+  const rows = recordsets[0] ?? [];
+  const total = Number((recordsets[1]?.[0] as { total?: number })?.total ?? 0);
+
+  return {
+    items: rows.map((r) => mapInventoryTransactionRow(r)),
+    meta: { page, limit, total }
+  };
+};
+
 export const listInventory = async (query: Record<string, unknown>) => {
   const { page, limit, offset } = parsePagination(query);
   const search = String(query.search ?? "").trim();

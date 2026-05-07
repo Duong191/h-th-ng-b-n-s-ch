@@ -1,5 +1,6 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { NavLink, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { resetPasswordByEmailRequest } from '../api/authApi';
 import { useBookstore } from '../context/BookstoreContext';
 
 export default function LoginPage() {
@@ -21,6 +22,7 @@ export default function LoginPage() {
     }
   }, [currentUser, navigate, location.state]);
 
+  /** Đăng nhập và quay lại trang user đang đứng trước khi bị chặn auth. */
   async function onLogin(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -33,13 +35,27 @@ export default function LoginPage() {
     }
   }
 
-  function onForgotPassword(e: FormEvent<HTMLFormElement>) {
+  /** Quên mật khẩu: reset theo email về mật khẩu mặc định từ backend. */
+  async function onForgotPassword(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    showToast('Quên mật khẩu: liên hệ quản trị hoặc reset mật khẩu trong database.', 'info');
-    setShowForgotPassword(false);
-    setTab('login');
+    const fd = new FormData(e.currentTarget);
+    const email = (fd.get('forgotEmail') as string)?.trim() || '';
+    if (!email) {
+      showToast('Vui lòng nhập email.', 'error');
+      return;
+    }
+    try {
+      await resetPasswordByEmailRequest(email);
+      showToast('Đã đặt lại mật khẩu. Đăng nhập bằng mật khẩu mặc định: 1', 'success');
+      setShowForgotPassword(false);
+      setTab('login');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Không thể đặt lại mật khẩu.';
+      showToast(msg, 'error');
+    }
   }
 
+  /** Đăng ký tài khoản mới và tự đăng nhập ngay sau khi tạo thành công. */
   async function onRegister(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -173,38 +189,29 @@ export default function LoginPage() {
       {/* Forgot Password Modal */}
       {showForgotPassword && (
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0,0,0,0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-          }}
+          className="auth-modal-backdrop"
           onClick={() => setShowForgotPassword(false)}
         >
           <div
-            style={{
-              background: 'white',
-              padding: 40,
-              borderRadius: 10,
-              maxWidth: 500,
-              width: '90%',
-            }}
+            className="auth-modal"
             onClick={(e) => e.stopPropagation()}
           >
             <h2>Quên Mật Khẩu</h2>
             <p style={{ color: '#666', marginTop: 10 }}>
-              Nhập email của bạn để nhận mật khẩu mới
+              Nhập email đã đăng ký. Mật khẩu sẽ được đặt lại thành <strong>1</strong> (giống tài khoản demo).
             </p>
             <form onSubmit={onForgotPassword} style={{ marginTop: 20 }}>
               <div className="form-group">
-                <label>Email *</label>
-                <input type="email" name="email" className="form-input" required autoFocus />
+                <label htmlFor="forgotEmail">Email *</label>
+                <input
+                  type="email"
+                  id="forgotEmail"
+                  name="forgotEmail"
+                  className="form-input"
+                  required
+                  autoComplete="email"
+                  autoFocus
+                />
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
                 <button

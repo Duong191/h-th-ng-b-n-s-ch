@@ -192,3 +192,27 @@ export const logout = async (token: string): Promise<void> => {
   const pool = await getDb();
   await pool.request().input("token", sql.NVarChar(500), token).query("DELETE FROM refresh_tokens WHERE token=@token");
 };
+
+/**
+ * Đặt lại mật khẩu theo email (quên mật khẩu — dev/demo): về mật khẩu mặc định "1".
+ * Xóa refresh token của user để buộc đăng nhập lại.
+ */
+export const resetPasswordToDefault = async (emailRaw: string): Promise<void> => {
+  const email = normalizeEmail(emailRaw);
+  const pool = await getDb();
+  const rs = await pool.request().input("email", sql.NVarChar(255), email).query(
+    `SELECT id FROM users WHERE LOWER(LTRIM(RTRIM(email))) = @email AND is_deleted = 0 AND is_active = 1`
+  );
+  if (!rs.recordset.length) throw new AppError(404, "Không tìm thấy tài khoản với email này");
+
+  const userId = Number((rs.recordset[0] as { id: number }).id);
+  await pool
+    .request()
+    .input("id", sql.BigInt, userId)
+    .input("hash", sql.NVarChar(255), BCRYPT_HASH_DEV_PASSWORD_1)
+    .query(
+      `UPDATE users SET password_hash = @hash, updated_at = GETUTCDATE() WHERE id = @id AND is_deleted = 0`
+    );
+
+  await pool.request().input("userId", sql.BigInt, userId).query(`DELETE FROM refresh_tokens WHERE user_id = @userId`);
+};

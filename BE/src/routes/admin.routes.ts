@@ -2,6 +2,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import * as bookController from "../controllers/book.controller";
+import * as adminStatsController from "../controllers/adminStats.controller";
 import * as inventoryController from "../controllers/inventory.controller";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { checkPermission } from "../middlewares/checkPermission";
@@ -11,6 +12,8 @@ import { asyncHandler } from "../utils/asyncHandler";
 const router = Router();
 router.use(authMiddleware);
 router.use(checkPermission(["admin", "staff"]));
+
+router.get("/stats", asyncHandler(adminStatsController.getAdminStats));
 
 router.post(
   "/books",
@@ -34,6 +37,7 @@ router.post(
 router.put("/books/:id", asyncHandler(bookController.updateBook));
 router.delete("/books/:id", asyncHandler(bookController.deleteBook));
 
+router.get("/inventory/transactions", asyncHandler(inventoryController.listInventoryTransactions));
 router.get("/inventory", asyncHandler(inventoryController.listInventory));
 router.post(
   "/inventory",

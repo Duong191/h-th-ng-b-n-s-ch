@@ -1,10 +1,13 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useBookstore } from '../../context/BookstoreContext';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser, logout, data, refreshBooksFromApi } = useBookstore();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   
   const pendingOrdersCount = useMemo(() => {
     return (data?.orders || []).filter(order => order.status === 'pending').length;
@@ -28,8 +31,23 @@ export default function AdminLayout() {
     }
   };
 
+  const breadcrumbLabel = useMemo(() => {
+    const path = location.pathname;
+    if (path.includes('/admin/dashboard')) return 'Dashboard';
+    if (path.includes('/admin/books')) return 'Quản lý sách';
+    if (path.includes('/admin/inventory')) return 'Quản lý kho';
+    if (path.includes('/admin/orders')) return 'Quản lý đơn hàng';
+    if (path.includes('/admin/blog')) return 'Quản lý blog';
+    return 'Admin';
+  }, [location.pathname]);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   return (
-    <div className="admin-container">
+    <div className={`admin-container ${sidebarCollapsed ? 'sidebar-collapsed' : ''} ${mobileOpen ? 'sidebar-open' : ''}`}>
+      <div className="admin-sidebar-overlay" onClick={() => setMobileOpen(false)} />
       {/* Sidebar */}
       <aside className="admin-sidebar">
         <div className="admin-sidebar-header">
@@ -76,10 +94,16 @@ export default function AdminLayout() {
         {/* Header */}
         <header className="admin-header">
           <div className="admin-header-left">
-            <button className="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <button className="mobile-sidebar-toggle" type="button" onClick={() => setMobileOpen((v) => !v)}>
               <i className="fas fa-bars"></i>
             </button>
-            <h1 className="admin-header-title">Admin Panel</h1>
+            <button className="desktop-sidebar-toggle" type="button" onClick={() => setSidebarCollapsed((v) => !v)}>
+              <i className={`fas ${sidebarCollapsed ? 'fa-angles-right' : 'fa-angles-left'}`}></i>
+            </button>
+            <div className="admin-title-wrap">
+              <h1 className="admin-header-title">Admin Panel</h1>
+              <p className="admin-breadcrumb">Trang chủ admin / {breadcrumbLabel}</p>
+            </div>
           </div>
           <div className="admin-header-right">
             <div className="admin-user-info">

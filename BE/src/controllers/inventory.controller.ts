@@ -2,6 +2,11 @@
 import { Request, Response } from "express";
 import * as inventoryService from "../services/inventory.service";
 
+export const listInventoryTransactions = async (req: Request, res: Response) => {
+  const data = await inventoryService.listInventoryTransactions(req.query as Record<string, unknown>);
+  res.json(data);
+};
+
 export const listInventory = async (req: Request, res: Response) => {
   const data = await inventoryService.listInventory(req.query as Record<string, unknown>);
   res.json(data);

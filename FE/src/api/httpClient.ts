@@ -8,6 +8,7 @@ interface RequestOptions extends RequestInit {
   token?: string;
 }
 
+/** Xác định lỗi auth có thể thử refresh token rồi gọi lại request. */
 function isAuthRecoverable(status: number, message: string): boolean {
   const m = message.toLowerCase();
   if (status === 401) return true;
@@ -18,6 +19,7 @@ function isAuthRecoverable(status: number, message: string): boolean {
 
 let refreshInFlight: Promise<string | null> | null = null;
 
+/** Refresh access token; dùng lock `refreshInFlight` để tránh gọi trùng. */
 async function refreshAccessToken(): Promise<string | null> {
   if (refreshInFlight) return refreshInFlight;
 
@@ -45,6 +47,7 @@ async function refreshAccessToken(): Promise<string | null> {
   return refreshInFlight;
 }
 
+/** Ưu tiên lấy message JSON từ backend khi request lỗi. */
 async function readErrorMessage(response: Response): Promise<string> {
   let message = `Request failed with status ${response.status}`;
   try {
@@ -56,6 +59,7 @@ async function readErrorMessage(response: Response): Promise<string> {
   return message;
 }
 
+/** Wrapper fetch chung: tự gắn token, tự retry 1 lần khi token hết hạn. */
 export async function httpRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { token: initialToken, headers, ...rest } = options;
   let token = initialToken;

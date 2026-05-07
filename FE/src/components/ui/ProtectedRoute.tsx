@@ -9,7 +9,14 @@ interface ProtectedRouteProps {
 export function RequireAuth({ children }: ProtectedRouteProps) {
   const { currentUser, loading } = useBookstore();
   const loc = useLocation();
-  if (loading) return <div className="container" style={{ padding: 40 }}>Đang tải…</div>;
+  if (loading) {
+    return (
+      <div className="container app-loading-state">
+        <div className="app-spinner" />
+        <p>Đang tải dữ liệu phiên đăng nhập...</p>
+      </div>
+    );
+  }
   if (!currentUser) return <Navigate to="/login" state={{ from: loc }} replace />;
   return <>{children}</>;
 }
@@ -17,7 +24,14 @@ export function RequireAuth({ children }: ProtectedRouteProps) {
 export function RequireAdmin({ children }: ProtectedRouteProps) {
   const { currentUser, loading } = useBookstore();
   const loc = useLocation();
-  if (loading) return <div className="container" style={{ padding: 40 }}>Đang tải…</div>;
+  if (loading) {
+    return (
+      <div className="container app-loading-state">
+        <div className="app-spinner" />
+        <p>Đang tải dữ liệu quyền truy cập...</p>
+      </div>
+    );
+  }
   if (!currentUser) return <Navigate to="/login" state={{ from: loc }} replace />;
   if (currentUser.role !== 'admin' && currentUser.role !== 'staff') {
     return <Navigate to="/" replace />;

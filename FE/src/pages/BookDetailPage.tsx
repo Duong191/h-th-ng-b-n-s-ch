@@ -288,7 +288,7 @@ export default function BookDetailPage() {
                   <i className="fas fa-chevron-right"></i>
                 </div>
                 <div className="policy-item">
-                  <img src="/icon/book_details/sync.svg" alt="Sync" className="policy-icon" />
+                  <i className="fas fa-arrow-rotate-left policy-icon" aria-hidden />
                   <span>Chính sách đổi trả: Đổi trả miễn phí toàn quốc</span>
                   <i className="fas fa-chevron-right"></i>
                 </div>
@@ -395,7 +395,7 @@ export default function BookDetailPage() {
                 </div>
 
                 <div className="shipping-card__method-box">
-                  <img src="/icon/book_details/delivery-truck.svg" alt="" className="shipping-card__method-icon" />
+                  <i className="fas fa-truck-fast shipping-card__method-icon" aria-hidden />
                   <div className="shipping-card__method-text">
                     <span className="shipping-card__method-title">Giao hàng tiêu chuẩn</span>
                   </div>

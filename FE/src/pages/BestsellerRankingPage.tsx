@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
 import { getBestSellersByCategory } from '../services/booksService';
 import { formatPrice, fixImagePath } from '../utils/format';
@@ -38,26 +38,37 @@ export default function BestsellerRankingPage() {
             <p>Không có sách trong danh mục này</p>
           ) : (
             ranking.map((book, index) => (
-              <div key={book.id} style={{ borderBottom: '1px solid #eee', padding: 20, display: 'flex', gap: 20 }}>
+              <Link
+                key={book.id}
+                to={`/books/${encodeURIComponent(String(book.id))}`}
+                style={{
+                  borderBottom: '1px solid #eee',
+                  padding: 20,
+                  display: 'flex',
+                  gap: 20,
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                }}
+                className="bestseller-ranking-row-link"
+              >
                 <div style={{ fontWeight: 'bold', fontSize: 24 }}>{index + 1}</div>
                 <img
                   src={fixImagePath((book as any).images?.[0] || book.image)}
                   alt={book.title}
-                  style={{ width: 60, height: 90, objectFit: 'cover' }}
+                  style={{ width: 60, height: 90, objectFit: 'cover', flexShrink: 0 }}
                   onError={(e) => {
                     const target = e.currentTarget;
                     target.onerror = null;
                     target.src = 'https://placehold.co/240x320?text=No+Image';
                   }}
                 />
-                <div style={{ flex: 1 }}>
-                  <NavLink to={`/books/${book.id}`}>
-                    <h3>{book.title}</h3>
-                  </NavLink>
-                  <p>{book.author}</p>
-                  <p>{formatPrice(book.price)}</p>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>{book.title}</h3>
+                  <p style={{ margin: '0 0 6px' }}>{book.author}</p>
+                  <p style={{ margin: 0 }}>{formatPrice(book.price)}</p>
                 </div>
-              </div>
+              </Link>
             ))
           )}
         </div>

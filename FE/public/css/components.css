@@ -1381,3 +1381,101 @@
         font-size: var(--font-size-xs);
     }
 }
+
+/* ==========================================
+   AUTH V2 (UI refresh, giữ nguyên logic)
+========================================== */
+.auth-page {
+    background:
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 38%),
+        radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.14), transparent 40%),
+        #f4f7fc;
+    min-height: calc(100vh - 180px);
+}
+
+.auth-section {
+    padding: 44px 0;
+}
+
+.auth-card {
+    border: 1px solid #dce5f3;
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.14);
+    max-width: 500px;
+}
+
+.auth-tabs {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 6px;
+}
+
+.auth-tabs .tab-btn {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.auth-tabs .tab-btn.active {
+    color: #0f172a;
+    border-bottom-color: transparent;
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.auth-title {
+    margin-bottom: 6px;
+}
+
+.auth-subtitle {
+    margin-bottom: 0;
+}
+
+.auth-form .form-input {
+    min-height: 46px;
+    border-radius: 11px;
+    border: 1px solid #dbe3f3;
+    background: #fff;
+}
+
+.auth-form .form-input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.auth-submit-btn {
+    margin-top: 6px;
+    min-height: 46px;
+    border-radius: 11px;
+}
+
+.demo-accounts {
+    border-top: 1px dashed #d6deec;
+    background: #f8fbff;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.auth-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.48);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+}
+
+.auth-modal {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #dbe6f6;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    max-width: 520px;
+    width: 100%;
+    padding: 28px;
+}

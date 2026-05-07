@@ -9,12 +9,14 @@ interface OrderResponse {
   item: Order;
 }
 
+/** Lấy danh sách đơn hàng của user hiện tại. */
 export async function getOrders(token: string): Promise<Order[]> {
   const data = await httpRequest<OrdersResponse & { data?: Order[] }>('/orders?limit=200', { token });
   const raw = data.items ?? data.data;
   return Array.isArray(raw) ? raw : [];
 }
 
+/** Tạo đơn hàng mới; fallback từ `orderId` nếu backend chưa trả full `item`. */
 export async function createOrderRequest(
   token: string,
   payload: Record<string, unknown>,
@@ -39,6 +41,7 @@ export async function createOrderRequest(
   throw new Error('Không tạo được đơn hàng');
 }
 
+/** Đổi trạng thái đơn hàng (luồng admin). */
 export async function updateOrderStatusRequest(token: string, orderId: string, status: string): Promise<void> {
   await httpRequest(`/orders/${orderId}/status`, {
     method: 'PATCH',

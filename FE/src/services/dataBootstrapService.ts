@@ -18,6 +18,7 @@ function normalizeKey(value: string): string {
     .trim();
 }
 
+/** Nhận diện URL ảnh kém chất lượng để thay bằng nguồn recovered. */
 function isBadImagePath(path?: string): boolean {
   const p = String(path || '').trim().toLowerCase();
   if (!p) return true;
@@ -26,6 +27,7 @@ function isBadImagePath(path?: string): boolean {
   return false;
 }
 
+/** Tạo detailed categories fallback khi API chưa có dữ liệu đầy đủ. */
 function buildFallbackDetailedCategories(categories: Category[]): DetailedCategory[] {
   const fallbackSubsBySlug: Record<string, string[]> = {
     'van-hoc': ['Tiểu Thuyết', 'Truyện Ngắn - Tản Văn', 'Light Novel', 'Ngôn Tình'],
@@ -61,6 +63,7 @@ function buildFallbackDetailedCategories(categories: Category[]): DetailedCatego
   }));
 }
 
+/** Map dữ liệu recovered JSON về model Book của FE. */
 function mapRecoveredBook(raw: Record<string, unknown>, categories: Category[]): Book & {
   category?: string;
   categoryName?: string;
@@ -117,6 +120,7 @@ function mapRecoveredBook(raw: Record<string, unknown>, categories: Category[]):
   };
 }
 
+/** Nạp dữ liệu recovered cục bộ để dự phòng khi API thiếu dữ liệu. */
 async function loadRecoveredLocalData(): Promise<{
   books: Book[];
   categories: Category[];
@@ -140,6 +144,7 @@ async function loadRecoveredLocalData(): Promise<{
   }
 }
 
+/** Bù ảnh tốt từ recovered vào sách API có ảnh lỗi/placeholder. */
 function enrichBooksWithRecoveredImages(apiBooks: Book[], recoveredBooks: Book[]): Book[] {
   const byIsbn = new Map<string, Book>();
   const byTitle = new Map<string, Book>();
@@ -171,6 +176,7 @@ function enrichBooksWithRecoveredImages(apiBooks: Book[], recoveredBooks: Book[]
   });
 }
 
+/** Bootstrap catalog: ưu tiên API, fallback recovered khi cần. */
 export async function bootstrapFromBackend(): Promise<BookstoreData | null> {
   try {
     const [books, categories, detailedCategories, blogs] = await Promise.all([

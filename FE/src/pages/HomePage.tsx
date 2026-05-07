@@ -264,7 +264,7 @@ export default function HomePage() {
             <div className="books-container">
               <div className="books-carousel" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                 {slicePage(featured, featPage).map((book) => (
-                  <div key={book.id} style={{ width: 200 }}>
+                  <div key={book.id} className="home-book-slot">
                     <BookCard book={book as any} onAddToCart={addToCart} />
                   </div>
                 ))}
@@ -307,7 +307,7 @@ export default function HomePage() {
                   <p style={{ padding: 40, color: '#666' }}>Chưa có sách mới — hãy thêm sách và bật “Mới” trong admin.</p>
                 ) : (
                   slicePage(newBooks, newBooksPage).map((book) => (
-                    <div key={book.id} style={{ width: 200 }}>
+                    <div key={book.id} className="home-book-slot">
                       <BookCard book={book as any} onAddToCart={addToCart} />
                     </div>
                   ))
@@ -375,7 +375,7 @@ export default function HomePage() {
                   <p style={{ padding: 40, color: '#666' }}>Chưa có sản phẩm nào</p>
                 ) : (
                   slicePage(comicFiltered, comicPage).map((book) => (
-                    <div key={book.id} style={{ width: 200 }}>
+                    <div key={book.id} className="home-book-slot">
                       <BookCard book={book as any} onAddToCart={addToCart} />
                     </div>
                   ))
@@ -550,7 +550,7 @@ export default function HomePage() {
                   <p style={{ padding: 40, color: '#666' }}>Chưa có sản phẩm nào</p>
                 ) : (
                   slicePage(foreignFiltered, foreignPage).map((book) => (
-                    <div key={book.id} style={{ width: 200 }}>
+                    <div key={book.id} className="home-book-slot">
                       <BookCard book={book as any} onAddToCart={addToCart} />
                     </div>
                   ))

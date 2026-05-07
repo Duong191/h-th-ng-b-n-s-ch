@@ -62,3 +62,12 @@ export const updateMe = async (
     );
   return getMe(userId);
 };
+
+/** Đếm tất cả tài khoản đang hoạt động (dashboard admin). */
+export const countActiveUsers = async (): Promise<number> => {
+  const pool = await getDb();
+  const rs = await pool.request().query(
+    `SELECT COUNT(*) AS cnt FROM users WHERE is_deleted = 0`
+  );
+  return Number(rs.recordset[0]?.cnt ?? 0);
+};

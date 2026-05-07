@@ -1,10 +1,15 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { getAdminStatsRequest } from '../../api/adminStatsApi';
 import { useBookstore } from '../../context/BookstoreContext';
 import { formatPrice, formatDate, fixImagePath } from '../../utils/format';
 
+const ACCESS_TOKEN_KEY = 'bookstoreAccessToken';
+
 export default function AdminDashboardPage() {
   const { data, getUserById, deleteBook, showToast } = useBookstore();
+  /** Tổng user thật từ DB; context chỉ có user đang đăng nhập nên không dùng data.users.length cho thống kê. */
+  const [dbTotalUsers, setDbTotalUsers] = useState<number | null>(null);
 
   const stats = useMemo(() => {
     const orders = data?.orders || [];
@@ -29,6 +34,31 @@ export default function AdminDashboardPage() {
       netRevenue,
     };
   }, [data]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+    if (!token) return;
+
+    const load = async () => {
+      try {
+        const { totalUsers } = await getAdminStatsRequest(token);
+        if (!cancelled) setDbTotalUsers(totalUsers);
+      } catch {
+        /* giữ fallback stats.totalUsers */
+      }
+    };
+
+    load();
+    const onFocus = () => {
+      load();
+    };
+    window.addEventListener('focus', onFocus);
+    return () => {
+      cancelled = true;
+      window.removeEventListener('focus', onFocus);
+    };
+  }, []);
 
   const recentOrders = useMemo(() => {
     return (data?.orders || [])
@@ -94,7 +124,7 @@ export default function AdminDashboardPage() {
             <i className="fas fa-users"></i>
           </div>
           <div className="stat-content">
-            <h3>{stats.totalUsers}</h3>
+            <h3>{dbTotalUsers ?? stats.totalUsers}</h3>
             <p>Tổng số người dùng</p>
           </div>
         </div>

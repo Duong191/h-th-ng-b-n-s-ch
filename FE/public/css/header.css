@@ -143,6 +143,12 @@
     background: #C0392B;
 }
 
+.nav-action-glyph {
+    font-size: 16px;
+    line-height: 1;
+    color: #fff;
+}
+
 /* NAV ACTIONS */
 .nav-actions {
     display: flex;
@@ -171,6 +177,12 @@
     font-size: 24px;
 }
 
+.cart-icon-glyph {
+    font-size: 22px;
+    color: #64748b;
+    transition: color 0.25s ease;
+}
+
 .cart-icon span {
     font-size: 12px;
     font-weight: 500;
@@ -181,6 +193,10 @@
     background: #F5F5F5;
     text-decoration: none;
     color: #333;
+}
+
+.cart-icon:hover .cart-icon-glyph {
+    color: #2563eb;
 }
 
 .cart-badge {
@@ -250,6 +266,12 @@
     font-size: 24px;
 }
 
+.category-icon-glyph {
+    font-size: 21px;
+    color: #64748b;
+    transition: color 0.25s ease;
+}
+
 .category-icon span {
     font-size: 12px;
     font-weight: 500;
@@ -260,6 +282,10 @@
     background: #F5F5F5;
     text-decoration: none;
     color: #333;
+}
+
+.category-icon:hover .category-icon-glyph {
+    color: #2563eb;
 }
 
 /* AUTH DROPDOWN */

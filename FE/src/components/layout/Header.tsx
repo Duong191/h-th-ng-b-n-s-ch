@@ -122,7 +122,7 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
                 onMouseLeave={() => setCatOpen(false)}
               >
                 <button type="button" className="category-icon" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                  <img src="/icon/ico_menu.jpg" alt="Menu" className="icon-img" />
+                  <i className="fas fa-table-cells-large category-icon-glyph" aria-hidden />
                   <span>Danh mục</span>
                 </button>
                 <div className={`category-dropdown ${catOpen ? 'show' : ''}`}>
@@ -188,13 +188,13 @@ export default function Header({ topBarVariant = 'default' }: HeaderProps) {
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <button type="submit" aria-label="Tìm kiếm" id="searchBtn">
-                  <img src="/icon/icon_search.png" alt="" className="icon-img" style={{ width: 18, height: 18 }} />
+                  <i className="fas fa-magnifying-glass nav-action-glyph" aria-hidden />
                 </button>
               </form>
 
               {showStorefrontCart && (
                 <NavLink to="/cart" className="cart-icon">
-                  <img src="/icon/ico_cart_gray.jpg" alt="" className="icon-img" />
+                  <i className="fas fa-bag-shopping cart-icon-glyph" aria-hidden />
                   <span>Giỏ hàng</span>
                   <span className="cart-badge" id="cartBadge" style={{ display: cartItemCount > 0 ? 'block' : 'none' }}>
                     {cartItemCount}

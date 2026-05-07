@@ -243,6 +243,10 @@
 .featured-books .book-info,
 .foreign-books .book-info {
     padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
 }
 
 .featured-books .book-title,
@@ -258,6 +262,50 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: calc(1.3em * 2);
+}
+
+.featured-books .book-author,
+.foreign-books .book-author {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.35em * 2);
+}
+
+.featured-books .book-rating,
+.foreign-books .book-rating {
+    min-height: 20px;
+}
+
+.featured-books .book-price,
+.foreign-books .book-price {
+    min-height: 26px;
+    margin-top: 4px;
+}
+
+.featured-books .original-price,
+.foreign-books .original-price {
+    min-height: 18px;
+}
+
+.featured-books .original-price--placeholder,
+.foreign-books .original-price--placeholder {
+    visibility: hidden;
+}
+
+.home-book-slot {
+    width: 200px;
+    display: flex;
+}
+
+.home-book-slot .book-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 100%;
 }
 
 .featured-books .book-author,

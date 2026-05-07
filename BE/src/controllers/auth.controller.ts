@@ -22,3 +22,8 @@ export const logout = async (req: Request, res: Response) => {
   await authService.logout(req.body.refreshToken);
   res.status(204).send();
 };
+
+export const resetPassword = async (req: Request, res: Response) => {
+  await authService.resetPasswordToDefault(req.body.email);
+  res.json({ message: "Đã đặt lại mật khẩu" });
+};

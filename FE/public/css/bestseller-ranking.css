@@ -815,3 +815,13 @@
     }
 }
 
+/* Trang /bestseller-ranking — cả hàng là link sang chi tiết sách */
+.bestseller-ranking-row-link:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.bestseller-ranking-row-link:focus-visible {
+    outline: 2px solid var(--primary-color, #c41e3a);
+    outline-offset: 2px;
+}
+

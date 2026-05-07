@@ -17,10 +17,12 @@ interface CartRequestOptions {
   guestSessionId?: string;
 }
 
+/** Gắn header guest session khi chưa đăng nhập. */
 function buildHeaders(guestSessionId?: string): Record<string, string> {
   return guestSessionId ? { 'X-Guest-Session': guestSessionId } : {};
 }
 
+/** Lấy giỏ hàng hiện tại (user hoặc guest). */
 export async function getCartRequest(options: CartRequestOptions = {}): Promise<CartItemWithDetails[]> {
   const data = await httpRequest<CartResponse>('/cart', {
     token: options.token,
@@ -29,6 +31,7 @@ export async function getCartRequest(options: CartRequestOptions = {}): Promise<
   return data.items || [];
 }
 
+/** Ghi đè toàn bộ giỏ hàng theo payload mới. */
 export async function updateCartRequest(payload: CartPayload, options: CartRequestOptions = {}): Promise<CartItemWithDetails[]> {
   const data = await httpRequest<CartResponse>('/cart', {
     method: 'PUT',

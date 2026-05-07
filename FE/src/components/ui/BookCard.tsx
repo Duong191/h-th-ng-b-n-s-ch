@@ -1,3 +1,9 @@
+
+
+
+
+
+
 import { useNavigate } from 'react-router-dom';
 import { formatPrice, discountedUnitPrice, fixImagePath } from '../../utils/format';
 import { Book } from '../../context/BookstoreContext';
@@ -6,6 +12,7 @@ interface StarsProps {
   rating?: number;
 }
 
+/** Render sao theo rating 0-5 (có nửa sao). */
 function Stars({ rating = 0 }: StarsProps) {
   const r = Number(rating) || 0;
   const nodes = [];
@@ -39,12 +46,14 @@ export default function BookCard({ book, onAddToCart }: BookCardProps) {
   const price = discountedUnitPrice(book);
   const outOfStock = !book.stock || Number(book.stock) <= 0;
 
+  /** Badge hiển thị nhanh trạng thái nổi bật của sách. */
   const badges = [];
   if (book.trending) badges.push(<span key="t" className="book-badge trending">Xu hướng</span>);
   if (book.bestSeller || book.bestseller)
     badges.push(<span key="b" className="book-badge bestseller">Bán chạy</span>);
   if (book.isNew) badges.push(<span key="n" className="book-badge new">Mới</span>);
 
+  /** Card click đi trang chi tiết; nút "Thêm vào giỏ" tự chặn bubbling. */
   return (
     <div
       className="book-card"
@@ -97,12 +106,18 @@ export default function BookCard({ book, onAddToCart }: BookCardProps) {
           <span className="current-price">{formatPrice(price)}</span>
           {book.discount > 0 && <span className="discount-badge">-{book.discount}%</span>}
         </div>
-        {book.originalPrice && book.originalPrice > price && <span className="original-price">{formatPrice(book.originalPrice)}</span>}
+        {book.originalPrice && book.originalPrice > price ? (
+          <span className="original-price">{formatPrice(book.originalPrice)}</span>
+        ) : (
+          <span className="original-price original-price--placeholder" aria-hidden>
+            &nbsp;
+          </span>
+        )}
         {onAddToCart && (
           <button
             type="button"
             className="btn btn-primary"
-            style={{ marginTop: 8, opacity: outOfStock ? 0.55 : 1 }}
+            style={{ marginTop: 'auto', opacity: outOfStock ? 0.55 : 1 }}
             disabled={outOfStock}
             onClick={(e) => {
               e.stopPropagation();

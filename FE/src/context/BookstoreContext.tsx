@@ -30,6 +30,7 @@ import { bootstrapFromBackend } from '../services/dataBootstrapService';
 
 const ACCESS_TOKEN_KEY = 'bookstoreAccessToken';
 const REFRESH_TOKEN_KEY = 'bookstoreRefreshToken';
+/** Đọc access token hiện tại từ localStorage. */
 function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
@@ -191,6 +192,8 @@ export interface InventoryLog {
   note: string;
   userId: string;
   createdAt: string;
+  /** Tên người nhập/xuất từ API (context `users` chỉ có user hiện tại). */
+  creatorName?: string;
 }
 
 export interface BookstoreData {
@@ -247,6 +250,8 @@ export interface BookstoreContextValue {
   confirmOrderReceived: (orderId: string) => Order | null | Promise<Order | null>;
   /** Đồng bộ danh sách sách từ server (tồn kho sau đơn hàng / nhập kho). */
   refreshBooksFromApi: () => Promise<void>;
+  /** Tải lại lịch sử nhập/xuất kho từ server (đúng sau khi reload trang). */
+  refreshInventoryLogsFromApi: () => Promise<void>;
   /** Gộp dòng giỏ trùng sách (sửa dữ liệu cũ). */
   dedupeCartLines: () => void;
   addBook: (bookData: Omit<Book, 'id' | 'createdAt'>) => Book | Promise<Book>;
@@ -263,7 +268,7 @@ export interface BookstoreContextValue {
     quantity: number,
     note: string,
     importPrice?: number
-  ) => void | Promise<void>;
+  ) => Promise<boolean>;
   getInventoryLogs: () => InventoryLog[];
 }
 
@@ -283,6 +288,7 @@ function clearLegacyStoredCatalog(): void {
 
 const BookstoreContext = createContext<BookstoreContextValue | null>(null);
 
+/** Đọc session đăng nhập cũ từ localStorage và tự loại session hết hạn. */
 function readSession(): Session | null {
   try {
     const raw = localStorage.getItem(SESSION_KEY);
@@ -299,11 +305,13 @@ function readSession(): Session | null {
   }
 }
 
+/** Ghi/xóa session theo trạng thái đăng nhập hiện tại. */
 function writeSession(session: Session | null): void {
   if (!session) localStorage.removeItem(SESSION_KEY);
   else localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
+/** Tải dữ liệu danh mục/sách ban đầu từ backend. */
 async function loadCatalogFromApi(): Promise<BookstoreData> {
   clearLegacyStoredCatalog();
   const bootstrapped = await bootstrapFromBackend();
@@ -330,6 +338,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(() => readSession());
   const [toast, setToast] = useState<Toast | null>(null);
 
+  /** Helper cập nhật `data` an toàn theo object hoặc updater function. */
   const persist = useCallback((nextOrFn: BookstoreData | ((prev: BookstoreData) => BookstoreData)) => {
     setData((prev) => {
       const base: BookstoreData = prev || {
@@ -699,6 +708,17 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     }
   }, [persist]);
 
+  const refreshInventoryLogsFromApi = useCallback(async () => {
+    const token = getAccessToken();
+    if (!token) return;
+    try {
+      const logs = await getInventoryLogsRequest(token);
+      persist((prev) => (prev ? { ...prev, inventoryLogs: logs } : prev));
+    } catch {
+      /* ignore */
+    }
+  }, [persist]);
+
   const dedupeCartLines = useCallback(() => {
     persist((prev) => {
       if (!prev?.cart?.length) return prev;
@@ -1061,57 +1081,36 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
   const addInventoryLog = useCallback(
     async (bookId: string, type: 'import' | 'export', quantity: number, note: string, importPrice?: number) => {
       const token = getAccessToken();
-      if (!token) return;
-      const log: InventoryLog = {
-        id: Date.now().toString(),
-        bookId,
-        type,
-        quantity,
-        importPrice,
-        note,
-        userId: currentUser?.id || 'system',
-        createdAt: new Date().toISOString(),
-      };
+      if (!token) {
+        showToast('Bạn cần đăng nhập để thực hiện thao tác kho.', 'error');
+        return false;
+      }
 
-      await createInventoryLogRequest(token, {
-        bookId,
-        transactionType: type,
-        quantity: type === 'export' ? -Math.abs(quantity) : Math.abs(quantity),
-        importPrice,
-        note,
-      });
+      try {
+        await createInventoryLogRequest(token, {
+          bookId,
+          transactionType: type,
+          quantity: type === 'export' ? -Math.abs(quantity) : Math.abs(quantity),
+          importPrice,
+          note,
+        });
+        await refreshBooksFromApi();
+        const freshLogs = await getInventoryLogsRequest(token).catch(() => [] as InventoryLog[]);
+        persist((prev) => (prev ? { ...prev, inventoryLogs: freshLogs } : prev));
 
-      persist((prev) => {
-        const logs = [log, ...(prev.inventoryLogs || [])];
-        const books = [...(prev.books || [])];
-        const bookIdx = books.findIndex((b) => String(b.id) === String(bookId));
-
-        if (bookIdx !== -1) {
-          const newStock = type === 'import'
-            ? books[bookIdx].stock + quantity
-            : Math.max(0, books[bookIdx].stock - quantity);
-          books[bookIdx] = {
-            ...books[bookIdx],
-            stock: newStock,
-            importPrice:
-              type === 'import' && importPrice != null && importPrice > 0
-                ? importPrice
-                : books[bookIdx].importPrice,
-          };
-        }
-
-        return { ...prev, books, inventoryLogs: logs };
-      });
-
-      showToast(
-        type === 'import'
-          ? `Đã nhập ${quantity} sản phẩm vào kho`
-          : `Đã xuất ${quantity} sản phẩm`,
-        'success'
-      );
-      await refreshBooksFromApi();
+        showToast(
+          type === 'import'
+            ? `Đã nhập ${quantity} sản phẩm vào kho`
+            : `Đã xuất ${quantity} sản phẩm`,
+          'success'
+        );
+        return true;
+      } catch {
+        showToast('Không thể ghi nhận nhập/xuất kho. Kiểm tra kết nối hoặc tồn kho và thử lại.', 'error');
+        return false;
+      }
     },
-    [persist, currentUser, showToast, refreshBooksFromApi]
+    [persist, showToast, refreshBooksFromApi]
   );
 
   const getInventoryLogs = useCallback(() => {
@@ -1146,6 +1145,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
       updateOrder,
       confirmOrderReceived,
       refreshBooksFromApi,
+      refreshInventoryLogsFromApi,
       dedupeCartLines,
       addBook,
       updateBook,
@@ -1182,6 +1182,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
       updateOrder,
       confirmOrderReceived,
       refreshBooksFromApi,
+      refreshInventoryLogsFromApi,
       dedupeCartLines,
       addBook,
       updateBook,

@@ -161,43 +161,16 @@ export default function AdminOrdersPage() {
       {/* Order Details Modal */}
       {selectedOrder && (
         <div
-          style={{
-            display: 'flex',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0,0,0,0.5)',
-            zIndex: 2000,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className="admin-modal-backdrop"
           onClick={closeModal}
         >
           <div
-            style={{
-              background: 'white',
-              padding: 30,
-              borderRadius: 10,
-              maxWidth: 800,
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              position: 'relative',
-            }}
+            className="admin-modal"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={closeModal}
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                background: 'none',
-                border: 'none',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-              }}
+              className="admin-modal-close"
             >
               &times;
             </button>
@@ -226,34 +199,32 @@ export default function AdminOrdersPage() {
                 <strong>Ngày đặt:</strong> {formatDateTime(selectedOrder.createdAt)}
               </p>
               <h3 style={{ marginTop: 20 }}>Sản phẩm:</h3>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
+              <table className="admin-order-items-table">
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #ddd' }}>
-                    <th style={{ padding: 10, textAlign: 'left' }}>Tên sách</th>
-                    <th style={{ padding: 10, textAlign: 'center' }}>Số lượng</th>
-                    <th style={{ padding: 10, textAlign: 'right' }}>Đơn giá</th>
-                    <th style={{ padding: 10, textAlign: 'right' }}>Thành tiền</th>
+                  <tr>
+                    <th>Tên sách</th>
+                    <th className="cell-center">Số lượng</th>
+                    <th className="cell-right">Đơn giá</th>
+                    <th className="cell-right">Thành tiền</th>
                   </tr>
                 </thead>
                 <tbody>
                   {selectedOrder.items.map((item: any) => {
                     const book = getBookById(item.bookId);
                     return (
-                      <tr key={item.bookId} style={{ borderBottom: '1px solid #eee' }}>
-                        <td style={{ padding: 10 }}>{book?.title || 'N/A'}</td>
-                        <td style={{ padding: 10, textAlign: 'center' }}>{item.quantity}</td>
-                        <td style={{ padding: 10, textAlign: 'right' }}>{formatPrice(item.price)}</td>
-                        <td style={{ padding: 10, textAlign: 'right' }}>{formatPrice(item.price * item.quantity)}</td>
+                      <tr key={item.bookId}>
+                        <td>{book?.title || 'N/A'}</td>
+                        <td className="cell-center">{item.quantity}</td>
+                        <td className="cell-right">{formatPrice(item.price)}</td>
+                        <td className="cell-right">{formatPrice(item.price * item.quantity)}</td>
                       </tr>
                     );
                   })}
                 </tbody>
                 <tfoot>
-                  <tr style={{ borderTop: '2px solid #ddd', fontWeight: 'bold' }}>
-                    <td colSpan={3} style={{ padding: 10, textAlign: 'right' }}>
-                      Tổng cộng:
-                    </td>
-                    <td style={{ padding: 10, textAlign: 'right' }}>{formatPrice(selectedOrder.total)}</td>
+                  <tr>
+                    <td colSpan={3} className="cell-right">Tổng cộng:</td>
+                    <td className="cell-right">{formatPrice(selectedOrder.total)}</td>
                   </tr>
                 </tfoot>
               </table>

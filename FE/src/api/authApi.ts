@@ -9,6 +9,7 @@ export interface LoginResponse {
   permissions: string[];
 }
 
+/** Đăng nhập và nhận token + hồ sơ user hiện tại. */
 export async function loginRequest(email: string, password: string): Promise<LoginResponse> {
   return httpRequest<LoginResponse>('/auth/login', {
     method: 'POST',
@@ -16,6 +17,7 @@ export async function loginRequest(email: string, password: string): Promise<Log
   });
 }
 
+/** Đăng ký tài khoản mới, backend trả luôn phiên đăng nhập. */
 export async function registerRequest(payload: {
   firstName: string;
   lastName: string;
@@ -36,11 +38,21 @@ export async function logoutRequest(refreshToken: string): Promise<void> {
   });
 }
 
+/** Đặt lại mật khẩu về mặc định "1" khi biết email (không cần đăng nhập). */
+export async function resetPasswordByEmailRequest(email: string): Promise<void> {
+  await httpRequest('/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+/** Lấy thông tin người dùng từ access token hiện tại. */
 export async function fetchCurrentUser(accessToken: string): Promise<User> {
   const res = await httpRequest<{ item: User }>('/users/me', { token: accessToken });
   return res.item;
 }
 
+/** Cập nhật thông tin hồ sơ (tên, avatar, địa chỉ...). */
 export async function updateProfileRequest(accessToken: string, patch: Record<string, unknown>): Promise<User> {
   const res = await httpRequest<{ item: User }>('/users/me', {
     method: 'PATCH',
