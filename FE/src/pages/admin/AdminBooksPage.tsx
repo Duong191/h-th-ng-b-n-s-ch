@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useBookstore } from '../../context/BookstoreContext';
+import { useBooks } from '../../hooks/useBooks';
 import { formatPrice, fixImagePath, discountedUnitPrice } from '../../utils/format';
 
 export default function AdminBooksPage() {
-  const { data, deleteBook, showToast } = useBookstore();
-  const books = data?.books || [];
-  const categories = data?.categories || [];
+  const { showToast } = useBookstore();
+  const { books, categories, deleteBook } = useBooks();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredBooks = useMemo(() => {

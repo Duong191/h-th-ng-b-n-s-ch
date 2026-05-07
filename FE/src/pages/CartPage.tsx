@@ -1,51 +1,13 @@
-import { useState, useMemo, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useBookstore } from '../context/BookstoreContext';
+import { useCart } from '../hooks/useCart';
+import { useCartSelection } from '../hooks/useCartSelection';
 import { formatPrice, fixImagePath } from '../utils/format';
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const { getCartItems, updateCartItem, removeFromCart } = useBookstore();
+  const { getCartItems, updateCartItem, removeFromCart } = useCart();
   const items = getCartItems();
-  const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    const initial: Record<string, boolean> = {};
-    items.forEach((item) => {
-      initial[item.bookId] = true;
-    });
-    setSelectedItems(initial);
-  }, [items.length]);
-
-  const selectedCount = useMemo(() => {
-    return Object.values(selectedItems).filter(Boolean).length;
-  }, [selectedItems]);
-
-  const subtotal = useMemo(() => {
-    return items.reduce((sum, item) => {
-      if (selectedItems[item.bookId]) {
-        return sum + item.total;
-      }
-      return sum;
-    }, 0);
-  }, [items, selectedItems]);
-
-  const allSelected = items.length > 0 && items.every((item) => selectedItems[item.bookId]);
-
-  const toggleSelectAll = () => {
-    const newSelected: Record<string, boolean> = {};
-    items.forEach((item) => {
-      newSelected[item.bookId] = !allSelected;
-    });
-    setSelectedItems(newSelected);
-  };
-
-  const toggleItem = (bookId: string) => {
-    setSelectedItems((prev) => ({
-      ...prev,
-      [bookId]: !prev[bookId],
-    }));
-  };
+  const { selectedItems, selectedCount, subtotal, allSelected, toggleSelectAll, toggleItem } = useCartSelection(items);
 
   const proceedToCheckout = () => {
     if (selectedCount === 0) return;

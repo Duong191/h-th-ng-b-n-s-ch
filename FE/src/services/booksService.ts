@@ -8,7 +8,7 @@
  * Thiết kế: pure function, nhận mảng sách + tham số → trả mảng mới.
  * Không gọi API ở đây (việc đó nằm ở `src/api/*` và `BookstoreContext`).
  */
-import { Book } from '../context/BookstoreContext';
+import type { Book } from '../types/bookstore.types';
 
 /** categoryId / category từ API hoặc seed có thể là string hoặc number — chuẩn hóa để lọc khớp sidebar. */
 export function normalizedBookCategoryId(book: Book): string {

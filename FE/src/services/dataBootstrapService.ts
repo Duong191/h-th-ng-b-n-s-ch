@@ -1,6 +1,6 @@
 import { getBooks, getCategories, getDetailedCategories } from '../api/publicApi';
 import { getBlogs } from '../api/blogsApi';
-import type { Blog, Book, BookstoreData, Category, DetailedCategory } from '../context/BookstoreContext';
+import type { Blog, Book, BookstoreData, Category, DetailedCategory } from '../types/bookstore.types';
 
 type LocalRecoveredPayload = {
   categories?: Category[];

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useBookstore } from '../context/BookstoreContext';
+import { useCart } from '../hooks/useCart';
+import { useBooks } from '../hooks/useBooks';
 import BookCard from '../components/ui/BookCard';
 import { fixImagePath } from '../utils/format';
 import RecommendationSection from '../components/recommendation/RecommendationSection';
 import { getBestSellersByCategory, isMarkedNew } from '../services/booksService';
-import { Book } from '../context/BookstoreContext';
+import type { Book } from '../types/bookstore.types';
 
 const PER = 5;
 
@@ -111,8 +112,9 @@ function RankingPreviewDetailPanel({ book }: { book: BookWithExtras }) {
 }
 
 export default function HomePage() {
-  const { data, loading, addToCart } = useBookstore();
-  const books = (data?.books || []) as BookWithExtras[];
+  const { books: baseBooks, loading } = useBooks();
+  const { addToCart } = useCart();
+  const books = baseBooks as BookWithExtras[];
 
   /** Xáo thứ tự sách nổi bật khi vào trang chủ (mỗi lần mount / khi danh sách books đổi). */
   const featured = useMemo(

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import type { Book } from '../../context/BookstoreContext';
+import type { Book } from '../../types/bookstore.types';
 import { formatPrice, discountedUnitPrice, fixImagePath } from '../../utils/format';
 
 export type RecommendationBook = Book & {

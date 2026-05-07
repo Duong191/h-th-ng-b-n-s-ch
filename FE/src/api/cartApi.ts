@@ -1,10 +1,16 @@
+/**
+ * File này chứa các hàm gọi API liên quan đến giỏ hàng.
+ * Không xử lý UI, chỉ gửi request và trả về danh sách cart item theo chuẩn frontend.
+ */
 import { httpRequest } from './httpClient';
-import type { CartItemWithDetails } from '../context/BookstoreContext';
+import type { CartItemWithDetails } from '../types/bookstore.types';
 
+// Response giỏ hàng từ backend.
 interface CartResponse {
   items: CartItemWithDetails[];
 }
 
+// Payload cập nhật giỏ hàng: backend nhận mảng dòng sách + số lượng.
 interface CartPayload {
   items: Array<{
     bookId: number;
@@ -12,6 +18,7 @@ interface CartPayload {
   }>;
 }
 
+// Tùy chọn gọi API cart: user token hoặc guest session.
 interface CartRequestOptions {
   token?: string;
   guestSessionId?: string;
@@ -31,7 +38,10 @@ export async function getCartRequest(options: CartRequestOptions = {}): Promise<
   return data.items || [];
 }
 
-/** Ghi đè toàn bộ giỏ hàng theo payload mới. */
+/**
+ * Ghi đè toàn bộ giỏ hàng theo payload mới.
+ * Dùng cho đồng bộ quantity/remove phía frontend sau khi người dùng thao tác.
+ */
 export async function updateCartRequest(payload: CartPayload, options: CartRequestOptions = {}): Promise<CartItemWithDetails[]> {
   const data = await httpRequest<CartResponse>('/cart', {
     method: 'PUT',

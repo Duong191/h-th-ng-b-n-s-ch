@@ -2,6 +2,8 @@ import { useState, useEffect, FormEvent } from 'react';
 import { NavLink, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { resetPasswordByEmailRequest } from '../api/authApi';
 import { useBookstore } from '../context/BookstoreContext';
+import { useAuth } from '../hooks/useAuth';
+import { useAuthRedirect } from '../hooks/useAuthRedirect';
 
 export default function LoginPage() {
   const [tab, setTab] = useState('login');
@@ -9,18 +11,14 @@ export default function LoginPage() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, register, currentUser, showToast } = useBookstore();
+  const { currentUser, login, register } = useAuth();
+  const { showToast } = useBookstore();
 
   useEffect(() => {
     if (params.get('tab') === 'register') setTab('register');
   }, [params]);
 
-  useEffect(() => {
-    if (currentUser) {
-      const to = location.state?.from?.pathname || '/';
-      navigate(to, { replace: true });
-    }
-  }, [currentUser, navigate, location.state]);
+  useAuthRedirect(currentUser, location.state?.from?.pathname);
 
   /** Đăng nhập và quay lại trang user đang đứng trước khi bị chặn auth. */
   async function onLogin(e: FormEvent<HTMLFormElement>) {

@@ -1,9 +1,16 @@
+/**
+ * File này là HTTP client lõi cho toàn bộ API frontend.
+ * Không xử lý UI, chỉ chịu trách nhiệm gửi request, gắn token và xử lý lỗi/refresh token.
+ */
+
+// Base URL backend API (ưu tiên biến môi trường, fallback localhost khi dev).
 export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
 
 /** Must match BookstoreContext localStorage keys */
 const ACCESS_TOKEN_KEY = 'bookstoreAccessToken';
 const REFRESH_TOKEN_KEY = 'bookstoreRefreshToken';
 
+// Tùy chọn request mở rộng: cho phép truyền token trực tiếp.
 interface RequestOptions extends RequestInit {
   token?: string;
 }
@@ -27,6 +34,7 @@ async function refreshAccessToken(): Promise<string | null> {
     try {
       const rt = localStorage.getItem(REFRESH_TOKEN_KEY);
       if (!rt) return null;
+      // Endpoint làm mới access token bằng refresh token.
       const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -59,13 +67,19 @@ async function readErrorMessage(response: Response): Promise<string> {
   return message;
 }
 
-/** Wrapper fetch chung: tự gắn token, tự retry 1 lần khi token hết hạn. */
+/**
+ * Wrapper fetch chung:
+ * - tự gắn `Authorization: Bearer <token>` nếu có token,
+ * - tự retry 1 lần khi token hết hạn (qua refresh token),
+ * - chuẩn hóa xử lý response JSON/text/204.
+ */
 export async function httpRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { token: initialToken, headers, ...rest } = options;
   let token = initialToken;
   let didRetry = false;
 
   for (;;) {
+    // Gửi request gốc tới backend theo path tương đối.
     const response = await fetch(`${API_BASE_URL}${path}`, {
       ...rest,
       headers: {
@@ -77,6 +91,7 @@ export async function httpRequest<T>(path: string, options: RequestOptions = {})
 
     if (!response.ok) {
       const message = await readErrorMessage(response);
+      // Nếu token lỗi và có thể refresh, thử refresh rồi gửi lại đúng 1 lần.
       if (!didRetry && token && isAuthRecoverable(response.status, message)) {
         const newAccess = await refreshAccessToken();
         if (newAccess) {
@@ -88,6 +103,7 @@ export async function httpRequest<T>(path: string, options: RequestOptions = {})
       throw new Error(message);
     }
 
+    // Backend có thể trả không content cho các request DELETE/PATCH thành công.
     if (response.status === 204 || response.status === 205) {
       return undefined as T;
     }
@@ -97,6 +113,7 @@ export async function httpRequest<T>(path: string, options: RequestOptions = {})
       return undefined as T;
     }
 
+    // Nếu không phải JSON thì trả raw text (dùng cho endpoint đặc biệt nếu có).
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.toLowerCase().includes('application/json')) {
       const text = await response.text();

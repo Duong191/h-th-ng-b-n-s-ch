@@ -1,6 +1,25 @@
 import { NavLink } from 'react-router-dom';
+import type { CSSProperties } from 'react';
 
 export default function Footer() {
+  const placeholderLinkButtonStyle: CSSProperties = {
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    margin: 0,
+    color: 'inherit',
+    font: 'inherit',
+    textAlign: 'left',
+    cursor: 'pointer',
+  };
+
+  const socialPlaceholderButtonStyle: CSSProperties = {
+    ...placeholderLinkButtonStyle,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
   return (
     <footer className="footer">
       <div className="container">
@@ -18,12 +37,14 @@ export default function Footer() {
               <a href="https://www.instagram.com/no.coten.7773" target="_blank" rel="noopener noreferrer">
                 <img src="/icon/Social/instagram.png" alt="Instagram" className="social-icon" />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              {/* Placeholder mạng xã hội: chưa có URL chính thức nên dùng button để đúng accessibility. */}
+              <button type="button" aria-label="TikTok (sắp cập nhật)" style={socialPlaceholderButtonStyle}>
                 <img src="/icon/Social/tik-tok.png" alt="TikTok" className="social-icon" />
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              </button>
+              {/* Placeholder mạng xã hội: chưa có URL chính thức nên dùng button để đúng accessibility. */}
+              <button type="button" aria-label="YouTube (sắp cập nhật)" style={socialPlaceholderButtonStyle}>
                 <img src="/icon/Social/youtube.png" alt="YouTube" className="social-icon" />
-              </a>
+              </button>
             </div>
           </div>
           <div className="footer-col">
@@ -47,16 +68,28 @@ export default function Footer() {
             <h3>Hỗ Trợ</h3>
             <ul>
               <li>
-                <a href="#">Chính sách đổi trả</a>
+                {/* Link placeholder: giữ text UI, chưa có route thực tế. */}
+                <button type="button" style={placeholderLinkButtonStyle}>
+                  Chính sách đổi trả
+                </button>
               </li>
               <li>
-                <a href="#">Phương thức thanh toán</a>
+                {/* Link placeholder: giữ text UI, chưa có route thực tế. */}
+                <button type="button" style={placeholderLinkButtonStyle}>
+                  Phương thức thanh toán
+                </button>
               </li>
               <li>
-                <a href="#">Vận chuyển</a>
+                {/* Link placeholder: giữ text UI, chưa có route thực tế. */}
+                <button type="button" style={placeholderLinkButtonStyle}>
+                  Vận chuyển
+                </button>
               </li>
               <li>
-                <a href="#">Câu hỏi thường gặp</a>
+                {/* Link placeholder: giữ text UI, chưa có route thực tế. */}
+                <button type="button" style={placeholderLinkButtonStyle}>
+                  Câu hỏi thường gặp
+                </button>
               </li>
             </ul>
           </div>

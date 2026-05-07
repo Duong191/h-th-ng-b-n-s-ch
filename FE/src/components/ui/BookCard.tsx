@@ -6,7 +6,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { formatPrice, discountedUnitPrice, fixImagePath } from '../../utils/format';
-import { Book } from '../../context/BookstoreContext';
+import type { Book } from '../../types/bookstore.types';
 
 interface StarsProps {
   rating?: number;

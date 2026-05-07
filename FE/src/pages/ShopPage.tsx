@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { NavLink, useSearchParams } from 'react-router-dom';
-import { useBookstore } from '../context/BookstoreContext';
+import { useBooks } from '../hooks/useBooks';
 import BookCard from '../components/ui/BookCard';
 import { filterBooks, isFeaturedBook, isMarkedNew, searchBooks, sortBooks } from '../services/booksService';
 
@@ -40,10 +40,8 @@ function buildPaginationItems(current: number, total: number): (number | 'ellips
 }
 
 export default function ShopPage() {
-  const { data, loading } = useBookstore();
+  const { books, categories, loading } = useBooks();
   const [params, setParams] = useSearchParams();
-  const books = data?.books || [];
-  const categories = data?.categories || [];
 
   const [sortBy, setSortBy] = useState('default');
   const selectedCategory = params.get('category') || 'all';

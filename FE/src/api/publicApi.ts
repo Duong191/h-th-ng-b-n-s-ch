@@ -1,6 +1,11 @@
+/**
+ * File này chứa các hàm gọi API public (sách, danh mục, chi tiết sách).
+ * Không xử lý UI, chỉ gửi request và chuẩn hóa dữ liệu backend về model frontend.
+ */
 import { httpRequest } from './httpClient';
-import type { Book } from '../context/BookstoreContext';
+import type { Book } from '../types/bookstore.types';
 
+// Backend có thể trả list trực tiếp hoặc bọc trong `items`/`data`.
 type ListResponse<T> = T[] | { items?: T[]; data?: T[] };
 
 /** Đồng bộ format response list giữa nhiều endpoint backend. */
@@ -32,6 +37,7 @@ export function mapBook(raw: RawBook): Book & {
   const soldCount = Number(raw.sold_count ?? raw.soldCount ?? 0);
   const reviewCount = Number(raw.review_count ?? raw.reviewCount ?? 0);
 
+  // Mapping field backend -> frontend để các page/service dùng một schema thống nhất.
   return {
     id: String(raw.id ?? ''),
     title: String(raw.title ?? ''),
@@ -63,7 +69,7 @@ export function mapBook(raw: RawBook): Book & {
     reviews: reviewCount,
     salesCount: soldCount,
     images: image ? [image] : [],
-    originalPrice: discount > 0 ? Math.round(price / (1 - discount / 100)) : undefined
+    originalPrice: discount > 0 ? Math.round(price / (1 - discount / 100)) : undefined,
   };
 }
 
@@ -74,24 +80,30 @@ export async function getHealthStatus(): Promise<{ status: string; service: stri
 
 /** Lấy danh sách sách public rồi map về model FE thống nhất. */
 export async function getBooks<TBook>(params = 'page=1&limit=100'): Promise<TBook[]> {
+  // Endpoint danh sách sách public.
   const data = await httpRequest<ListResponse<RawBook>>(`/books?${params}`);
+  // Chuẩn hóa từng dòng sách về model FE trước khi trả cho caller.
   return unwrapList(data).map((b) => mapBook(b) as unknown as TBook);
 }
 
 /** Lấy danh mục cấp 1. */
 export async function getCategories<TCategory>(): Promise<TCategory[]> {
+  // Endpoint danh mục public.
   const data = await httpRequest<ListResponse<TCategory>>('/categories');
   return unwrapList(data);
 }
 
 /** Lấy danh mục chi tiết để render mega menu. */
 export async function getDetailedCategories<TDetailedCategory>(): Promise<TDetailedCategory[]> {
+  // Endpoint danh mục chi tiết (bao gồm nhóm con).
   const data = await httpRequest<ListResponse<TDetailedCategory>>('/categories/detailed');
   return unwrapList(data);
 }
 
 /** Một cuốn sách mới nhất từ API (tồn kho đúng với DB). */
 export async function fetchBookById(id: string): Promise<Book> {
+  // Endpoint chi tiết 1 sách theo id.
   const raw = await httpRequest<RawBook>(`/books/${encodeURIComponent(id)}`);
+  // Chuẩn hóa dữ liệu detail về model Book frontend.
   return mapBook(raw);
 }

@@ -1,7 +1,11 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useBookstore } from '../context/BookstoreContext';
-import type { Book } from '../context/BookstoreContext';
+import { useBooks } from '../hooks/useBooks';
+import { useCart } from '../hooks/useCart';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/useToast';
+import type { Book } from '../types/bookstore.types';
 import { formatPrice, discountedUnitPrice, fixImagePath } from '../utils/format';
 import { getRelatedBooks } from '../services/booksService';
 import RecommendationSection from '../components/recommendation/RecommendationSection';
@@ -16,7 +20,11 @@ const LONG_DESCRIPTION_CHARS = 520;
 export default function BookDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data, getBookById, addToCart, loading, currentUser, showToast, persist } = useBookstore();
+  const { books, categories, getBookById, loading } = useBooks();
+  const { addToCart } = useCart();
+  const { currentUser } = useAuth();
+  const { showToast } = useToast();
+  const { persist } = useBookstore();
   const book = id ? getBookById(id) : null;
   /** Tồn kho mới nhất từ API (tránh cache cũ trên trang chi tiết). */
   const [stockBook, setStockBook] = useState<Book | null>(null);
@@ -49,9 +57,9 @@ export default function BookDetailPage() {
   }, [tags]);
   const [selectedVariant, setSelectedVariant] = useState<string>(() => variants[0] || 'Bìa mềm');
   const relatedBooks = useMemo(() => {
-    if (!book || !data?.books) return [];
-    return getRelatedBooks(data.books, book.id, 80);
-  }, [book, data]);
+    if (!book || !books.length) return [];
+    return getRelatedBooks(books, book.id, 80);
+  }, [book, books]);
 
   useEffect(() => {
     setReviews([]);
@@ -168,7 +176,7 @@ export default function BookDetailPage() {
   if (!book) return <div className="container" style={{ padding: 60 }}>Không tìm thấy sách</div>;
 
   const price = discountedUnitPrice(displayBook!);
-  const category = data?.categories?.find((c) => c.id === book.categoryId || c.id === (book as any).category);
+  const category = categories.find((c) => c.id === book.categoryId || c.id === (book as any).category);
   const sold = Number(book.soldCount || bookWithExtras?.salesCount || 0);
   const detailRows = [
     { label: 'Mã hàng', value: book.isbn || 'N/A' },
@@ -363,15 +371,13 @@ export default function BookDetailPage() {
                 </div>
 
                 <div className="product-summary-card__promo">
-                  <a
-                    href="#"
+                  {/* Placeholder promo: chưa có trang chi tiết khuyến mãi, giữ giao diện bằng button. */}
+                  <button
+                    type="button"
                     className="pds-promo-link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
                   >
                     Chính sách khuyến mãi trên chỉ áp dụng tại Bookarazi.com &gt;
-                  </a>
+                  </button>
                 </div>
 
                 <div className="product-summary-card__stock">
@@ -405,13 +411,10 @@ export default function BookDetailPage() {
                 <div className="shipping-card__vouchers">
                   <div className="shipping-card__vouchers-head">
                     <h3 className="shipping-card__vouchers-title">Ưu đãi liên quan</h3>
-                    <a
-                      href="#"
-                      className="shipping-card__vouchers-more"
-                      onClick={(e) => e.preventDefault()}
-                    >
+                    {/* Placeholder "xem thêm": chưa có trang đích, giữ UI bằng button đúng chuẩn a11y. */}
+                    <button type="button" className="shipping-card__vouchers-more">
                       Xem thêm &gt;
-                    </a>
+                    </button>
                   </div>
                   <div className="shipping-card__voucher-grid">
                     {[
