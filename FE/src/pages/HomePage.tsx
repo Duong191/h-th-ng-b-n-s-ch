@@ -160,8 +160,10 @@ export default function HomePage() {
 
   /** Tab danh mục cho bảng xếp hạng (id category khớp backend / booksService). */
   const [rankCat, setRankCat] = useState('1');
+
   /** Top 5 sách bán chạy theo category — từ context, không fetch thêm. */
   const rankingPreview = useMemo(() => getBestSellersByCategory(books, rankCat).slice(0, 5), [books, rankCat]);
+  
   /**
    * Id sách đang được hover ở cột trái; `null` = coi như chọn mặc định **hạng 1** (xem activeRankBook).
    * Reset khi đổi tab danh mục để panel không hiển thị sách của category cũ.
@@ -231,7 +233,7 @@ export default function HomePage() {
   }
 
   return (
-    <>
+    <div className="home-liquid-bg">
       <section className="hero">
         <div className="hero-slider">
           <div className="hero-slide active">
@@ -603,6 +605,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

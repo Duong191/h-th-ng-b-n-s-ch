@@ -1,0 +1,486 @@
+/* ============================================================
+   LOGIN.CSS - Giao diện Liquid Glass cho trang đăng nhập/đăng ký
+   Áp dụng cho FE/src/pages/LoginPage.tsx
+   Quy ước: mọi class bắt đầu bằng tiền tố `lg-` để tách biệt
+   với các module CSS khác và tránh xung đột.
+============================================================ */
+
+
+/* ============================================================
+   1. NỀN TRANG (lg-page)
+   - Gradient mềm nhiều màu pastel
+   - Có 2-3 vòng "blob" blur để tạo cảm giác Liquid Glass
+   - Container chính cho toàn bộ form login/register
+============================================================ */
+.lg-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 60px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(1200px 700px at 10% 10%, #b8c6ff 0%, transparent 60%),
+        radial-gradient(900px 700px at 90% 90%, #ffc6e0 0%, transparent 60%),
+        linear-gradient(135deg, #eef2ff 0%, #faf5ff 50%, #fff1f6 100%);
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+
+/* ============================================================
+   2. CÁC VÒNG BLUR TRANG TRÍ (lg-blob)
+   - Nằm phía sau card form, tạo cảm giác chiều sâu và glow
+   - Float chậm để giao diện sống động nhẹ nhàng
+============================================================ */
+.lg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+    animation: lg-blob-float 14s ease-in-out infinite;
+}
+
+.lg-blob-1 {
+    width: 380px;
+    height: 380px;
+    background: #ff8fbf;
+    top: -120px;
+    left: -120px;
+    animation-delay: 0s;
+}
+
+.lg-blob-2 {
+    width: 420px;
+    height: 420px;
+    background: #7873f5;
+    bottom: -160px;
+    right: -120px;
+    animation-delay: -4s;
+}
+
+.lg-blob-3 {
+    width: 280px;
+    height: 280px;
+    background: #4facfe;
+    top: 35%;
+    right: 25%;
+    opacity: 0.35;
+    animation-delay: -8s;
+}
+
+
+/* ============================================================
+   3. CARD CHÍNH (lg-card)
+   - Thẻ trong mờ (glassmorphism) chứa form login/register
+   - Bo góc lớn, đổ bóng mềm, có viền sáng nhẹ
+============================================================ */
+.lg-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 460px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 28px;
+    box-shadow:
+        0 20px 50px rgba(31, 38, 135, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    padding: 32px 28px;
+    animation: lg-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* ============================================================
+   4. SEGMENTED CONTROL KIỂU iOS (lg-segmented + lg-segment)
+   - Chuyển tab Đăng nhập / Đăng ký
+   - Có thanh trượt nền (pseudo-element ::before) di chuyển mượt
+     khi đổi tab nhờ thuộc tính data-tab trên cha
+============================================================ */
+.lg-segmented {
+    position: relative;
+    display: flex;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 26px;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* Thanh trượt nền của segmented control */
+.lg-segmented::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+
+/* Khi tab register được chọn, đẩy thanh trượt sang phải */
+.lg-segmented[data-tab="register"]::before {
+    transform: translateX(100%);
+}
+
+.lg-segment {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #5b5b6e;
+    cursor: pointer;
+    transition: color 0.25s ease;
+    font-size: 14px;
+}
+
+.lg-segment:hover { color: #2a2a3a; }
+
+.lg-segment.is-active { color: #1f1f33; }
+
+
+/* ============================================================
+   5. PANEL FORM ĐĂNG NHẬP / ĐĂNG KÝ (lg-auth-panel)
+   - Bọc nội dung từng tab
+   - Có animation fade + slide nhẹ khi đổi tab
+============================================================ */
+.lg-auth-panel {
+    animation: lg-panel-in 0.35s ease both;
+}
+
+
+/* ============================================================
+   6. TIÊU ĐỀ FORM (lg-title, lg-subtitle)
+============================================================ */
+.lg-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1f1f33;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+}
+
+.lg-subtitle {
+    color: #5b5b6e;
+    margin: 0 0 22px;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   7. NHÓM FORM (lg-group, lg-label, lg-input)
+   - Mỗi cặp label + input nằm trong lg-group
+   - Input trong mờ, focus có ring tím nhẹ
+============================================================ */
+.lg-group { margin-bottom: 16px; }
+
+.lg-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3a3a4a;
+    margin-bottom: 6px;
+}
+
+.lg-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 14px;
+    font-size: 14px;
+    color: #1f1f33;
+    outline: none;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.lg-input::placeholder { color: #8d8da3; }
+
+.lg-input:hover { background: rgba(255, 255, 255, 0.75); }
+
+.lg-input:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(118, 75, 162, 0.5);
+    box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.15);
+}
+
+
+/* ============================================================
+   8. NÚT SUBMIT CHÍNH (lg-submit)
+   - Gradient indigo → purple, đổ bóng mềm
+   - Hover nâng nhẹ + tăng brightness
+============================================================ */
+.lg-submit {
+    width: 100%;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(118, 75, 162, 0.4);
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.lg-submit:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+    box-shadow: 0 10px 22px rgba(118, 75, 162, 0.5);
+}
+
+.lg-submit:active { transform: translateY(0); }
+
+
+/* ============================================================
+   9. LINK QUÊN MẬT KHẨU (lg-forgot-wrap + lg-forgot-link)
+============================================================ */
+.lg-forgot-wrap {
+    text-align: center;
+    margin-top: 14px;
+}
+
+.lg-forgot-link {
+    background: none;
+    border: none;
+    color: #764ba2;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: 13px;
+    transition: color 0.2s ease;
+}
+
+.lg-forgot-link:hover { color: #553a82; }
+
+
+/* ============================================================
+   10. PANEL TÀI KHOẢN DEMO (lg-demo-panel)
+   - Khung trong mờ liệt kê tài khoản admin/staff/user demo
+============================================================ */
+.lg-demo-panel {
+    margin-top: 24px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 16px;
+}
+
+.lg-demo-panel h3 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3a3a4a;
+}
+
+.lg-demo-item {
+    font-size: 12.5px;
+    color: #4a4a5a;
+    margin-top: 4px;
+}
+
+
+/* ============================================================
+   11. LINK VỀ TRANG CHỦ (lg-home-link)
+   - Pill nổi phía dưới card, nền glass mờ
+============================================================ */
+.lg-home-link {
+    margin-top: 22px;
+    color: #3a3a4a;
+    text-decoration: none;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    z-index: 1;
+    transition: background 0.2s ease;
+    font-size: 13.5px;
+}
+
+.lg-home-link:hover { background: rgba(255, 255, 255, 0.75); }
+
+
+/* ============================================================
+   12. MODAL QUÊN MẬT KHẨU
+   - lg-modal-backdrop: lớp phủ tối làm mờ phía sau
+   - lg-modal-card: thẻ chính hiển thị form quên mật khẩu
+   - Animation: backdrop fade-in, card scale + slide-in mềm
+============================================================ */
+.lg-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 35, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+    animation: lg-backdrop-in 0.25s ease both;
+}
+
+.lg-modal-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow: 0 20px 50px rgba(31, 38, 135, 0.3);
+    animation: lg-modal-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.lg-modal-card h2 {
+    margin: 0 0 8px;
+    color: #1f1f33;
+    font-size: 20px;
+}
+
+.lg-modal-card p {
+    color: #4a4a5a;
+    font-size: 13.5px;
+    margin: 0;
+}
+
+
+/* ============================================================
+   13. NHÓM NÚT HÀNH ĐỘNG TRONG MODAL (lg-modal-actions + lg-btn-secondary)
+============================================================ */
+.lg-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.lg-btn-secondary {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.7);
+    color: #3a3a4a;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.lg-btn-secondary:hover { background: rgba(255, 255, 255, 0.9); }
+
+
+/* ============================================================
+   14. KEYFRAMES - HIỆU ỨNG CHUYỂN ĐỘNG
+   - lg-card-in:     card form trượt nhẹ lên khi load trang
+   - lg-panel-in:    fade + slide nhẹ khi đổi tab login/register
+   - lg-backdrop-in: lớp phủ modal fade-in
+   - lg-modal-in:    card modal phóng nhẹ + trượt lên
+   - lg-blob-float:  vòng blur trang trí trôi nhẹ liên tục
+============================================================ */
+@keyframes lg-card-in {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lg-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lg-backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes lg-modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes lg-blob-float {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(20px, -18px); }
+}
+
+
+/* ============================================================
+   15. RESPONSIVE - MOBILE
+   - Giảm padding/font-size để vừa màn hình nhỏ
+   - Giảm độ mờ blob để không quá rối
+============================================================ */
+@media (max-width: 480px) {
+    .lg-card {
+        padding: 24px 20px;
+        border-radius: 22px;
+    }
+
+    .lg-title { font-size: 22px; }
+
+    .lg-blob-1,
+    .lg-blob-2,
+    .lg-blob-3 { opacity: 0.4; }
+}
+
+
+/* ============================================================
+   16. ƯU TIÊN GIẢM CHUYỂN ĐỘNG (Accessibility)
+   - Tắt animation khi user bật "Reduce motion" trên hệ điều hành
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .lg-card,
+    .lg-auth-panel,
+    .lg-modal-backdrop,
+    .lg-modal-card,
+    .lg-blob {
+        animation: none !important;
+    }
+
+    .lg-segmented::before {
+        transition: none !important;
+    }
+}

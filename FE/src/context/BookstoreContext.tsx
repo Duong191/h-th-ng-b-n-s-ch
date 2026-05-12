@@ -1,13 +1,25 @@
+// ==============================
+// Import React hooks và kiểu nền tảng
+// ==============================
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   ReactNode,
 } from 'react';
+
+// ==============================
+// Import helper/util cho tính toán dữ liệu hiển thị
+// ==============================
 import { discountedUnitPrice } from '../utils/format';
+
+// ==============================
+// Import các API auth, orders, books/blogs, inventory, cart, public
+// ==============================
 import {
   fetchCurrentUser,
   loginRequest,
@@ -27,6 +39,10 @@ import { createInventoryLogRequest, getInventoryLogsRequest } from '../api/inven
 import { getCartRequest, updateCartRequest } from '../api/cartApi';
 import { getBooks } from '../api/publicApi';
 import { bootstrapFromBackend } from '../services/dataBootstrapService';
+
+// ==============================
+// Import type dùng chung của domain bookstore
+// ==============================
 import type {
   Blog,
   Book,
@@ -41,8 +57,11 @@ import type {
   User,
 } from '../types/bookstore.types';
 
+// Key localStorage cho token/phiên đăng nhập.
 const ACCESS_TOKEN_KEY = 'bookstoreAccessToken';
 const REFRESH_TOKEN_KEY = 'bookstoreRefreshToken';
+const GUEST_CART_KEY = 'bookstoreGuestCart';
+const USER_CART_KEY_PREFIX = 'bookstoreUserCart';
 /** Đọc access token hiện tại từ localStorage. */
 function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -61,6 +80,67 @@ function mergeCartLineItems(cart: CartItem[]): CartItem[] {
     }
   }
   return Array.from(map.values());
+}
+
+/** Đọc giỏ hàng guest từ localStorage để giữ dữ liệu sau khi reload. */
+function readGuestCart(): CartItem[] {
+  try {
+    const raw = localStorage.getItem(GUEST_CART_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((item) => ({
+        bookId: String(item?.bookId || ''),
+        quantity: Number(item?.quantity || 0),
+        addedAt: String(item?.addedAt || new Date().toISOString()),
+      }))
+      .filter((item) => item.bookId && item.quantity > 0);
+  } catch {
+    return [];
+  }
+}
+
+/** Ghi giỏ hàng guest vào localStorage. */
+function writeGuestCart(cart: CartItem[]): void {
+  try {
+    localStorage.setItem(GUEST_CART_KEY, JSON.stringify(cart));
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Key localStorage riêng theo user để tránh lẫn dữ liệu giữa các tài khoản. */
+function getUserCartKey(userId: string): string {
+  return `${USER_CART_KEY_PREFIX}:${userId}`;
+}
+
+/** Đọc cart đã cache local của user đăng nhập. */
+function readUserCart(userId: string): CartItem[] {
+  try {
+    const raw = localStorage.getItem(getUserCartKey(userId));
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((item) => ({
+        bookId: String(item?.bookId || ''),
+        quantity: Number(item?.quantity || 0),
+        addedAt: String(item?.addedAt || new Date().toISOString()),
+      }))
+      .filter((item) => item.bookId && item.quantity > 0);
+  } catch {
+    return [];
+  }
+}
+
+/** Ghi cart local cache cho user đăng nhập. */
+function writeUserCart(userId: string, cart: CartItem[]): void {
+  try {
+    localStorage.setItem(getUserCartKey(userId), JSON.stringify(cart));
+  } catch {
+    /* ignore */
+  }
 }
 
 // ============ CONTEXT SETUP ============
@@ -123,12 +203,24 @@ async function loadCatalogFromApi(): Promise<BookstoreData> {
 
 // ============ PROVIDER COMPONENT ============
 
+// Provider bọc toàn app: giữ state dùng chung + expose action nghiệp vụ.
 export function BookstoreProvider({ children }: { children: ReactNode }) {
+  // State dữ liệu chính toàn hệ thống (sách, danh mục, đơn hàng, blog, cart, kho...).
   const [data, setData] = useState<BookstoreData | null>(null);
+
+  // Cờ loading global cho lúc bootstrap dữ liệu ban đầu.
   const [loading, setLoading] = useState(true);
+
+  // Phiên đăng nhập hiện tại (đọc từ localStorage khi khởi tạo).
   const [session, setSession] = useState<Session | null>(() => readSession());
+  const initialSessionUserIdRef = useRef(session?.userId);
+
+  // State toast toàn app.
   const [toast, setToast] = useState<Toast | null>(null);
 
+  // ==============================
+  // Persist/storage helper
+  // ==============================
   /** Helper cập nhật `data` an toàn theo object hoặc updater function. */
   const persist = useCallback((nextOrFn: BookstoreData | ((prev: BookstoreData) => BookstoreData)) => {
     setData((prev) => {
@@ -147,6 +239,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  // ==============================
+  // Khởi tạo dữ liệu ban đầu của app (catalog/blog/review...)
+  // ==============================
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -154,7 +249,10 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         console.log('[Init] Loading data...');
         const d = await loadCatalogFromApi();
         console.log('[Init] Data loaded. Users:', d.users?.length, 'Books:', d.books?.length);
-        if (!cancelled) setData(d);
+        if (!cancelled) {
+          const guestCart = !initialSessionUserIdRef.current ? readGuestCart() : [];
+          setData({ ...d, cart: guestCart.length ? guestCart : d.cart || [] });
+        }
       } catch (e) {
         console.error('[Init] Error loading data:', e);
         if (!cancelled) {
@@ -177,6 +275,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  // ==============================
+  // Đồng bộ dữ liệu theo phiên đăng nhập (user/orders/cart/inventory)
+  // ==============================
   useEffect(() => {
     if (loading) return;
     const token = getAccessToken();
@@ -192,6 +293,23 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
           getCartRequest({ token }).catch(() => []),
         ]);
         if (cancelled) return;
+        const serverCart: CartItem[] = cartItems.map((item) => ({
+          bookId: item.bookId,
+          quantity: item.quantity,
+          addedAt: item.addedAt,
+        }));
+        const localUserCart = readUserCart(session.userId);
+        const hydratedCart = serverCart.length ? serverCart : localUserCart;
+        if (!serverCart.length && localUserCart.length) {
+          const payload = {
+            items: localUserCart.map((item) => ({
+              bookId: Number(item.bookId),
+              quantity: item.quantity,
+            })),
+          };
+          updateCartRequest(payload, { token }).catch(() => {});
+        }
+        writeUserCart(session.userId, hydratedCart);
         setData((prev) => {
           if (!prev) return prev;
           return {
@@ -199,11 +317,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
             users: user ? [user] : prev.users,
             orders,
             inventoryLogs,
-            cart: cartItems.map((item) => ({
-              bookId: item.bookId,
-              quantity: item.quantity,
-              addedAt: item.addedAt,
-            })),
+            cart: hydratedCart,
           };
         });
       } catch {
@@ -215,11 +329,15 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     };
   }, [loading, session?.userId]);
 
+  // ==============================
+  // Nhóm xử lý toast/thông báo
+  // ==============================
   const showToast = useCallback((message: string, type: 'info' | 'success' | 'error' | 'warning' = 'info') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 4000);
   }, []);
 
+  // User hiện tại được suy ra từ session + data.users.
   const currentUser = useMemo(() => {
     if (!data || !session?.userId) {
       console.log('[CurrentUser] No data or session');
@@ -230,6 +348,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     return user;
   }, [data, session]);
 
+  // ==============================
+  // Nhóm helper dữ liệu cơ bản (books/cart)
+  // ==============================
   const getBookById = useCallback(
     (id: string) => data?.books?.find((b) => b && String(b.id) === String(id)),
     [data]
@@ -241,9 +362,24 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
 
   const saveCart = useCallback(
     (cart: CartItem[]) => {
+      if (!session?.userId) {
+        writeGuestCart(cart);
+      } else {
+        writeUserCart(session.userId, cart);
+        const token = getAccessToken();
+        if (token) {
+          const payload = {
+            items: cart.map((item) => ({
+              bookId: Number(item.bookId),
+              quantity: item.quantity,
+            })),
+          };
+          updateCartRequest(payload, { token }).catch(() => {});
+        }
+      }
       persist((prev) => ({ ...prev, cart }));
     },
-    [persist]
+    [persist, session?.userId]
   );
 
   const getCartItems = useCallback((): CartItemWithDetails[] => {
@@ -268,6 +404,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     [getCartItems]
   );
 
+  // ==============================
+  // Nhóm xử lý xác thực (auth)
+  // ==============================
   const login = useCallback(
     async (email: string, password: string) => {
       try {
@@ -279,6 +418,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         ]);
         localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
         localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+        writeGuestCart([]);
         const s: Session = {
           userId: user.id,
           loginTime: new Date().toISOString(),
@@ -316,12 +456,17 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
   );
 
   const logout = useCallback(() => {
+    const userId = session?.userId;
     const rt = localStorage.getItem(REFRESH_TOKEN_KEY);
     if (rt) {
       logoutRequest(rt).catch(() => {});
     }
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
+    writeGuestCart([]);
+    if (userId) {
+      writeUserCart(userId, []);
+    }
     writeSession(null);
     setSession(null);
     setData((prev) =>
@@ -336,7 +481,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         : prev
     );
     showToast('Đã đăng xuất', 'success');
-  }, [showToast]);
+  }, [session?.userId, showToast]);
 
   const register = useCallback(
     async (name: string, email: string, password: string, phone: string = '') => {
@@ -352,6 +497,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
         ]);
         localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
         localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+        writeGuestCart([]);
         const s: Session = {
           userId: user.id,
           loginTime: new Date().toISOString(),
@@ -421,6 +567,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  // ==============================
+  // Nhóm xử lý giỏ hàng
+  // ==============================
   const addToCart = useCallback(
     (bookId: string, quantity: number = 1) => {
       const book = getBookById(bookId);
@@ -487,9 +636,13 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
   );
 
   const clearCartStorage = useCallback(() => {
+    writeGuestCart([]);
     saveCart([]);
   }, [saveCart]);
 
+  // ==============================
+  // Nhóm refresh dữ liệu từ backend
+  // ==============================
   const refreshBooksFromApi = useCallback(async () => {
     try {
       const books = await getBooks<Book>('page=1&limit=500');
@@ -517,6 +670,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     });
   }, [persist]);
 
+  // ==============================
+  // Nhóm xử lý đơn hàng
+  // ==============================
   const addOrder = useCallback(
     async (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> => {
       const token = getAccessToken();
@@ -618,6 +774,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     [persist]
   );
 
+  // ==============================
+  // Nhóm xử lý sách/blog phía admin
+  // ==============================
   const addBook = useCallback(
     async (bookData: Omit<Book, 'id' | 'createdAt'>): Promise<Book> => {
       const token = getAccessToken();
@@ -869,6 +1028,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     [data]
   );
 
+  // ==============================
+  // Nhóm xử lý kho (inventory)
+  // ==============================
   const addInventoryLog = useCallback(
     async (bookId: string, type: 'import' | 'export', quantity: number, note: string, importPrice?: number) => {
       const token = getAccessToken();
@@ -910,7 +1072,9 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     );
   }, [data]);
 
-
+  // ==============================
+  // Giá trị context chia sẻ xuống toàn bộ app
+  // ==============================
   const value: BookstoreContextValue = useMemo(
     () => ({
       data,
@@ -988,6 +1152,7 @@ export function BookstoreProvider({ children }: { children: ReactNode }) {
     ]
   );
 
+  // Provider render children + toast toàn cục.
   return (
     <BookstoreContext.Provider value={value}>
       {children}

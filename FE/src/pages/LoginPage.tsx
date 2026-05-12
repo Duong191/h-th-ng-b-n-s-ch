@@ -77,150 +77,190 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="auth-page">
-      <section className="auth-section">
-        <div className="container">
-          <div className="auth-wrapper">
-            <div className="auth-card">
-              <div className="auth-tabs">
-                <button type="button" className={`tab-btn ${tab === 'login' ? 'active' : ''}`} onClick={() => setTab('login')}>
-                  Đăng Nhập
-                </button>
+    <div className="lg-page">
+      {/* Vòng blur trang trí phong cách Liquid Glass */}
+      <div className="lg-blob lg-blob-1" />
+      <div className="lg-blob lg-blob-2" />
+      <div className="lg-blob lg-blob-3" />
+
+      <div className="lg-card">
+        {/* Segmented control kiểu iOS - data-tab điều khiển thanh trượt CSS */}
+        <div className="lg-segmented" data-tab={tab} role="tablist">
+          <button
+            type="button"
+            className={`lg-segment ${tab === 'login' ? 'is-active' : ''}`}
+            onClick={() => setTab('login')}
+          >
+            Đăng Nhập
+          </button>
+          <button
+            type="button"
+            className={`lg-segment ${tab === 'register' ? 'is-active' : ''}`}
+            onClick={() => setTab('register')}
+          >
+            Đăng Ký
+          </button>
+        </div>
+
+        {tab === 'login' ? (
+          <div id="loginForm" className="lg-auth-panel">
+            <h2 className="lg-title">Đăng Nhập</h2>
+            <p className="lg-subtitle">Chào mừng bạn quay trở lại Bookarazi</p>
+
+            <form onSubmit={onLogin}>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="loginEmail">Email *</label>
+                <input
+                  type="email"
+                  id="loginEmail"
+                  name="email"
+                  className="lg-input"
+                  required
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="loginPassword">Mật khẩu *</label>
+                <input
+                  type="password"
+                  id="loginPassword"
+                  name="password"
+                  className="lg-input"
+                  required
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                />
+              </div>
+              <button type="submit" className="lg-submit">
+                <i className="fas fa-sign-in-alt" /> Đăng Nhập
+              </button>
+              <div className="lg-forgot-wrap">
                 <button
                   type="button"
-                  className={`tab-btn ${tab === 'register' ? 'active' : ''}`}
-                  onClick={() => setTab('register')}
+                  onClick={() => setShowForgotPassword(true)}
+                  className="lg-forgot-link"
                 >
-                  Đăng Ký
+                  Quên mật khẩu?
                 </button>
               </div>
+            </form>
 
-              {tab === 'login' ? (
-                <div id="loginForm" className="auth-form active">
-                  <div className="form-header">
-                    <h2 className="auth-title">Đăng Nhập</h2>
-                    <p className="auth-subtitle">Chào mừng bạn quay trở lại Bookarazi</p>
-                  </div>
-                  <form className="auth-form-body" onSubmit={onLogin}>
-                    <div className="form-group">
-                      <label htmlFor="loginEmail">Email *</label>
-                      <input type="email" id="loginEmail" name="email" className="form-input" required autoComplete="email" />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="loginPassword">Mật khẩu *</label>
-                      <input
-                        type="password"
-                        id="loginPassword"
-                        name="password"
-                        className="form-input"
-                        required
-                        autoComplete="current-password"
-                      />
-                    </div>
-                    <button type="submit" className="btn btn-primary btn-block auth-submit-btn">
-                      <i className="fas fa-sign-in-alt" /> Đăng Nhập
-                    </button>
-                    <div style={{ textAlign: 'center', marginTop: 15 }}>
-                      <button
-                        type="button"
-                        onClick={() => setShowForgotPassword(true)}
-                        style={{ background: 'none', border: 'none', color: '#ff6b6b', cursor: 'pointer', textDecoration: 'underline' }}
-                      >
-                        Quên mật khẩu?
-                      </button>
-                    </div>
-                  </form>
-                  <div className="demo-accounts">
-                    <h3>Tài khoản demo (mật khẩu: 1)</h3>
-                    <div className="demo-account">
-                      <strong>Admin:</strong> admin@bookstore.com
-                    </div>
-                    <div className="demo-account">
-                      <strong>Staff:</strong> staff@bookstore.com
-                    </div>
-                    <div className="demo-account">
-                      <strong>User:</strong> user@example.com
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div id="registerForm" className="auth-form active">
-                  <div className="form-header">
-                    <h2 className="auth-title">Đăng Ký</h2>
-                    <p className="auth-subtitle">Tạo tài khoản mới</p>
-                  </div>
-                  <form className="auth-form-body" onSubmit={onRegister}>
-                    <div className="form-group">
-                      <label htmlFor="registerName">Họ và tên *</label>
-                      <input type="text" id="registerName" name="name" className="form-input" required />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="registerEmail">Email *</label>
-                      <input type="email" id="registerEmail" name="email" className="form-input" required />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="registerPhone">Số điện thoại</label>
-                      <input type="tel" id="registerPhone" name="phone" className="form-input" />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="registerPassword">Mật khẩu *</label>
-                      <input type="password" id="registerPassword" name="password" className="form-input" required minLength={6} />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="confirmPassword">Xác nhận mật khẩu *</label>
-                      <input type="password" id="confirmPassword" name="confirmPassword" className="form-input" required />
-                    </div>
-                    <button type="submit" className="btn btn-primary btn-block auth-submit-btn">
-                      <i className="fas fa-user-plus" /> Đăng Ký
-                    </button>
-                  </form>
-                </div>
-              )}
+            <div className="lg-demo-panel">
+              <h3>Tài khoản demo (mật khẩu: 1)</h3>
+              <div className="lg-demo-item"><strong>Admin:</strong> admin@bookstore.com</div>
+              <div className="lg-demo-item"><strong>Staff:</strong> staff@bookstore.com</div>
+              <div className="lg-demo-item"><strong>User:</strong> user@example.com</div>
             </div>
           </div>
-        </div>
-      </section>
-      <div className="container" style={{ textAlign: 'center', marginBottom: 40 }}>
-        <NavLink to="/">Về trang chủ</NavLink>
+        ) : (
+          <div id="registerForm" className="lg-auth-panel">
+            <h2 className="lg-title">Đăng Ký</h2>
+            <p className="lg-subtitle">Tạo tài khoản mới</p>
+
+            <form onSubmit={onRegister}>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="registerName">Họ và tên *</label>
+                <input
+                  type="text"
+                  id="registerName"
+                  name="name"
+                  className="lg-input"
+                  required
+                  placeholder="Nguyễn Văn A"
+                />
+              </div>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="registerEmail">Email *</label>
+                <input
+                  type="email"
+                  id="registerEmail"
+                  name="email"
+                  className="lg-input"
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="registerPhone">Số điện thoại</label>
+                <input
+                  type="tel"
+                  id="registerPhone"
+                  name="phone"
+                  className="lg-input"
+                  placeholder="09xx xxx xxx"
+                />
+              </div>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="registerPassword">Mật khẩu *</label>
+                <input
+                  type="password"
+                  id="registerPassword"
+                  name="password"
+                  className="lg-input"
+                  required
+                  minLength={6}
+                  placeholder="Tối thiểu 6 ký tự"
+                />
+              </div>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="confirmPassword">Xác nhận mật khẩu *</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="lg-input"
+                  required
+                  placeholder="Nhập lại mật khẩu"
+                />
+              </div>
+              <button type="submit" className="lg-submit">
+                <i className="fas fa-user-plus" /> Đăng Ký
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
-      {/* Forgot Password Modal */}
+      <NavLink to="/" className="lg-home-link">← Về trang chủ</NavLink>
+
+      {/* Modal quên mật khẩu - click backdrop để đóng, stopPropagation ở card */}
       {showForgotPassword && (
         <div
-          className="auth-modal-backdrop"
+          className="lg-modal-backdrop"
           onClick={() => setShowForgotPassword(false)}
         >
           <div
-            className="auth-modal"
+            className="lg-modal-card"
             onClick={(e) => e.stopPropagation()}
           >
             <h2>Quên Mật Khẩu</h2>
-            <p style={{ color: '#666', marginTop: 10 }}>
+            <p style={{ marginTop: 10 }}>
               Nhập email đã đăng ký. Mật khẩu sẽ được đặt lại thành <strong>1</strong> (giống tài khoản demo).
             </p>
             <form onSubmit={onForgotPassword} style={{ marginTop: 20 }}>
-              <div className="form-group">
-                <label htmlFor="forgotEmail">Email *</label>
+              <div className="lg-group">
+                <label className="lg-label" htmlFor="forgotEmail">Email *</label>
                 <input
                   type="email"
                   id="forgotEmail"
                   name="forgotEmail"
-                  className="form-input"
+                  className="lg-input"
                   required
                   autoComplete="email"
                   autoFocus
+                  placeholder="you@example.com"
                 />
               </div>
-              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+              <div className="lg-modal-actions">
                 <button
                   type="button"
                   onClick={() => setShowForgotPassword(false)}
-                  className="btn btn-secondary"
-                  style={{ flex: 1 }}
+                  className="lg-btn-secondary"
                 >
                   Hủy
                 </button>
-                <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>
+                <button type="submit" className="lg-submit" style={{ marginTop: 0 }}>
                   Reset mật khẩu
                 </button>
               </div>

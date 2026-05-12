@@ -1,0 +1,418 @@
+/* ============================================================
+   HOME-LIQUID.CSS - Lớp Liquid Glass cho trang chủ HomePage
+   Áp dụng cho FE/src/pages/HomePage.tsx
+   Toàn bộ rule được scope dưới `.home-liquid-bg` để không
+   ảnh hưởng các trang khác (Shop, BookDetail, Cart...).
+============================================================ */
+
+
+/* ============================================================
+   1. NỀN TỔNG THỂ TRANG CHỦ (.home-liquid-bg)
+   - Gradient mềm pastel + 2 vòng blur trang trí trôi nhẹ
+   - overflow-x: hidden để tránh tràn ngang khi blob lệch
+============================================================ */
+.home-liquid-bg {
+    position: relative;
+    background:
+        radial-gradient(1000px 600px at 0% 0%, rgba(184, 198, 255, 0.55) 0%, transparent 60%),
+        radial-gradient(900px 600px at 100% 100%, rgba(255, 198, 224, 0.55) 0%, transparent 60%),
+        linear-gradient(180deg, #f8f9ff 0%, #fefcff 50%, #fff7fb 100%);
+    overflow-x: hidden;
+}
+
+/* Vòng blur trang trí phía trên (đặt dưới hero để không che ảnh hero) */
+.home-liquid-bg::before {
+    content: '';
+    position: absolute;
+    width: 460px;
+    height: 460px;
+    background: #7873f5;
+    opacity: 0.16;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    top: 70vh;
+    left: -160px;
+    z-index: 0;
+    animation: home-blob-float 18s ease-in-out infinite;
+}
+
+/* Vòng blur trang trí phía dưới bên phải */
+.home-liquid-bg::after {
+    content: '';
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    background: #ff8fbf;
+    opacity: 0.14;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    bottom: 8%;
+    right: -200px;
+    z-index: 0;
+    animation: home-blob-float 22s ease-in-out infinite reverse;
+}
+
+/* Mọi section con đều phải nằm trên lớp blob để không bị che mờ */
+.home-liquid-bg > section {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ============================================================
+   2. SECTION GLASS CHO "SÁCH NỔI BẬT" / "SÁCH MỚI" / "COMIC" / "NGOẠI NGỮ"
+   - Biến nền section trong suốt
+   - Khung container bên trong thành thẻ glassmorphism
+============================================================ */
+.home-liquid-bg .featured-books {
+    background: transparent;
+    box-shadow: none;
+    margin: 40px 0;
+}
+
+.home-liquid-bg .featured-books .container {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 28px;
+    box-shadow:
+        0 18px 60px rgba(31, 38, 135, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+
+/* ============================================================
+   3. SECTION GLASS CHO "BẢNG XẾP HẠNG BÁN CHẠY TUẦN"
+============================================================ */
+.home-liquid-bg .bestseller-ranking-preview {
+    position: relative;
+    z-index: 1;
+}
+
+.home-liquid-bg .bestseller-ranking-preview .container {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 28px;
+    box-shadow:
+        0 18px 60px rgba(31, 38, 135, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    padding: 28px 28px 32px;
+}
+
+
+/* ============================================================
+   4. SECTION GLASS CHO "GỢI Ý CHO BẠN"
+   - Bọc thêm khung ngoài cho recommend-block
+============================================================ */
+.home-liquid-bg .recommendations-section {
+    position: relative;
+    z-index: 1;
+    margin: 40px 0;
+}
+
+.home-liquid-bg .recommendations-section .container {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 28px;
+    box-shadow:
+        0 18px 60px rgba(31, 38, 135, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    padding: 24px;
+}
+
+
+/* ============================================================
+   5. TIÊU ĐỀ SECTION - GRADIENT MỀM MƯỢT
+============================================================ */
+.home-liquid-bg .featured-books .section-header h2,
+.home-liquid-bg .featured-books .comic-section-header h2,
+.home-liquid-bg .bestseller-ranking-preview .ranking-preview-header h2 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.01em;
+}
+
+.home-liquid-bg .featured-books .section-header h2::after,
+.home-liquid-bg .featured-books .comic-section-header h2::after {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+
+/* ============================================================
+   6. CARD SÁCH (BookCard) - GLASSY + HOVER MƯỢT
+   - Tăng chiều sâu, ảnh phóng nhẹ khi hover
+============================================================ */
+.home-liquid-bg .book-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(31, 38, 135, 0.08);
+    transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease;
+    will-change: transform;
+}
+
+.home-liquid-bg .book-card:hover {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: 0 22px 50px rgba(31, 38, 135, 0.18);
+    border-color: rgba(118, 75, 162, 0.25);
+}
+
+/* Ảnh sách phóng nhẹ khi hover - khung book-image-container giữ overflow hidden từ book-card */
+.home-liquid-bg .book-card .book-image {
+    transition: transform 0.5s ease;
+}
+
+.home-liquid-bg .book-card:hover .book-image {
+    transform: scale(1.05);
+}
+
+
+/* ============================================================
+   7. NÚT "THÊM VÀO GIỎ" TRONG CARD - GRADIENT MƯỢT
+============================================================ */
+.home-liquid-bg .book-card .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    box-shadow: 0 6px 14px rgba(118, 75, 162, 0.3);
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.home-liquid-bg .book-card .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+    box-shadow: 0 10px 22px rgba(118, 75, 162, 0.4);
+}
+
+.home-liquid-bg .book-card .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   8. NÚT CHUYỂN TRANG CAROUSEL (PREV/NEXT) - GLASS
+============================================================ */
+.home-liquid-bg .featured-books .carousel-nav {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 20px rgba(31, 38, 135, 0.14);
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.home-liquid-bg .featured-books .carousel-nav:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 12px 26px rgba(31, 38, 135, 0.2);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.home-liquid-bg .featured-books .carousel-nav:disabled {
+    opacity: 0.45;
+}
+
+.home-liquid-bg .featured-books .carousel-nav:disabled:hover {
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 20px rgba(31, 38, 135, 0.14);
+}
+
+
+/* ============================================================
+   9. ANIMATION KHI CHUYỂN TRANG CAROUSEL
+   - Khi đổi page, BookCard mới được mount → CSS animation tự chạy
+   - Stagger nhẹ theo thứ tự để cảm giác mượt như Apple
+============================================================ */
+.home-liquid-bg .home-book-slot {
+    animation: home-slot-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-liquid-bg .home-book-slot:nth-child(1) { animation-delay: 0.02s; }
+.home-liquid-bg .home-book-slot:nth-child(2) { animation-delay: 0.06s; }
+.home-liquid-bg .home-book-slot:nth-child(3) { animation-delay: 0.10s; }
+.home-liquid-bg .home-book-slot:nth-child(4) { animation-delay: 0.14s; }
+.home-liquid-bg .home-book-slot:nth-child(5) { animation-delay: 0.18s; }
+
+
+/* ============================================================
+   10. TAB "TRUYỆN TRANH" / "NGOẠI NGỮ" / "RANKING" - TRANSITION MƯỢT
+============================================================ */
+.home-liquid-bg .comic-tab-btn,
+.home-liquid-bg .ranking-preview-tab-btn {
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.home-liquid-bg .comic-tab-btn:hover,
+.home-liquid-bg .ranking-preview-tab-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   11. NÚT "XEM THÊM" CUỐI MỖI SECTION - GLASS GRADIENT
+============================================================ */
+.home-liquid-bg .view-more-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 8px 22px rgba(118, 75, 162, 0.32);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease,
+        background 0.25s ease;
+}
+
+.home-liquid-bg .view-more-btn:hover {
+    background: linear-gradient(135deg, #5a72e0 0%, #6a3e96 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(118, 75, 162, 0.45);
+    filter: brightness(1.05);
+}
+
+.home-liquid-bg .view-more-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+
+/* ============================================================
+   12. FADE-IN MƯỢT KHI CUỘN VÀO SECTION (HIỆU ỨNG XUẤT HIỆN)
+============================================================ */
+.home-liquid-bg section.featured-books,
+.home-liquid-bg section.bestseller-ranking-preview,
+.home-liquid-bg section.recommendations-section {
+    animation: home-section-in 0.7s ease both;
+}
+
+.home-liquid-bg section.featured-books:nth-of-type(2) { animation-delay: 0.05s; }
+.home-liquid-bg section.featured-books:nth-of-type(3) { animation-delay: 0.10s; }
+.home-liquid-bg section.bestseller-ranking-preview     { animation-delay: 0.15s; }
+.home-liquid-bg section.recommendations-section        { animation-delay: 0.20s; }
+
+
+/* ============================================================
+   13. KEYFRAMES
+   - home-blob-float:  vòng blur trang trí trôi nhẹ
+   - home-slot-in:     card sách fade + slide-up khi mount
+   - home-section-in:  section fade + slide nhẹ khi vào trang
+============================================================ */
+@keyframes home-blob-float {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(30px, -25px); }
+}
+
+@keyframes home-slot-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes home-section-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+   14. RESPONSIVE - MOBILE
+   - Bo góc nhỏ lại, padding gọn hơn, blob mờ hơn
+============================================================ */
+@media (max-width: 768px) {
+    .home-liquid-bg .featured-books .container,
+    .home-liquid-bg .bestseller-ranking-preview .container,
+    .home-liquid-bg .recommendations-section .container {
+        border-radius: 22px;
+    }
+
+    .home-liquid-bg .book-card {
+        border-radius: 14px;
+    }
+
+    .home-liquid-bg::before,
+    .home-liquid-bg::after {
+        opacity: 0.10;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-liquid-bg .featured-books .container,
+    .home-liquid-bg .bestseller-ranking-preview .container,
+    .home-liquid-bg .recommendations-section .container {
+        border-radius: 18px;
+    }
+}
+
+
+/* ============================================================
+   15. TRÁNH HOVER GIẬT TRÊN THIẾT BỊ CẢM ỨNG
+============================================================ */
+@media (hover: none) and (pointer: coarse) {
+    .home-liquid-bg .book-card:hover {
+        transform: none;
+        box-shadow: 0 6px 18px rgba(31, 38, 135, 0.08);
+    }
+
+    .home-liquid-bg .book-card:hover .book-image {
+        transform: none;
+    }
+}
+
+
+/* ============================================================
+   16. ACCESSIBILITY - GIẢM CHUYỂN ĐỘNG
+   - Tắt animation cho user bật "Reduce motion" trên hệ điều hành
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .home-liquid-bg::before,
+    .home-liquid-bg::after,
+    .home-liquid-bg .home-book-slot,
+    .home-liquid-bg section.featured-books,
+    .home-liquid-bg section.bestseller-ranking-preview,
+    .home-liquid-bg section.recommendations-section {
+        animation: none !important;
+    }
+
+    .home-liquid-bg .book-card,
+    .home-liquid-bg .book-card .book-image,
+    .home-liquid-bg .featured-books .carousel-nav,
+    .home-liquid-bg .view-more-btn,
+    .home-liquid-bg .comic-tab-btn,
+    .home-liquid-bg .ranking-preview-tab-btn {
+        transition: none !important;
+    }
+}
