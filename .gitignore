@@ -13,3 +13,6 @@ BE/.env
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Cursor IDE — không đưa cấu hình/rule MCP của Cursor lên Git
+.cursor/
